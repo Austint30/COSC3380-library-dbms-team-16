@@ -9,10 +9,5 @@
 	if($conn->connect_error){
 		die('Connection error: '.$conn->connect_error);
 	}
-	
-    $result = $conn->query("SELECT `First Name` FROM library.Account WHERE Type = 'ADMIN'");
-    $results = $result->fetch_all();
-    print_r($results);
-    $conn->close();
 
 ?>	
