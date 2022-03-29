@@ -35,7 +35,7 @@
                         echo "<tr>";
                         for ($i = 0; $i < count($row); $i++) {
                             $value = $row[$i];
-                            echo "<th>$value</th>";
+                            echo "<td>$value</td>";
                         }
                         echo "</tr>";
                     }
