@@ -27,6 +27,12 @@
                 </div>
             </div>
             <?php
+                if (isset($_GET["msg"])){
+                    $errormsg = $_GET["msg"];
+                    echo '<div class="alert alert-primary mt-3" role="alert">';
+                    echo $errormsg;
+                    echo '</div>';
+                }
                 if (isset($_GET["errormsg"])){
                     $errormsg = $_GET["errormsg"];
                     echo '<div class="alert alert-danger mt-3" role="alert">';
