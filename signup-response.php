@@ -2,10 +2,10 @@
 <html>
     <!--------------------------------------------------------------->
     <head>
-        <?php include '../bootstrap.php' ?>
+        <?php include 'bootstrap.php' ?>
     </head>
     <body>
-        <?php include '../headerbar-unauth.php' ?>
+        <?php include 'headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
             <h1>Account creation successful!</h1>
             <p>
@@ -35,7 +35,7 @@
         //     const text = await resp.text();
         //     if (text == 1){
         //         console.log('User is approved. Redirecting...');
-        //         window.location = '../index.php';
+        //         window.location = '/index.php';
         //     }
         // }
 
@@ -45,7 +45,13 @@
             .then((text) => {
                 if (text == 1){
                     console.log('User is approved. Redirecting...');
-                    window.location = '../index.php';
+                    var now = new Date();
+                    var time = now.getTime();
+                    var expireTime = time + 1000*36000;
+                    now.setTime(expireTime);
+
+                    document.cookie = "signed-in=true;expires=" + now.toUTCString() + ";path=/"
+                    window.location = '/index.php';
                 }
             })
         }

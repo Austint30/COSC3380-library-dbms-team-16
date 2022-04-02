@@ -6,12 +6,12 @@
 <html>
     <!--------------------------------------------------------------->
     <head>
-        <?php include '../bootstrap.php' ?>
+        <?php include 'bootstrap.php' ?>
     </head>
     <!--------------------------------------------------------------->
     <body>
-        <?php include '../headerbar-unauth.php' ?>
-        <!-- <?php include '../usertable.php' ?> -->
+        <?php include 'headerbar-unauth.php' ?>
+        <!-- <?php include 'usertable.php' ?> -->
         <form class="container mt-5" action="signup-response-server.php" method="post">
             <div class="card">
                 <div class="card-body">

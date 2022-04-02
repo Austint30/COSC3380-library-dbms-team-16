@@ -37,10 +37,10 @@
 <html>
     <!--------------------------------------------------------------->
     <head>
-        <?php include '../bootstrap.php' ?>
+        <?php include 'bootstrap.php' ?>
     </head>
     <body>
-        <?php include '../headerbar-unauth.php' ?>
+        <?php include 'headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
             <h1>Account creation failed!</h1>
             <p>

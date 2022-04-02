@@ -17,12 +17,13 @@
                 // if ($type == "ADMIN"){
 
                 // }
+                setcookie("signed-in", true, time() + (86400 * 30), "/"); // 86400 = 1 day
                 header("Location: /index.php");
             }
         }
         else
         {
-            header("Location: /library/signin.php?errormsg=Password is inccorrect.");
+            header("Location: /signin.php?errormsg=Password is inccorrect.");
         }
     }
     else
@@ -33,10 +34,10 @@
 <html>
     <!--------------------------------------------------------------->
     <head>
-        <?php include '../bootstrap.php' ?>
+        <?php include 'bootstrap.php' ?>
     </head>
     <body>
-        <?php include '../headerbar-unauth.php' ?>
+        <?php include 'headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
             <h1>Sign in failed</h1>
             <p>
