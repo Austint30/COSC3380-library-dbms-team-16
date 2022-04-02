@@ -22,7 +22,12 @@
             INSERT INTO Account (Account.`First Name`, Account.`Last Name`, Account.`Middle Name`, Account.Password, Account.Email, Account.Phone, Account.Type)
             VALUES ('$firstName', '$lastName', '$middleName', '$password', '$email', '$phone', '$type');
         ");
-        header("Location: signup-response.php");
+        $res = $conn->query('SELECT LAST_INSERT_ID()');
+        $row = $res->fetch_array();
+        $userId = $row[0];
+        if ($result){
+            header("Location: signup-response.php?userId=$userId&email=$email");
+        }
     }
     else
     {
@@ -35,7 +40,7 @@
         <?php include '../bootstrap.php' ?>
     </head>
     <body>
-        <?php include '../headerbar.php' ?>
+        <?php include '../headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
             <h1>Account creation failed!</h1>
             <p>
