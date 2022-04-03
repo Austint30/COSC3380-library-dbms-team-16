@@ -19,11 +19,11 @@
                     <div class="row align-items-start">
                         <div class="col-6 mb-3">
                             <label for="signup-firstname" class="form-label">First name</label>
-                            <input class="form-control" id="signup-firstname" name="firstName">
+                            <input class="form-control" id="signup-firstname" name="firstName" required>
                         </div>
                         <div class="col-6 mb-3">
                             <label for="signup-lastname" class="form-label">Last name</label>
-                            <input class="form-control" id="signup-lastname" name="lastName">
+                            <input class="form-control" id="signup-lastname" name="lastName" required>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -32,7 +32,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="signup-type" class="form-label">Account type</label>
-                        <select id="signup-type" class="form-select" name="type">
+                        <select id="signup-type" class="form-select" name="type" required>
                             <option value="" selected>Choose an account type</option>
                             <option value="STUDENT">Student</option>
                             <option value="FACULTY">Faculty</option>
@@ -40,11 +40,11 @@
                     </div>
                     <div class="mb-3">
                         <label id="signup-email-label" for="signup-email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="signup-email" disabled name="email">
+                        <input type="email" class="form-control" id="signup-email" disabled name="email" required>
                     </div>
                     <div class="mb-3">
                         <label id="signup-phone-label" for="signup-phone" class="form-label">Phone</label>
-                        <input type="phone" class="form-control" id="signup-phone" disabled name="phone">
+                        <input type="phone" class="form-control" id="signup-phone" disabled name="phone" required>
                     </div>
                     <button id="signup-button" type="submit" class="btn btn-primary" disabled>Sign Up</button>
                 </div>

@@ -17,11 +17,11 @@
                     <h5 class="card-title">Sign in</h5>
                     <div class="mb-3">
                         <label for="signin-userid" class="form-label">User ID</label>
-                        <input class="form-control" id="signin-userid" name="userId">
+                        <input class="form-control" id="signin-userid" name="userId" required>
                     </div>
                     <div class="mb-3">
                         <label for="signin-password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="signin-password" name="password">
+                        <input type="password" class="form-control" id="signin-password" name="password" required>
                     </div>
                     <button id="signin-button" type="submit" class="btn btn-primary">Sign in</button>
                 </div>
