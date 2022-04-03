@@ -22,7 +22,7 @@
                     <h5 class="card-title">Users awaiting approval</h5>
                 </div>
                 <?php
-                    $result = $conn->query("SELECT Account.`Last Name`, Account.`First Name`, Account.`Email`, Account.`User ID` FROM Account WHERE Account.Approved='0'");
+                    $result = $conn->query("SELECT Account.`Last Name`, Account.`First Name`, Account.Type, Account.`Email`, Account.`User ID` FROM Account WHERE Account.Approved='0'");
                     $unApprColumns = $result->fetch_fields();
                     $unApprUsers = $result->fetch_all();
                 ?>
@@ -66,7 +66,7 @@
                     <h5 class="card-title">Active users</h5>
                 </div>
                 <?php
-                    $result = $conn->query("SELECT Account.`Last Name`, Account.`First Name`, Account.`Email`, Account.`User ID` FROM Account WHERE Account.Approved='1'");
+                    $result = $conn->query("SELECT Account.`Last Name`, Account.`First Name`, Account.Type, Account.`Email`, Account.`User ID` FROM Account WHERE Account.Approved='1'");
                     $columns = $result->fetch_fields();
                     $users = $result->fetch_all();
                 ?>
