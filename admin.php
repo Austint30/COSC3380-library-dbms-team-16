@@ -20,37 +20,46 @@
     <body>
         <?php include 'headerbar-auth.php' ?>
         <div class="container mt-5">
-            <h1 class="mb-2 pb-3 border-bottom">Admin page</h1>
-            <h4>Unapproved users</h4>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
+            <h1 class="mb-3">Admin page</h1>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Users awaiting approval</h5>
+                </div>
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <?php
+                                foreach($unApprColumns as $colData){
+                                    echo "<th>$colData->name</th>";
+                                }
+                            ?>
+                        </tr>
+                    <thead>
+                    <tbody>
                         <?php
-                            foreach($unApprColumns as $colData){
-                                echo "<th>$colData->name</th>";
+                            for ($j = 0; $j < count($unApprUsers); $j++) {
+                                $row = $unApprUsers[$j];
+                                $userID = $row[3];
+                                $tdStyle = "";
+                                if ($j == count($unApprUsers)-1){
+                                    $tdStyle = "border-bottom: none;";
+                                }
+                                echo "<tr>";
+                                for ($i = 0; $i < count($row); $i++) {
+                                    $value = $row[$i];
+                                    echo "<td style='$tdStyle'>$value</td>";
+                                }
+                                echo "<td style='$tdStyle'>
+                                    <a href='admin-approve-user.php?userID=$userID' class='btn btn-primary btn-small' style='float: right;'>
+                                        Approve
+                                    </a>
+                                </td>";
+                                echo "</tr>";
                             }
                         ?>
-                    </tr>
-                <thead>
-                <tbody>
-                    <?php
-                        foreach($unApprUsers as $row){
-                            $userID = $row[3];
-                            echo "<tr>";
-                            for ($i = 0; $i < count($row); $i++) {
-                                $value = $row[$i];
-                                echo "<td>$value</td>";
-                            }
-                            echo "<td>
-                                <a href='admin-approve-user.php?userID=$userID' class='btn btn-primary btn-small' style='float: right;'>
-                                    Approve
-                                </a>
-                            </td>";
-                            echo "</tr>";
-                        }
-                    ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </body>
 </html>
