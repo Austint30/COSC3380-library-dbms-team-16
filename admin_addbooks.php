@@ -11,7 +11,7 @@
     <!--------------------------------------------------------------->
     <body>
         <?php include 'headerbar-unauth.php' ?>
-        <form class="container mt-5" action="signup-response-server.php" method="post">
+        <form class="container mt-5" action="addbook-response-server.php" method="post">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Add Book</h5>
@@ -28,7 +28,7 @@
 					<div class="row align-items-start">
                         <div class="col-6 mb-3">
                             <label for="addbook-genre" class="form-label">Genre</label>
-							<select id="signup-type" class="form-select" name="type" required>
+							<select id="signup-type" class="form-select" name="bookGenre" required>
                             <option value="" selected>Choose an account type</option>
 							<option value="STUDENT">FANTASY</option>
                             <option value="FACULTY">SCI_FI</option>
@@ -83,7 +83,7 @@
                             <input class="form-control" id="addbook-yearpublished" name="bookYear" required>
                         </div>
                     </div>					
-                    <button id="addbook-button" type="submit" class="btn btn-primary" disabled>Add Book</button>
+                    <button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button>
                 </div>
             </div>
         </form>
