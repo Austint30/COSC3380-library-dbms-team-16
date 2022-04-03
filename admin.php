@@ -20,7 +20,7 @@
     <body>
         <?php include 'headerbar-auth.php' ?>
         <div class="container mt-5">
-            <h1 class="mb-2 pb-3 border-bottom">This is the admin page.</h1>
+            <h1 class="mb-2 pb-3 border-bottom">Admin page</h1>
             <h4>Unapproved users</h4>
             <table class="table table-striped">
                 <thead>
