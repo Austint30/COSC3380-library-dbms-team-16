@@ -40,7 +40,7 @@
                         <?php
                             for ($j = 0; $j < count($unApprUsers); $j++) {
                                 $row = $unApprUsers[$j];
-                                $userID = $row[3];
+                                $userID = $row[4];
                                 $tdStyle = "";
                                 if ($j == count($unApprUsers)-1){
                                     $tdStyle = "border-bottom: none;";
@@ -84,7 +84,7 @@
                         <?php
                             for ($j = 0; $j < count($users); $j++) {
                                 $row = $users[$j];
-                                $userID = $row[4];
+                                $userID = $row[3];
                                 $tdStyle = "";
                                 if ($j == count($users)-1){
                                     $tdStyle = "border-bottom: none;";
