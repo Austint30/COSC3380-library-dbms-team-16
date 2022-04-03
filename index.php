@@ -13,9 +13,9 @@
 			$columns = $result->fetch_fields();
 			$results = $result->fetch_all();
 		?>
-		<p class="fs-1 text-center">Books:</p>
-		<div class="container">
-			<table class="table table-hover">
+		<div class="container mt-5">
+            <h1>Books</h1>
+			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
 						<?php
@@ -52,8 +52,8 @@
 			$columns = $result->fetch_fields();
 			$results = $result->fetch_all();
 		?>
-		<p class="fs-1 text-center" >Media:</p>
 		<div class="container">
+            <h1 class="mt-5">Media</h1>
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
@@ -92,8 +92,8 @@
 			$results = $result->fetch_all();
 			$conn->close();
 		?>
-		<p class="fs-1 text-center">Devices:</p>
 		<div class="container">
+            <h1 class="mt-5">Devices</h1>
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
@@ -173,5 +173,6 @@
             <a href="/library/signup.php">Go to Sign Up</a>
         </div>
     </body>
+    <?php include 'scripts.php' ?>
 <!---------------------------------------------------------------> 
 </html>
