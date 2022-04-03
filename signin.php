@@ -24,6 +24,7 @@
                         <input type="password" class="form-control" id="signin-password" name="password" required>
                     </div>
                     <button id="signin-button" type="submit" class="btn btn-primary">Sign in</button>
+                    <a style="float: right;" href="signin-fake-response-server.php">I don't care just sign me in</a>
                 </div>
             </div>
             <?php
