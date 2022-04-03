@@ -10,6 +10,9 @@
       gap: 1rem;
     }
 </style>
+<?php
+  $pageName = basename($_SERVER['PHP_SELF']);
+?>
 <nav class="navbar navbar-dark bg-dark library-headerbar">
   <div class="container-fluid">
     <a class="navbar-brand">Team 16 Library System</a>
@@ -30,9 +33,25 @@
       <form class="d-flex" style="white-space: nowrap;" action="search.php" method="post">
         <div class="input-group me-2">
           <select class="form-select" style="width: 7rem;" name="type">
-            <option value="books" selected>Books</option>
-            <option value="media">Media</option>
-            <option value="devices">Devices</option>
+            <?php
+              echo "<option value='books'";
+              if ($pageName == "books.php"){
+                echo "selected";
+              }
+              echo ">Books</option>";
+
+              echo "<option value='media'";
+              if ($pageName == "media.php"){
+                echo "selected";
+              }
+              echo ">Media</option>";
+
+              echo "<option value='devices'";
+              if ($pageName == "devices.php"){
+                echo "selected";
+              }
+              echo ">Devices</option>";
+            ?>
           </select>
           <input class="form-control" style="width: 20rem;" type="search" placeholder="Search" aria-label="Search" name="query" required>
           <button class="btn btn-outline-light me-2" type="submit">

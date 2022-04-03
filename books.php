@@ -10,10 +10,10 @@
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
 			$result = $conn->query(
-				"SELECT Title, Genre, AuthorFName, AuthorMName, AuthorLName, `Year Published`, ISBN, count(library.Item.`Book Title ID`) as Stock
+				"SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, `Year Published`, ISBN, count(library.Item.`Book Title ID`) as Stock
 				FROM library.`Book Title`
 				LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
-				WHERE Item.`Checked Out By` IS NULL AND Item.`Held By` IS NULL
+				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
 				GROUP BY library.`Book Title`.Title
 				ORDER BY library.`Book Title`.Title"
 			);
@@ -33,19 +33,27 @@
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
-						<?php
-							foreach($columns as $colData){
-								echo "<th>$colData->name</th>";
-							}
-						?>
-						<th>Learn More</th>
+						<th>Title</th>
+						<th>Genre</th>
+						<th>Author</th>
+						<th>Year Published</th>
+						<th>ISBN</th>
+						<th>Stock</th>
+						<th></th>
 					</tr>
 				<thead>
 				<tbody>
 					<?php
 						foreach($results as $row){
 							echo "<tr>";
-							for ($i = 0; $i < count($row); $i++) {
+							for ($i = 0; $i < 2; $i++) {
+								echo "<td>$row[$i]</td>";
+							}
+							$fullNameArray = [$row[2], $row[3], $row[4]];
+							$fullNameArray = array_filter($fullNameArray, 'strlen');
+							$fullNameStr = join(", ", $fullNameArray);
+							echo "<td>$fullNameStr</td>";
+							for ($i = 5; $i < count($row); $i++) {
 								$value = $row[$i];
 								if ($i == 7) { // Quantity column
 									if ($value == 0){
