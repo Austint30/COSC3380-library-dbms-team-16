@@ -54,6 +54,11 @@
 			</table>
 		</div>
     </body>
+	
+	<div class="text-center">
+	  <img src="stackofbooks.png" class="rounded" alt="">
+	</div>
+
 	<?php include 'scripts.php' ?>
 <!---------------------------------------------------------------> 
 </html>
