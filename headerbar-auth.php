@@ -18,17 +18,43 @@
     <a class="navbar-brand">Team 16 Library System</a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-5">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <?php if ($pageName == "index.php") {
+              echo '<a class="nav-link active" aria-current="page" href="/">Home</a>';
+            }
+            else
+            {
+              echo '<a class="nav-link" aria-current="page" href="/">Home</a>';
+            }
+          ?>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/books.php">Books</a>
+          <?php if ($pageName == "books.php") {
+              echo '<a class="nav-link active" aria-current="page" href="/books.php">Books</a>';
+            }
+            else
+            {
+              echo '<a class="nav-link" aria-current="page" href="/books.php">Books</a>';
+            }
+          ?>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/media.php">Media</a>
+          <?php if ($pageName == "media.php") {
+              echo '<a class="nav-link active" aria-current="page" href="/media.php">Media</a>';
+            }
+            else
+            {
+              echo '<a class="nav-link" aria-current="page" href="/media.php">Media</a>';
+            }
+          ?>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/devices.php">Devices</a>
-        </li>
+          <?php if ($pageName == "devices.php") {
+              echo '<a class="nav-link active" aria-current="page" href="/devices.php">Devices</a>';
+            }
+            else
+            {
+              echo '<a class="nav-link" aria-current="page" href="/devices.php">Devices</a>';
+            }
+          ?>
       </ul>
       <form class="d-flex" style="white-space: nowrap;" action="search.php" method="post">
         <div class="input-group me-2">
