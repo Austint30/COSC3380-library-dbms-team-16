@@ -9,7 +9,13 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = $conn->query("SELECT * FROM library.`Book Title`");
+			$result = $conn->query(
+				"SELECT Title, Genre, AuthorFName, AuthorMName, AuthorLName, `Year Published`, ISBN, count(library.Item.`Book Title ID`) as Quantity
+				FROM library.`Book Title`
+				LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
+				GROUP BY library.`Book Title`.Title
+				ORDER BY library.`Book Title`.Title"
+			);
 			$columns = $result->fetch_fields();
 			$results = $result->fetch_all();
 		?>
@@ -54,11 +60,6 @@
 			</table>
 		</div>
     </body>
-	
-	<div class="text-center">
-	  <img src="stackofbooks.png" class="rounded" alt="">
-	</div>
-
 	<?php include 'scripts.php' ?>
 <!---------------------------------------------------------------> 
 </html>
