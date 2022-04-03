@@ -155,7 +155,7 @@
 		
 		
 		<div class="container text-center mt-5">
-            <a href="/library/signup.php">Go to Sign Up</a>
+            <a href="/signup.php">Go to Sign Up</a>
         </div>
     </body>
     <?php include 'scripts.php' ?>
