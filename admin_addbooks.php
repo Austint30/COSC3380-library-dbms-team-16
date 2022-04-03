@@ -30,26 +30,26 @@
                             <label for="addbook-genre" class="form-label">Genre</label>
 							<select id="signup-type" class="form-select" name="bookGenre" required>
                             <option value="" selected>Choose an account type</option>
-							<option value="STUDENT">FANTASY</option>
-                            <option value="FACULTY">SCI_FI</option>
-							<option value="STUDENT">DYSTOPIAN</option>
-							<option value="STUDENT">ACTION_ADVEN</option>
-							<option value="STUDENT">MYSTERY</option>
-							<option value="STUDENT">HORROR</option>
-							<option value="STUDENT">THRILL</option>
-							<option value="STUDENT">HIS_FICTION</option>
-							<option value="STUDENT">ROMANCE</option>
-							<option value="STUDENT">GRAPH_NOVEL</option>
-							<option value="STUDENT">AUTO_BIO</option>
-							<option value="STUDENT">BIO</option>
-							<option value="STUDENT">ART</option>
-							<option value="STUDENT">HISTORY</option>
-							<option value="STUDENT">TRAVEL</option>
-							<option value="STUDENT">CRIME</option>
-							<option value="STUDENT">HUMOR</option>
-							<option value="STUDENT">GUIDE</option>
-							<option value="STUDENT">RELIGION</option>
-							<option value="STUDENT">SCIENCE</option>
+							<option value="FANTASY">FANTASY</option>
+                            <option value="SCI_FI">SCI_FI</option>
+							<option value="DYSTOPIAN">DYSTOPIAN</option>
+							<option value="ACTION_ADVEN">ACTION_ADVEN</option>
+							<option value="MYSTERY">MYSTERY</option>
+							<option value="HORROR">HORROR</option>
+							<option value="THRILL">THRILL</option>
+							<option value="HIS_FICTION">HIS_FICTION</option>
+							<option value="ROMANCE">ROMANCE</option>
+							<option value="GRAPH_NOVEL">GRAPH_NOVEL</option>
+							<option value="AUTO_BIO">AUTO_BIO</option>
+							<option value="BIO">BIO</option>
+							<option value="ART">ART</option>
+							<option value="HISTORY">HISTORY</option>
+							<option value="TRAVEL">TRAVEL</option>
+							<option value="CRIME">CRIME</option>
+							<option value="HUMOR">HUMOR</option>
+							<option value="GUIDE">GUIDE</option>
+							<option value="RELIGION">RELIGION</option>
+							<option value="SCIENCE">SCIENCE</option>
                         </select>
                         </div>
                         <div class="col-6 mb-3">
