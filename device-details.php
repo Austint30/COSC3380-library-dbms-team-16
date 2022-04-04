@@ -75,7 +75,7 @@
                                     if ($stock == 0){
 										$stock = "<span class='text-danger'>Out of stock</span>";
 									}
-									else if ($stock < 10){
+									else if ($stock < 4){
 										$stock = "<span class='text-warning'>Limited stock</span>";
 									}
 									else
