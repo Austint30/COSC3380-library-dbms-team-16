@@ -16,7 +16,7 @@
 				FROM library.`Book Title`
 				LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
 				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-				GROUP BY library.`Book Title`.Title
+				GROUP BY library.`Book Title`.ISBN
 				ORDER BY library.`Book Title`.Title"
 			);
 			$columns = $result->fetch_fields();

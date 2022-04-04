@@ -22,7 +22,7 @@
     $userID = $user[1];
 
     // Find an available item of this book and mark it as held.
-    $result = $conn->query("SELECT Item.`Item ID` FROM Item WHERE Item.`Book Title ID`=$isbn");
+    $result = $conn->query("SELECT Item.`Item ID` FROM Item WHERE Item.`Book Title ID`='$isbn'");
     $item = $result->fetch_row();
 
     if (!$item){

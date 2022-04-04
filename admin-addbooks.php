@@ -88,6 +88,10 @@
                             <label for="addbook-yearpublished" class="form-label">Year Published</label>
                             <input class="form-control" id="addbook-yearpublished" name="bookYear" required>
                         </div>
+                        <div class="col-6 mb-3">
+                            <label for="addbook-ddn" class="form-label">Quantity</label>
+                            <input type="number" max="100" min="1" class="form-control" id="addbook-ddn" name="bookQuantity" value="1" required>
+                        </div>
                     </div>					
                     <button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button>
                 </div>

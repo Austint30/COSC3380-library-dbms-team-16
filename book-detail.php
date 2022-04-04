@@ -7,10 +7,12 @@
     $isbn = $_GET["isbn"];
     $result = $conn->query(
         "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, `Year Published`, DDN, ISBN, count(library.Item.`Book Title ID`) as Stock
-        FROM library.`Book Title`
-        LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID` AND library.`Book Title`.ISBN = '$isbn'
-        AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-        GROUP BY library.`Book Title`.Title"
+FROM library.`Book Title`
+LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
+	AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
+    WHERE library.`Book Title`.ISBN = '$isbn'
+	GROUP BY library.`Book Title`.ISBN
+	ORDER BY library.`Book Title`.Title"
     );
     $book = $result->fetch_row();
     if (!$book){
