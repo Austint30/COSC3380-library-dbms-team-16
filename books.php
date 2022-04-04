@@ -21,7 +21,16 @@
 			$results = $result->fetch_all();
 		?>
 		<div class="container mt-5">
-            <h1>Books</h1>
+			<div class="mb-3 d-flex">
+				<h1 class="mb-0">Books</h1>
+				<?php
+					// TODO: Make this button only appear for ADMIN/STAFF users.
+					// if ($userType == 'ADMIN' || $userType == "STAFF"){
+						echo '<a href="/admin_addbooks.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Book(s)<a>'
+					// }
+				?>
+			</div>
+            
 			<?php
 				if (isset($_GET["search"])){
 					// We have a search url parameter. Display a message.
