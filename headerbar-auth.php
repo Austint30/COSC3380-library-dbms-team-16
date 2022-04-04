@@ -28,7 +28,7 @@
           ?>
         </li>
         <li class="nav-item">
-          <?php if ($pageName == "books.php" || $pageName == "book-detail.php") {
+          <?php if ($pageName == "books.php" || $pageName == "book-detail.php" || $pageName == "admin-addbooks.php") {
               echo '<a class="nav-link active" aria-current="page" href="/books.php">Books</a>';
             }
             else
@@ -47,6 +47,7 @@
             }
           ?>
         </li>
+        <li>
           <?php if ($pageName == "devices.php") {
               echo '<a class="nav-link active" aria-current="page" href="/devices.php">Devices</a>';
             }
@@ -55,6 +56,17 @@
               echo '<a class="nav-link" aria-current="page" href="/devices.php">Devices</a>';
             }
           ?>
+        </li>
+        <li>
+          <?php if ($pageName == "held-items.php") {
+              echo '<a class="nav-link active" aria-current="page" href="/held-items.php">Held Items</a>';
+            }
+            else
+            {
+              echo '<a class="nav-link" aria-current="page" href="/held-items.php">Held Items</a>';
+            }
+          ?>
+        </li>
       </ul>
       <form class="d-flex" style="white-space: nowrap;" action="search.php" method="post">
         <div class="input-group me-2">
