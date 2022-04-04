@@ -31,22 +31,22 @@
 			<div class="row">          
 				<div class="btn-group">
 				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Book</button>
-				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Book</button>
-				  <button id="addbook-button" type="submit" class="btn btn-primary ">Add Book</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Del. Book</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary ">Edit Book</button>
 				</div>
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
-				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Book</button>
-				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Book</button>
-				  <button id="addbook-button" type="submit" class="btn btn-primary ">Add Book</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Media</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Del. Media</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary ">Edit Media</button>
 				</div>
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
-				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Book</button>
-				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Book</button>
-				  <button id="addbook-button" type="submit" class="btn btn-primary ">Add Book</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Add Device</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary me-5">Del. Device</button>
+				  <button id="addbook-button" type="submit" class="btn btn-primary ">Edit Device</button>
 				</div>
 			</div>
 
