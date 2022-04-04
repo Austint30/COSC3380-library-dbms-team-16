@@ -26,7 +26,7 @@
 				<?php
 					// TODO: Make this button only appear for ADMIN/STAFF users.
 					// if ($userType == 'ADMIN' || $userType == "STAFF"){
-						echo '<a href="/admin_addbooks.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Book(s)<a>'
+						echo '<a href="/admin-addbooks.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Book(s)<a>'
 					// }
 				?>
 			</div>

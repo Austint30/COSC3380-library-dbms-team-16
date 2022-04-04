@@ -10,8 +10,14 @@
     </head>
     <!--------------------------------------------------------------->
     <body>
-        <?php include 'headerbar-unauth.php' ?>
+        <?php include 'headerbar-auth.php' ?>
         <form class="container mt-5" action="addbook-response-server.php" method="post">
+            <nav aria-label="breadcrumb mb-3">
+                <ol class="breadcrumb h3">
+                    <li class="breadcrumb-item" aria-current="page"><a href="/books.php">Books</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add book(s)</li>
+                </ol>
+            </nav>
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Add Book</h5>
