@@ -92,6 +92,20 @@
                     <button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button>
                 </div>
             </div>
+            <?php
+                if (isset($_GET["msg"])){
+                    $msg = $_GET["msg"];
+                    echo "<div class='alert alert-primary mt-3' role='alert'>
+                        $msg
+                    </div>";
+                }
+                if (isset($_GET["errormsg"])){
+                    $msg = $_GET["errormsg"];
+                    echo "<div class='alert alert-danger mt-3' role='alert'>
+                        $msg
+                    </div>";
+                }
+            ?>
         </form>
     </body>
     <!--------------------------------------------------------------->

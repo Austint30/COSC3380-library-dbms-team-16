@@ -46,6 +46,7 @@
                         <h5 class="card-title">Book Details</h5>
                         <div class="ms-auto d-flex flex-column justfy-content-end">
                             <a
+                                href="book-hold.php?isbn=<?php echo $isbn ?>"
                                 class="ms-auto btn btn-success <?php if ($book[8] == 0) { echo "disabled"; } ?>"
                             >Place Hold</a>
                             <?php if ($book[8] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
@@ -100,6 +101,20 @@
                     </table>
                 </div>
             </div>
+            <?php
+                if (isset($_GET["msg"])){
+                    $msg = $_GET["msg"];
+                    echo "<div class='alert alert-primary mt-3' role='alert'>
+                        $msg
+                    </div>";
+                }
+                if (isset($_GET["errormsg"])){
+                    $msg = $_GET["errormsg"];
+                    echo "<div class='alert alert-danger mt-3' role='alert'>
+                        $msg
+                    </div>";
+                }
+            ?>
         </form>
     </body>
     <?php include 'scripts.php' ?>

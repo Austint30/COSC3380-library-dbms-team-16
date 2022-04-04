@@ -42,8 +42,9 @@
 								$value = $row[$i];
 								echo "<td>$value</td>";
 							}
+							$modelNo = $row[0];
 							echo "<td>
-                                    <a href='#' class='btn btn-primary btn-small' style='float: left;'>
+                                    <a href='devices-detail.php?modelno=$modelNo' class='btn btn-primary btn-small' style='float: left;'>
                                         Learn More
                                     </a>
                                 </td>";

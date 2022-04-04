@@ -21,11 +21,16 @@
         echo $replacementcost;
 		echo $ddn;
 		echo $yearpublished;
-		
-        $result = $conn->query("
+        
+        // Ok so this may look a little weird. But apparently if you just pass the variables into the SQL statement, things like commas can break it. So you have to do it the "prepared" way.
+        // https://www.w3schools.com/php/php_mysql_prepared_statements.asp
+        $q = $conn->prepare("
             INSERT INTO `Book Title` (`Book Title`.ISBN, `Book Title`.Title, `Book Title`.Genre, `Book Title`.AuthorFName, `Book Title`.AuthorLName, `Book Title`.AuthorMName, `Book Title`.`Replacement Cost`, `Book Title`.DDN, `Book Title`.`Year Published`)
-            VALUES ('$isbn', '$title', '$genre', '$authorfname', '$authorlname', '$authormname', '$replacementcost', '$ddn', '$yearpublished');
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         ");
+        $q->bind_param("sssssssss", $isbn, $title, $genre, $authorfname, $authorlname, $authormname, $replacementcost, $ddn, $yearpublished);
+        $result = $q->execute();
+        header("Location: admin-addbooks.php?msg=Book sucessfully added.");
     }
     else
     {
@@ -43,7 +48,7 @@
         <div class="container mt-5 text-center">
             <h1></h1>
             <p>
-                
+                <?php $result ?>
             </p>
         </div>
     </body>
