@@ -28,7 +28,7 @@
           ?>
         </li>
         <li class="nav-item">
-          <?php if ($pageName == "books.php") {
+          <?php if ($pageName == "books.php" || $pageName == "book-detail.php") {
               echo '<a class="nav-link active" aria-current="page" href="/books.php">Books</a>';
             }
             else

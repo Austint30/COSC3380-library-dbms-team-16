@@ -73,8 +73,9 @@
 									echo "<td>$value</td>";
 								}
 							}
+							$bookISBN = $row[6];
 							echo "<td>
-                                    <a href='#' class='btn btn-primary btn-small' style='float: left;'>
+                                    <a href='book-detail.php?isbn=$bookISBN' class='btn btn-primary btn-small' style='float: left;'>
                                         Learn More
                                     </a>
                                 </td>";
