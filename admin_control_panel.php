@@ -31,8 +31,8 @@
 			<div class="row">          
 				<div class="btn-group">
 				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="admin-addbooks.php">Add Book Page</a>
-				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Delete Book Page (not implemented)</a>
-				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Edit Book Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="books.php">Delete Book Page</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary " href="books.php">Edit Book Page</a>
 				</div>
 			</div>
 			<div class="row mt-5">          
