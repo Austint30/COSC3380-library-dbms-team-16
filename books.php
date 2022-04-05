@@ -3,7 +3,9 @@
 <!--------------------------------------------------------------->
     <head>
         <?php include 'bootstrap.php'; 
-		include 'connect.php';?>	
+		include 'connect.php';
+		include 'require-signin.php';
+		?>
     </head>
 <!----------------------Here we have the book title table----------------------------------------->
     <body>
@@ -14,7 +16,8 @@
 				FROM library.`Book Title`
 				LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
 				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-				GROUP BY library.`Book Title`.Title
+                WHERE library.`Book Title`.Delisted = 0
+				GROUP BY library.`Book Title`.ISBN
 				ORDER BY library.`Book Title`.Title"
 			);
 			$columns = $result->fetch_fields();
@@ -24,10 +27,15 @@
 			<div class="mb-3 d-flex">
 				<h1 class="mb-0">Books</h1>
 				<?php
-					// TODO: Make this button only appear for ADMIN/STAFF users.
-					// if ($userType == 'ADMIN' || $userType == "STAFF"){
-						echo '<a href="/admin-addbooks.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Book(s)<a>'
-					// }
+					// Add books button only appears for ADMIN or STAFF users
+					$result = $conn->query("SELECT library.Account.Type FROM library.Account WHERE library.Account.`User ID`=$cookie_userID");
+					$user = $result->fetch_row();
+					if ($user){
+						$userType = $user[0];
+						if ($userType == 'ADMIN' || $userType == "STAFF"){
+							echo '<a href="/admin-addbooks.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Book(s)<a>';
+						}
+					}
 				?>
 			</div>
             
@@ -68,7 +76,7 @@
 									if ($value == 0){
 										$value = "<span class='text-danger'>Out of stock</span>";
 									}
-									else if ($value < 10){
+									else if ($value < 4){
 										$value = "<span class='text-warning'>Limited stock</span>";
 									}
 									else

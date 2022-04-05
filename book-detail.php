@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
     if (!isset($_GET["isbn"])){
         // Redirect to books page if no isbn is specified.
         header("Location: /books.php");
@@ -8,9 +9,11 @@
     $result = $conn->query(
         "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, `Year Published`, DDN, ISBN, count(library.Item.`Book Title ID`) as Stock
         FROM library.`Book Title`
-        LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID` AND library.`Book Title`.ISBN = '$isbn'
+        LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
         AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-        GROUP BY library.`Book Title`.Title"
+        WHERE library.`Book Title`.ISBN = '$isbn'
+        GROUP BY library.`Book Title`.ISBN
+        ORDER BY library.`Book Title`.Title"
     );
     $book = $result->fetch_row();
     if (!$book){
@@ -22,6 +25,9 @@
     $fullNameArray = [$book[2], $book[3], $book[4]];
     $fullNameArray = array_filter($fullNameArray, 'strlen');
     $fullNameStr = join(", ", $fullNameArray);
+
+    $result = $conn->query("SELECT Account.Type from Account WHERE Account.`User ID`=$cookie_userID");
+    $userType = $result->fetch_row()[0];
 ?>
 
 <!DOCTYPE html>
@@ -44,13 +50,22 @@
                 <div class="card-body">
                     <div class="d-flex">
                         <h5 class="card-title">Book Details</h5>
-                        <div class="ms-auto d-flex flex-column justfy-content-end">
-                            <a
-                                class="ms-auto btn btn-success <?php if ($book[8] == 0) { echo "disabled"; } ?>"
-                            >Place Hold</a>
-                            <?php if ($book[8] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
-                            
+                        <div class="d-flex" style="gap: 0.5rem;flex: 1;">
+                            <?php
+                                if ($userType == "STAFF" || $userType == "ADMIN"){
+                                    echo "<a href='delistbook-response-server.php?isbn=$isbn' class='btn btn-outline-danger ms-auto'>Delist Book</a>";
+                                    echo "<a href='admin-editbook.php?isbn=$isbn' class='btn btn-outline-primary'>Edit Book</a>";
+                                }
+                            ?>
+                            <div class="d-flex flex-column justfy-content-end">
+                                <a
+                                    href="book-hold.php?isbn=<?php echo $isbn ?>"
+                                    class="ms-auto btn btn-success <?php if ($book[8] == 0) { echo "disabled"; } ?>"
+                                >Place Hold</a>
+                                <?php if ($book[8] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
+                            </div>
                         </div>
+                        
                     </div>
                     
                     <table class="table">
@@ -86,7 +101,7 @@
                                     if ($stock == 0){
 										$stock = "<span class='text-danger'>Out of stock</span>";
 									}
-									else if ($stock < 10){
+									else if ($stock < 4){
 										$stock = "<span class='text-warning'>Limited stock</span>";
 									}
 									else
@@ -100,6 +115,20 @@
                     </table>
                 </div>
             </div>
+            <?php
+                if (isset($_GET["msg"])){
+                    $msg = $_GET["msg"];
+                    echo "<div class='alert alert-primary mt-3' role='alert'>
+                        $msg
+                    </div>";
+                }
+                if (isset($_GET["errormsg"])){
+                    $msg = $_GET["errormsg"];
+                    echo "<div class='alert alert-danger mt-3' role='alert'>
+                        $msg
+                    </div>";
+                }
+            ?>
         </form>
     </body>
     <?php include 'scripts.php' ?>

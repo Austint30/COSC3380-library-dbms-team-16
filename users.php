@@ -16,7 +16,7 @@
     <body>
         <?php include 'headerbar-auth.php' ?>
         <div class="container mt-5">
-            <h1 class="mb-3">Admin page</h1>
+            <h1 class="mb-3">User Management</h1>
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Users awaiting approval</h5>

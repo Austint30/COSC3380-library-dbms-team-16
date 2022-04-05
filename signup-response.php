@@ -50,7 +50,13 @@
                     var expireTime = time + 1000*36000;
                     now.setTime(expireTime);
 
+                    var now2 = new Date();
+                    var time = now.getTime();
+                    var expireTime = time + 1000*36000*2;
+                    now.setTime(expireTime);
+
                     document.cookie = "signed-in=true;expires=" + now.toUTCString() + ";path=/"
+                    document.cookie = "user-id=" + userId + ";expires=" + now.toUTCString() + ";path=/"
                     window.location = '/index.php';
                 }
             })

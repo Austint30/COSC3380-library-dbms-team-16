@@ -12,6 +12,11 @@
 </style>
 <?php
   $pageName = basename($_SERVER['PHP_SELF']);
+  include 'require-signin.php';
+  
+  $result = $conn->query("SELECT Account.Type from Account WHERE Account.`User ID`=$cookie_userID");
+  $userType = $result->fetch_row()[0];
+
 ?>
 <nav class="navbar navbar-dark bg-dark library-headerbar">
   <div class="container-fluid">
@@ -28,7 +33,7 @@
           ?>
         </li>
         <li class="nav-item">
-          <?php if ($pageName == "books.php" || $pageName == "book-detail.php") {
+          <?php if ($pageName == "books.php" || $pageName == "book-detail.php" || $pageName == "admin-addbooks.php") {
               echo '<a class="nav-link active" aria-current="page" href="/books.php">Books</a>';
             }
             else
@@ -47,6 +52,7 @@
             }
           ?>
         </li>
+        <li>
           <?php if ($pageName == "devices.php") {
               echo '<a class="nav-link active" aria-current="page" href="/devices.php">Devices</a>';
             }
@@ -55,6 +61,54 @@
               echo '<a class="nav-link" aria-current="page" href="/devices.php">Devices</a>';
             }
           ?>
+        </li>
+        <li>
+          <?php if ($pageName == "held-items.php") {
+              echo '<a class="nav-link active" aria-current="page" href="/held-items.php">Held Items</a>';
+            }
+            else
+            {
+              echo '<a class="nav-link" aria-current="page" href="/held-items.php">Held Items</a>';
+            }
+          ?>
+        </li>
+        <?php
+          if ($userType == "STAFF" || $userType == "ADMIN"){
+            $link = null;
+            if ($pageName == 'checkout-item.php'){
+              $link = "<a class='nav-link active' aria-current='page' href='/checkout-item.php'>Check Out</a>";
+            }
+            else
+            {
+              $link = "<a class='nav-link' aria-current='page' href='/checkout-item.php'>Check Out</a>";
+            }
+            echo "<li>$link</li>";
+          }
+        ?>
+        <?php
+          if ($userType == "ADMIN"){
+            $link = null;
+            if ($pageName == 'admin_control_panel.php'){
+              $link = "<a class='nav-link active' aria-current='page' href='/admin_control_panel.php'>Admin Control</a>";
+            }
+            else
+            {
+              $link = "<a class='nav-link' aria-current='page' href='/admin_control_panel.php'>Admin Control</a>";
+            }
+            echo "<li>$link</li>";
+
+            $link = null;
+            if ($pageName == 'users.php'){
+              $link = "<a class='nav-link active' aria-current='page' href='/users.php'>Users</a>";
+            }
+            else
+            {
+              $link = "<a class='nav-link' aria-current='page' href='/users.php'>Users</a>";
+            }
+            echo "<li>$link</li>";
+          }
+        ?>
+        
       </ul>
       <form class="d-flex" style="white-space: nowrap;" action="search.php" method="post">
         <div class="input-group me-2">
