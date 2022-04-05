@@ -37,7 +37,7 @@
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
-				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://google.com">Add Media Page</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="admin-addmedia.php">Add Media Page</a>
 				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://google.com">Delete Media Page (not implemented)</a>
 				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://google.com">Edit Media Page (not implemented)</a>
 				</div>
