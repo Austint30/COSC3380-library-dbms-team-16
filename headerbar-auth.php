@@ -96,6 +96,16 @@
               $link = "<a class='nav-link' aria-current='page' href='/admin_control_panel.php'>Admin Control</a>";
             }
             echo "<li>$link</li>";
+
+            $link = null;
+            if ($pageName == 'users.php'){
+              $link = "<a class='nav-link active' aria-current='page' href='/users.php'>Users</a>";
+            }
+            else
+            {
+              $link = "<a class='nav-link' aria-current='page' href='/users.php'>Users</a>";
+            }
+            echo "<li>$link</li>";
           }
         ?>
         
