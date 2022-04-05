@@ -44,7 +44,7 @@
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
-				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.google.com">Add Device Page</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="admin-adddevices.php">Add Device Page</a>
 				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.google.com">Delete Device Page (not implemented)</a>
 				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://www.google.com">Edit Device Page (not implemented)</a>
 				</div>
