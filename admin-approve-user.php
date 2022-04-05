@@ -8,6 +8,6 @@
         $conn->query("UPDATE `library`.`Account` SET `Approved` = '1' WHERE (`User ID` = '$userID');");
     }
     
-    header("Location: /admin.php");
+    header("Location: /users.php");
 
 ?>

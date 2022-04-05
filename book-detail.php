@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
     if (!isset($_GET["isbn"])){
         // Redirect to books page if no isbn is specified.
         header("Location: /books.php");
@@ -7,12 +8,12 @@
     $isbn = $_GET["isbn"];
     $result = $conn->query(
         "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, `Year Published`, DDN, ISBN, count(library.Item.`Book Title ID`) as Stock
-FROM library.`Book Title`
-LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
-	AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-    WHERE library.`Book Title`.ISBN = '$isbn'
-	GROUP BY library.`Book Title`.ISBN
-	ORDER BY library.`Book Title`.Title"
+        FROM library.`Book Title`
+        LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
+        AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
+        WHERE library.`Book Title`.ISBN = '$isbn'
+        GROUP BY library.`Book Title`.ISBN
+        ORDER BY library.`Book Title`.Title"
     );
     $book = $result->fetch_row();
     if (!$book){
@@ -24,6 +25,9 @@ LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book T
     $fullNameArray = [$book[2], $book[3], $book[4]];
     $fullNameArray = array_filter($fullNameArray, 'strlen');
     $fullNameStr = join(", ", $fullNameArray);
+
+    $result = $conn->query("SELECT Account.Type from Account WHERE Account.`User ID`=$cookie_userID");
+    $userType = $result->fetch_row()[0];
 ?>
 
 <!DOCTYPE html>
@@ -46,14 +50,21 @@ LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book T
                 <div class="card-body">
                     <div class="d-flex">
                         <h5 class="card-title">Book Details</h5>
-                        <div class="ms-auto d-flex flex-column justfy-content-end">
-                            <a
-                                href="book-hold.php?isbn=<?php echo $isbn ?>"
-                                class="ms-auto btn btn-success <?php if ($book[8] == 0) { echo "disabled"; } ?>"
-                            >Place Hold</a>
-                            <?php if ($book[8] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
-                            
+                        <div class="d-flex" style="gap: 0.5rem;flex: 1;">
+                            <?php
+                                if ($userType == "STAFF" || $userType == "ADMIN"){
+                                    echo "<a href='admin-editbook.php?isbn=$isbn' class='btn btn-outline-primary ms-auto'>Edit Book</a>";
+                                }
+                            ?>
+                            <div class="d-flex flex-column justfy-content-end">
+                                <a
+                                    href="book-hold.php?isbn=<?php echo $isbn ?>"
+                                    class="ms-auto btn btn-success <?php if ($book[8] == 0) { echo "disabled"; } ?>"
+                                >Place Hold</a>
+                                <?php if ($book[8] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
+                            </div>
                         </div>
+                        
                     </div>
                     
                     <table class="table">
