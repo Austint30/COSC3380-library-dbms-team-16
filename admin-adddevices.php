@@ -39,6 +39,7 @@
 							<option value="TABLET">TABLET</option>
                             <option value="LAPTOP">LAPTOP</option>
                             <option value="CALCULATOR">CALCULATOR</option>
+                            <option value="USB">USB</option>
                         </select>
                         </div>
                         <div class="col-6 mb-3">
