@@ -26,31 +26,29 @@
 	
 	<img src="adminicon.png" class="rounded mx-auto d-block" alt="...">
 	
-	<!-- <form class="container mt-5" action="" method="post"> -->
+	<form class="container mt-5" action="addbook-response-server.php" method="post">
 	<div class="card">
 			<div class="row">          
-				<div class="btn-group">	
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
+				<div class="btn-group">
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="admin-addbooks.php">Add Book Page</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.google.com">Delete Book Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://www.google.com">Edit Book Page (not implemented)</a>
 				</div>
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
-				  	<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
-
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.google.com">Add Media Page</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.google.com">Delete Media Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://www.google.com">Edit Media Page (not implemented)</a>
 				</div>
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
-					<form action="https://google.com" class="container mt-5"><button id="addbook-button" type="submit" class="btn btn-primary">Add Book</button></form>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.google.com">Add Device Page</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.google.com">Delete Device Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://www.google.com">Edit Device Page (not implemented)</a>
 				</div>
 			</div>
-
 	</div>
 	</form>
 
