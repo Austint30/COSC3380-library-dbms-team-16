@@ -37,16 +37,16 @@
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
-				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Add Media Page</a>
-				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Delete Media Page (not implemented)</a>
-				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Edit Media Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://google.com">Add Media Page</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://google.com">Delete Media Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://google.com">Edit Media Page (not implemented)</a>
 				</div>
 			</div>
 			<div class="row mt-5">          
 				<div class="btn-group">
 				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="admin-adddevices.php">Add Device Page</a>
-				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Delete Device Page (not implemented)</a>
-				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Edit Device Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary me-5" href="https://google.com">Delete Device Page (not implemented)</a>
+				  <a id="addbook-button" type="submit" class="btn btn-primary " href="https://google.com">Edit Device Page (not implemented)</a>
 				</div>
 			</div>
 	</div>
