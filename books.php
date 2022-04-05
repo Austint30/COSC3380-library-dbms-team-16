@@ -16,6 +16,7 @@
 				FROM library.`Book Title`
 				LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
 				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
+                WHERE library.`Book Title`.Delisted = 0
 				GROUP BY library.`Book Title`.ISBN
 				ORDER BY library.`Book Title`.Title"
 			);

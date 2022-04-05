@@ -53,7 +53,8 @@
                         <div class="d-flex" style="gap: 0.5rem;flex: 1;">
                             <?php
                                 if ($userType == "STAFF" || $userType == "ADMIN"){
-                                    echo "<a href='admin-editbook.php?isbn=$isbn' class='btn btn-outline-primary ms-auto'>Edit Book</a>";
+                                    echo "<a href='delistbook-response-server.php?isbn=$isbn' class='btn btn-outline-danger ms-auto'>Delist Book</a>";
+                                    echo "<a href='admin-editbook.php?isbn=$isbn' class='btn btn-outline-primary'>Edit Book</a>";
                                 }
                             ?>
                             <div class="d-flex flex-column justfy-content-end">
