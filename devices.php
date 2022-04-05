@@ -9,7 +9,15 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = $conn->query("SELECT * FROM library.`Device Title`");
+			$result = $conn->query(
+				"SELECT `Model No.`, `Name`, `Manufacturer`, `Device Title`.`Date Added`, `Type`, count(library.Item.`Device Title ID`) as Stock
+				FROM library.`Device Title`
+				LEFT OUTER JOIN library.Item ON library.`Device Title`.`Model No.` = library.Item.`Device Title ID`
+				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
+                WHERE library.`Device Title`.Delisted = 0
+				GROUP BY library.`Device Title`.`Model No.`
+				ORDER BY library.`Device Title`.`Name`"
+			);
 			$columns = $result->fetch_fields();
 			$results = $result->fetch_all();
 		?>
@@ -38,13 +46,24 @@
 					<?php
 						foreach($results as $row){
 							echo "<tr>";
-							for ($i = 0; $i < count($row); $i++) {
-								$value = $row[$i];
-								echo "<td>$value</td>";
+							for ($i = 0; $i < 5; $i++) {
+								echo "<td>$row[$i]</td>";
 							}
+							$stock = $row[5];
+							if ($stock == 0){
+								$stock = "<span class='text-danger'>Out of stock</span>";
+							}
+							else if ($stock < 4){
+								$stock = "<span class='text-warning'>Limited stock</span>";
+							}
+							else
+							{
+								$stock = "In stock";
+							}
+							echo "<td>$stock</td>";
 							$modelNo = $row[0];
 							echo "<td>
-                                    <a href='devices-detail.php?modelno=$modelNo' class='btn btn-primary btn-small' style='float: left;'>
+                                    <a href='device-details.php?modelNo=$modelNo' class='btn btn-primary btn-small' style='float: left;'>
                                         Learn More
                                     </a>
                                 </td>";

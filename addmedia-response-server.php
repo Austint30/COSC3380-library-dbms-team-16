@@ -10,6 +10,7 @@
         $genre = $_POST['mediaGenre'];
         $dateAdded = $_POST['dateAdded'];
         $replacementCost = $_POST['mediaCost'];
+        $quantity = $_POST['quantity'];
         
 
         echo "POST received. Values are below:";
@@ -51,22 +52,9 @@
                 header("Location: admin-addmedia.php?errormsg=Failed to add copies of the media. Please contact system admin.");
             }
         }
+
+        header("Location: admin-addmedia.php?msg=Media sucessfully added.");
     } else {
         $result = "Error";
     }
 ?>
-<html>
-    <!--------------------------------------------------------------->
-    <head>
-        <?php include 'bootstrap.php' ?>
-    </head>    
-    <body>
-        <?php include 'headerbar-unuath.php' ?>
-        <div class = "container mt-5 text-center">
-            <h1></h1>
-            <p>
-
-            </p>
-        </div>
-    </body>
-</html>
