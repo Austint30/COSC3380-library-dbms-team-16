@@ -91,6 +91,10 @@
                             <label for="addmedia-yearPublished" class="form-label">Year Published</label>
                             <input class="form-control" id="addmedia-yearPublished" name="yearPublished" required>
                         </div>
+                        <div class="col-6 mb-3">
+                            <label for="addbook-ddn" class="form-label">Quantity</label>
+                            <input type="number" max="100" min="1" class="form-control" id="adddevice-quanity" name="quantity" value="1" required>
+                        </div>
                     </div>		
                     <button id = "addbook-button" type = "submit" class = "btn btn-primary">Add Media</button>
                 </div>
