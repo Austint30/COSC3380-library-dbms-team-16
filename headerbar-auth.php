@@ -22,15 +22,16 @@
   <div class="container-fluid">
     <a class="navbar-brand">Team 16 Library System</a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-5">
-        <li class="nav-item">
-          <?php if ($pageName == "index.php") {
-              echo '<a class="nav-link active" aria-current="page" href="/">Home</a>';
-            }
-            else
-            {
-              echo '<a class="nav-link" aria-current="page" href="/">Home</a>';
-            }
-          ?>
+        <!-- <li class="nav-item"> -->
+          <?php
+            // if ($pageName == "index.php") {
+            //   echo '<a class="nav-link active" aria-current="page" href="/">Home</a>';
+            // }
+            // else
+            // {
+            //   echo '<a class="nav-link" aria-current="page" href="/">Home</a>';
+            // }
+          // ?>
         </li>
         <li class="nav-item">
           <?php if ($pageName == "books.php" || $pageName == "book-detail.php" || $pageName == "admin-addbooks.php") {

@@ -1,3 +1,8 @@
+
+<?php
+
+    header("Location: /books.php"); // Remove when there is time to add index page.
+?>
 <!DOCTYPE html>
 <html>
 <!--------------------------------------------------------------->

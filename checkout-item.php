@@ -14,8 +14,9 @@
 			<div class="mb-3 d-flex">
 				<h1 class="mb-0">Check Out</h1>
 			</div>
-            
-			
+            <div class="alert alert-warning" role="alert">
+                Check Out is a planned feature TBA very soon!
+            </div>
 		</div>
     </body>
 	<?php include 'scripts.php' ?>

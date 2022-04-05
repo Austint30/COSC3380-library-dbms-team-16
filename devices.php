@@ -23,6 +23,9 @@
 		?>
 		<div class="container mt-5">
             <h1>Devices</h1>
+			<div class="alert alert-warning mb-3" role="alert">
+			This page is still a WIP. It may not work properly yet.
+			</div>
 			<?php
 				if (isset($_GET["search"])){
 					// We have a search url parameter. Display a message.
