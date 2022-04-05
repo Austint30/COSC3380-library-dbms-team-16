@@ -9,12 +9,27 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = $conn->query("SELECT * FROM library.`Media Title`");
+			$result = $conn->query(
+				"SELECT Title, AuthorLName, AuthorMName, AuthorFName, `Year Published`, `Media ID`, count(library.Item.`Media Title ID`) as Stock
+				FROM library.`Media Title`
+				LEFT OUTER JOIN library.Item ON library.`Media Title`.`Media ID` = library.Item.`Media Title ID`
+				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
+				GROUP BY library.`Media Title`.`Title`
+				ORDER BY library.`Media Title`.Title"
+			);
 			$columns = $result->fetch_fields();
 			$results = $result->fetch_all();
 		?>
 		<div class="container mt-5">
-            <h1>Media</h1>
+			<div class="mb-3 d-flex">
+				<h1 class="mb-0">Media</h1>
+				<?php
+					// TODO: Make this button only appear for ADMIN/STAFF users.
+					// if ($userType == 'ADMIN' || $userType == "STAFF"){
+						echo '<a href="/admin-addmedia.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Media<a>'
+					// }
+				?>
+			</div>
 			<?php
 				if (isset($_GET["search"])){
 					// We have a search url parameter. Display a message.
