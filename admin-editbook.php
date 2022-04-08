@@ -28,7 +28,8 @@
     <!--------------------------------------------------------------->
     <body>
         <?php include 'headerbar-auth.php' ?>
-        <form class="container mt-5" action="editbook-response-server.php?isbn=<?php echo $isbn ?>" method="post">
+        <div class="container mt-5">
+            <?php include 'messages.php' ?>
             <nav aria-label="breadcrumb mb-3">
                 <ol class="breadcrumb h3">
                     <li class="breadcrumb-item" aria-current="page"><a href="/books.php">Books</a></li>
@@ -36,7 +37,7 @@
                     <li class="breadcrumb-item active" aria-current="page">Edit book</li>
                 </ol>
             </nav>
-            <div class="card">
+            <form class="card mb-4" action="editbook-response-server.php?isbn=<?php echo $isbn ?>" method="post">
                 <div class="card-body">
                     <h5 class="card-title">Edit Book</h5>
                     <div class="row align-items-start">
@@ -109,22 +110,64 @@
                     </div>					
                     <button id="addbook-button" type="submit" class="btn btn-primary">Save</button>
                 </div>
+            </form>
+            <div class="card">
+                <?php
+                    $bookISBN = $book[7];
+                    $result = sqlsrv_query($conn,
+                    "SELECT i.[Item ID]
+                    FROM library.library.Item as i
+                    WHERE i.[Book Title ID]='$bookISBN'
+                        AND i.[Checked Out By] IS NULL
+                        AND i.[Held By] IS NULL",
+                    array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+                    $numRows = sqlsrv_num_rows( $result );
+                ?>
+                <div class="card-body">
+                    <h5 class="card-title">Checked in copies</h5>
+                    <?php echo "<div>$numRows copies</div>"; ?>
+                </div>
+                
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>
+                                <form method="post" action="/book-add-copy.php" style='float: right;'>
+                                    <input style='display: none;' name='isbn' value='<?php echo $isbn ?>' />
+                                    <div class='input-group justify-content-end'>
+                                        <input value='1' class='form-control' type='number' min='1' max='100' class='me-1' style='max-width: 8rem;' name='numCopies' />
+                                        <button type='submit' class='btn btn-primary'>Add (n) copies</a>
+                                    </div>
+                                </form>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            // if (!$hasdata){
+                            //     echo "<tr>";
+                            //     echo "<td>No data. You can add a copy with the Add copy button.</td>";
+                            //     echo "<td></td>";
+                            //     echo "</tr>";
+                            //     return;
+                            // }
+                            
+                            while ( $row = sqlsrv_fetch_array($result)){
+                                echo "<tr>";
+                                echo "<td>$row[0]</td>";
+                                echo "<td>
+                                    <a href='/book-remove-item.php?isbn=$bookISBN&itemID=$row[0]' class='btn btn-outline-danger' style='float: right;'>Remove Item</a>
+                                </td>";
+                                echo "</tr>";
+                            }
+                        ?>
+                    </tbody>
+                </table>
             </div>
-            <?php
-                if (isset($_GET["msg"])){
-                    $msg = $_GET["msg"];
-                    echo "<div class='alert alert-primary mt-3' role='alert'>
-                        $msg
-                    </div>";
-                }
-                if (isset($_GET["errormsg"])){
-                    $msg = $_GET["errormsg"];
-                    echo "<div class='alert alert-danger mt-3' role='alert'>
-                        $msg
-                    </div>";
-                }
-            ?>
-        </form>
+        </div>
     </body>
+    <?php include 'scripts.php' ?>
     <!--------------------------------------------------------------->
 </html>
