@@ -18,11 +18,11 @@
         echo $phone;
         echo $type;
 
-        $result = $conn->query("
-            INSERT INTO Account (Account.`First Name`, Account.`Last Name`, Account.`Middle Name`, Account.Password, Account.Email, Account.Phone, Account.Type)
+        $result = sqlsrv_query($conn,"
+            INSERT INTO Account (Account.[First Name], Account.[Last Name], Account.[Middle Name], Account.Password, Account.Email, Account.Phone, Account.Type)
             VALUES ('$firstName', '$lastName', '$middleName', '$password', '$email', '$phone', '$type');
         ");
-        $res = $conn->query('SELECT LAST_INSERT_ID()');
+        $res = sqlsrv_query($conn, 'SELECT LAST_INSERT_ID()'));
         $row = $res->fetch_array();
         $userId = $row[0];
         if ($result){

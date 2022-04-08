@@ -43,4 +43,15 @@
 		echo $row['User ID'].", ".$row['Last Name'].", ".$row['First Name'].'<br />';
 	}
 	*/
+
+	// $sql = "SELECT [User ID], [Last Name], [First Name] FROM library.Account";
+	// $stmt = sqlsrv_query( $conn, $sql );
+	// sqlsrv_field_metadata($stmt);
+	// foreach( sqlsrv_field_metadata( $stmt ) as $fieldMetadata ) {
+	// 	echo $fieldMetadata["Name"];
+	// 	foreach( $fieldMetadata as $name => $value) {
+	// 	   echo "$name: $value<br />";
+	// 	}
+	// 	  echo "<br />";
+	// }
 ?>	

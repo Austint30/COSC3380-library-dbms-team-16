@@ -2,9 +2,9 @@
     include 'connect.php';
 ?>
 <?php
-    $result = $conn->query("SELECT * FROM library.Account WHERE Type = 'ADMIN'");
-    $columns = $result->fetch_fields();
-    $results = $result->fetch_all();
+    $stmt = sqlsrv_query($conn, "SELECT * FROM library.Account WHERE Type = 'ADMIN'"));
+    $columns = sqlsrv_fetch_metadata($result);
+    $results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
     $conn->close();
 ?>
 <div class="container">
@@ -13,7 +13,8 @@
             <tr>
                 <?php
                     foreach($columns as $colData){
-                        echo "<th>$colData->name</th>";
+                        $colName = $colData["Name"];
+								echo "<th>$colName</th>";
                     }
                 ?>
             </tr>

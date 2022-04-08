@@ -14,8 +14,11 @@
   $pageName = basename($_SERVER['PHP_SELF']);
   include 'require-signin.php';
   
-  $result = $conn->query("SELECT Account.Type from Account WHERE Account.`User ID`=$cookie_userID");
-  $userType = $result->fetch_row()[0];
+  $stmt = sqlsrv_query($conn, "SELECT Account.Type FROM library.library.Account WHERE Account.[User ID]=$cookie_userID");
+  if( $stmt === false) {
+    die("Failed to fetch accounts.");
+}
+  $userType = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)[0];
 
 ?>
 <nav class="navbar navbar-dark bg-dark library-headerbar">

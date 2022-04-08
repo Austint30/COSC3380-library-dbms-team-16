@@ -9,17 +9,19 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = $conn->query(
-				"SELECT `Model No.`, `Name`, `Manufacturer`, `Device Title`.`Date Added`, `Type`, count(library.Item.`Device Title ID`) as Stock
-				FROM library.`Device Title`
-				LEFT OUTER JOIN library.Item ON library.`Device Title`.`Model No.` = library.Item.`Device Title ID`
-				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-                WHERE library.`Device Title`.Delisted = 0
-				GROUP BY library.`Device Title`.`Model No.`
-				ORDER BY library.`Device Title`.`Name`"
+			$result = sqlsrv_query($conn,
+				"SELECT dt.[Model No.], dt.[Name], dt.[Manufacturer], dt.[Date Added], dt.[Type], COUNT(i.[Device Title ID]) as Stock
+				FROM library.library.[Device Title] as dt
+				LEFT OUTER JOIN library.library.Item as i ON i.[Device Title ID] = dt.[Model No.]
+				AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
+				WHERE dt.Delisted = 0
+				GROUP BY dt.[Model No.], dt.[Name], dt.[Manufacturer], dt.[Date Added], dt.[Type]
+				ORDER BY dt.[Name];"
 			);
-			$columns = $result->fetch_fields();
-			$results = $result->fetch_all();
+			if (!$result){
+				die("Failed to fetch devices");
+			}
+			$columns = sqlsrv_field_metadata($result);
 		?>
 		<div class="container mt-5">
             <h1>Devices</h1>
@@ -39,7 +41,8 @@
 					<tr>
 						<?php
 							foreach($columns as $colData){
-								echo "<th>$colData->name</th>";
+								$colName = $colData["Name"];
+								echo "<th>$colName</th>";
 							}
 						?>
 						<th>Learn More</th>
@@ -47,9 +50,14 @@
 				<thead>
 				<tbody>
 					<?php
-						foreach($results as $row){
+						while( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC) ){
 							echo "<tr>";
-							for ($i = 0; $i < 5; $i++) {
+							for ($i = 0; $i < 3; $i++) {
+								echo "<td>$row[$i]</td>";
+							}
+							$formatted = $row[3]->format('m/d/y');
+							echo "<td>$formatted</td>";
+							for ($i = 4; $i < 5; $i++) {
 								echo "<td>$row[$i]</td>";
 							}
 							$stock = $row[5];

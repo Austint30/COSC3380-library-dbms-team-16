@@ -4,7 +4,7 @@
     include 'connect.php';
     include 'require-signin.php';
 
-    $result = $conn->query("SELECT Account.Type FROM Account WHERE Account.`User ID`=$cookie_userID");
+    $stmt = sqlsrv_query($conn, "SELECT Account.Type FROM Account WHERE Account.[User ID]=$cookie_userID"));
     $user = $result->fetch_row();
 
     if(!$user){

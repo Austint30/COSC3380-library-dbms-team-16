@@ -25,7 +25,7 @@
         echo $replacementCost;
 
         $query = "
-            INSERT INTO `Media Title` (`Media Title`.`Media ID`, `Media Title`.Title, `Media Title`.`Year Published`, `Media Title`.AuthorFName, `Media Title`.AuthorLName, `Media Title`.AuthorMName, `Media Title`.Genre, `Media Title`.`Date Added`, `Media Title`.`Replacement Cost`)
+            INSERT INTO [Media Title] ([Media Title].[Media ID], [Media Title].Title, [Media Title].[Year Published], [Media Title].AuthorFName, [Media Title].AuthorLName, [Media Title].AuthorMName, [Media Title].Genre, [Media Title].[Date Added], [Media Title].[Replacement Cost])
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         ";
 
@@ -41,7 +41,7 @@
         }
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.Item (library.Item.`Date Added`, library.Item.`Media Title ID`) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.Item (library.Item.[Date Added], library.Item.[Media Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $q = $conn->prepare($query);
             $q->bind_param("s", $mediaID);

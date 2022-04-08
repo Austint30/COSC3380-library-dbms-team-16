@@ -7,12 +7,12 @@
     }
     $isbn = $_GET["isbn"];
 
-    $result = $conn->query(
-        "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, `Year Published`, DDN, ISBN, `Replacement Cost`
-        FROM library.`Book Title`
-        WHERE ISBN='$isbn'"
+    $result = sqlsrv_query($conn,
+        "SELECT b.Title, b.Genre, b.AuthorLName, b.AuthorMName, b.AuthorFName, b.[Year Published], b.DDN, b.ISBN, b.[Replacement Cost]
+        FROM library.library.[Book Title] as b
+        WHERE b.ISBN='$isbn'"
     );
-    $book = $result->fetch_row();
+    $book = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 
     if (!$book){
         header("Location: /books.php?errormsg=Book doesn't exist.");

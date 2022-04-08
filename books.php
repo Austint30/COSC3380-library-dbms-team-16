@@ -11,27 +11,29 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = $conn->query(
-				"SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, `Year Published`, ISBN, count(library.Item.`Book Title ID`) as Stock
-				FROM library.`Book Title`
-				LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
-				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-                WHERE library.`Book Title`.Delisted = 0
-				GROUP BY library.`Book Title`.ISBN
-				ORDER BY library.`Book Title`.Title"
+			$result = sqlsrv_query($conn,
+				"SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], ISBN, count(i.[Book Title ID]) as Stock
+				FROM library.library.[Book Title] as b
+				LEFT OUTER JOIN library.library.Item as i ON b.ISBN = i.[Book Title ID]
+				AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
+                WHERE b.Delisted = 0
+				GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], ISBN
+				ORDER BY b.Title"
 			);
-			$columns = $result->fetch_fields();
-			$results = $result->fetch_all();
+			if (!$result){
+				die("Failed to get books.");
+			}
+			$columns = sqlsrv_field_metadata($result);
 		?>
 		<div class="container mt-5">
 			<div class="mb-3 d-flex">
 				<h1 class="mb-0">Books</h1>
 				<?php
 					// Add books button only appears for ADMIN or STAFF users
-					$result = $conn->query("SELECT library.Account.Type FROM library.Account WHERE library.Account.`User ID`=$cookie_userID");
-					$user = $result->fetch_row();
+					$stmt = sqlsrv_query($conn, "SELECT a.Type FROM library.library.Account as a WHERE a.[User ID]=$cookie_userID");
+					sqlsrv_fetch($stmt);
 					if ($user){
-						$userType = $user[0];
+						$userType = sqlsrv_get_field($stmt, 0);
 						if ($userType == 'ADMIN' || $userType == "STAFF"){
 							echo '<a href="/admin-addbooks.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Book(s)<a>';
 						}
@@ -61,7 +63,7 @@
 				<thead>
 				<tbody>
 					<?php
-						foreach($results as $row){
+						while( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC) ){
 							echo "<tr>";
 							for ($i = 0; $i < 2; $i++) {
 								echo "<td>$row[$i]</td>";

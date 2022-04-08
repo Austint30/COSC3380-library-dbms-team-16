@@ -4,10 +4,10 @@
         $userId = $_POST['userId'];
         $password = $_POST["password"];
 
-        $result = $conn->query("
-            SELECT Account.`User ID`, Account.Password, Account.Type FROM Account WHERE Account.`User ID`='$userId' AND Account.Password='$password'
+        $result = sqlsrv_query($conn,"
+            SELECT Account.[User ID], Account.Password, Account.Type FROM Account WHERE Account.[User ID]='$userId' AND Account.Password='$password'
         ");
-        $rows = $result->fetch_all();
+        $rows = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
         if (count($rows) > 0){
             $row = $rows[0];
             $storedPass = $row[1];

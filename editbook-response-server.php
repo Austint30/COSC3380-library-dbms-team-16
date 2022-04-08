@@ -23,25 +23,30 @@
 		echo $yearpublished;
 
         $query = "
-            UPDATE `Book Title`
+            UPDATE library.library.[Book Title]
             SET
-                `Book Title`.ISBN = ?,
-                `Book Title`.Title = ?,
-                `Book Title`.Genre = ?,
-                `Book Title`.AuthorFName = ?,
-                `Book Title`.AuthorLName = ?,
-                `Book Title`.AuthorMName = ?,
-                `Book Title`.`Replacement Cost` = ?,
-                `Book Title`.DDN = ?,
-                `Book Title`.`Year Published` = ?
-            WHERE `Book Title`.ISBN = ?
+                library.library.[Book Title].ISBN = ?,
+                library.library.[Book Title].Title = ?,
+                library.library.[Book Title].Genre = ?,
+                library.library.[Book Title].AuthorFName = ?,
+                library.library.[Book Title].AuthorLName = ?,
+                library.library.[Book Title].AuthorMName = ?,
+                library.library.[Book Title].[Replacement Cost] = ?,
+                library.library.[Book Title].DDN = ?,
+                library.library.[Book Title].[Year Published] = ?
+            WHERE library.library.[Book Title].ISBN = ?
         ";
 
         echo $query;
 
-        $q = $conn->prepare($query);
-        $q->bind_param("ssssssssss", $isbn, $title, $genre, $authorfname, $authorlname, $authormname, $replacementcost, $ddn, $yearpublished, $isbn);
-        $q->execute();
+        $stmt = sqlsrv_prepare($conn, $query, array($isbn, $title, $genre, $authorfname, $authorlname, $authormname, $replacementcost, $ddn, $yearpublished, $isbn));
+        $res = sqlsrv_execute($stmt);
+
+        if ($res == false){
+            echo print_r( sqlsrv_errors());
+            $e = sqlsrv_errors()[0][0];
+            header("Location: admin-editbook.php?isbn=$isbn&errormsg=Failed to add book. Make sure that you aren't adding a duplicate book. Error: $e");
+        }
 
         header("Location: admin-editbook.php?isbn=$isbn&msg=Changes saved successfully.");
     }

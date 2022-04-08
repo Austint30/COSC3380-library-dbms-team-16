@@ -9,9 +9,9 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = $conn->query("SELECT * FROM library.`Book Title`");
-			$columns = $result->fetch_fields();
-			$results = $result->fetch_all();
+			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Book Title]"));
+			$columns = sqlsrv_fetch_metadata($result);
+			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 		?>
 		<div class="container mt-5">
             <h1>Our Favorite Books</h1>
@@ -20,7 +20,8 @@
 					<tr>
 						<?php
 							foreach($columns as $colData){
-								echo "<th>$colData->name</th>";
+								$colName = $colData["Name"];
+								echo "<th>$colName</th>";
 							}
 						?>
 						<th>Learn More</th>
@@ -48,9 +49,9 @@
 <!-------------------------------Here we have the media title table-------------------------------->
 
 		<?php
-			$result = $conn->query("SELECT * FROM library.`Media Title`");
-			$columns = $result->fetch_fields();
-			$results = $result->fetch_all();
+			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Media Title]"));
+			$columns = sqlsrv_fetch_metadata($result);
+			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 		?>
 		<div class="container">
             <h1 class="mt-5">Our Favorite Media</h1>
@@ -59,7 +60,8 @@
 					<tr>
 						<?php
 							foreach($columns as $colData){
-								echo "<th>$colData->name</th>";
+								$colName = $colData["Name"];
+								echo "<th>$colName</th>";
 							}
 						?>
 						<th>Learn More</th>					
@@ -87,9 +89,9 @@
 <!--------------------------------Here we have the device title table------------------------------->
 
 		<?php
-			$result = $conn->query("SELECT * FROM library.`Device Title`");
-			$columns = $result->fetch_fields();
-			$results = $result->fetch_all();
+			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Device Title]"));
+			$columns = sqlsrv_fetch_metadata($result);
+			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 			$conn->close();
 		?>
 		<div class="container">
@@ -99,7 +101,8 @@
 					<tr>
 						<?php
 							foreach($columns as $colData){
-								echo "<th>$colData->name</th>";
+								$colName = $colData["Name"];
+								echo "<th>$colName</th>";
 							}
 						?>
 						<th>Learn More</th>

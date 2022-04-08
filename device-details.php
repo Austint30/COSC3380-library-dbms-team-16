@@ -5,13 +5,13 @@
         header("Location: /devices.php");
     }
     $modelNo = $_GET["modelNo"];
-    $result = $conn->query(
-        "SELECT `Model No.`, `Name`, `Manufacturer`, `Type`, count(library.Item.`Device Title ID`) as Stock
-        FROM library.`Device Title`
-        LEFT OUTER JOIN library.Item ON library.`Device Title`.`Model No.` = library.Item.`Device Title ID`
-        AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-        WHERE library.`Device Title`.`Model No.` = '$modelNo'
-        GROUP BY library.`Device Title`.`Name`"
+    $result = sqlsrv_query($conn,
+        "SELECT [Model No.], [Name], [Manufacturer], [Type], count(library.Item.[Device Title ID]) as Stock
+        FROM library.[Device Title]
+        LEFT OUTER JOIN library.Item ON library.[Device Title].[Model No.] = library.Item.[Device Title ID]
+        AND library.Item.[Checked Out By] IS NULL AND library.Item.[Held By] IS NULL
+        WHERE library.[Device Title].[Model No.] = '$modelNo'
+        GROUP BY library.[Device Title].[Name]"
     );
     $device = $result->fetch_row();
     if (!$device){

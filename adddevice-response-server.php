@@ -17,7 +17,7 @@
         echo $replacementcost;
 		echo $dateAdded;
         $query = "
-            INSERT INTO `Device Title` (`Device Title`.`Model No.`, `Device Title`.Name, `Device Title`.Type, `Device Title`.Manufacturer, `Device Title`.`Replacement Cost`, `Device Title`.`Date Added`)
+            INSERT INTO [Device Title] ([Device Title].[Model No.], [Device Title].Name, [Device Title].Type, [Device Title].Manufacturer, [Device Title].[Replacement Cost], [Device Title].[Date Added])
             VALUES (?, ?, ?, ?, ?, ?);
         ";
 
@@ -33,7 +33,7 @@
         }
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.Item (library.Item.`Date Added`, library.Item.`Device Title ID`) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.Item (library.Item.[Date Added], library.Item.[Device Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $q = $conn->prepare($query);
             $q->bind_param("s", $modelNo);

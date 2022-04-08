@@ -22,16 +22,17 @@
                     <h5 class="card-title">Users awaiting approval</h5>
                 </div>
                 <?php
-                    $result = $conn->query("SELECT Account.`Last Name`, Account.`First Name`, Account.Type, Account.`Email`, Account.`User ID` FROM Account WHERE Account.Approved='0'");
-                    $unApprColumns = $result->fetch_fields();
-                    $unApprUsers = $result->fetch_all();
+                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='0'"));
+                    $unApprColumns = sqlsrv_fetch_metadata($result);
+                    $unApprUsers = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
                 ?>
                 <table class="table table-striped table-hover mb-0">
                     <thead>
                         <tr>
                             <?php
                                 foreach($unApprColumns as $colData){
-                                    echo "<th>$colData->name</th>";
+                                    $colName = $colData["Name"];
+								echo "<th>$colName</th>";
                                 }
                             ?>
                         </tr>
@@ -66,16 +67,17 @@
                     <h5 class="card-title">Active users</h5>
                 </div>
                 <?php
-                    $result = $conn->query("SELECT Account.`Last Name`, Account.`First Name`, Account.Type, Account.`Email`, Account.`User ID` FROM Account WHERE Account.Approved='1'");
-                    $columns = $result->fetch_fields();
-                    $users = $result->fetch_all();
+                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='1'"));
+                    $columns = sqlsrv_fetch_metadata($result);
+                    $users = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
                 ?>
                 <table class="table table-striped table-hover mb-0">
                     <thead>
                         <tr>
                             <?php
                                 foreach($columns as $colData){
-                                    echo "<th>$colData->name</th>";
+                                    $colName = $colData["Name"];
+								echo "<th>$colName</th>";
                                 }
                             ?>
                         </tr>

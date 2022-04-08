@@ -9,16 +9,16 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = $conn->query(
-				"SELECT Title, AuthorLName, AuthorMName, AuthorFName, `Year Published`, `Media ID`, count(library.Item.`Media Title ID`) as Stock
-				FROM library.`Media Title`
-				LEFT OUTER JOIN library.Item ON library.`Media Title`.`Media ID` = library.Item.`Media Title ID`
-				AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-				GROUP BY library.`Media Title`.`Title`
-				ORDER BY library.`Media Title`.Title"
+			$result = sqlsrv_query($conn,
+				"SELECT Title, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID], count(library.Item.[Media Title ID]) as Stock
+				FROM library.[Media Title]
+				LEFT OUTER JOIN library.Item ON library.[Media Title].[Media ID] = library.Item.[Media Title ID]
+				AND library.Item.[Checked Out By] IS NULL AND library.Item.[Held By] IS NULL
+				GROUP BY library.[Media Title].[Title]
+				ORDER BY library.[Media Title].Title"
 			);
-			$columns = $result->fetch_fields();
-			$results = $result->fetch_all();
+			$columns = sqlsrv_fetch_metadata($result);
+			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 		?>
 		<div class="container mt-5">
 			<div class="mb-3 d-flex">
@@ -46,7 +46,8 @@
 					<tr>
 						<?php
 							foreach($columns as $colData){
-								echo "<th>$colData->name</th>";
+								$colName = $colData["Name"];
+								echo "<th>$colName</th>";
 							}
 						?>
 						<th>Learn More</th>

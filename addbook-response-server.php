@@ -28,30 +28,28 @@
         // Also requires that a PDO connection is used (as seen in the import 'connect-pdo.php' above)
 
         $query = "
-            INSERT INTO `Book Title` (`Book Title`.ISBN, `Book Title`.Title, `Book Title`.Genre, `Book Title`.AuthorFName, `Book Title`.AuthorLName, `Book Title`.AuthorMName, `Book Title`.`Replacement Cost`, `Book Title`.DDN, `Book Title`.`Year Published`)
+            INSERT INTO library.library.[Book Title] (library.library.ISBN, library.library.Title, library.library.Genre, library.library.AuthorFName, library.library.AuthorLName, library.library.AuthorMName, library.library.[Replacement Cost], library.library.DDN, library.library.[Year Published])
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         ";
 
         echo $query;
 
-        $q = $conn->prepare($query);
-        $q->bind_param("sssssssss", $isbn, $title, $genre, $authorfname, $authorlname, $authormname, $replacementcost, $ddn, $yearpublished);
+        $stmt = sqlsrv_prepare($conn, $query, array($isbn, $title, $genre, $authorfname, $authorlname, $authormname, $replacementcost, $ddn, $yearpublished));
+        $res = sqlsrv_execute($stmt);
 
-        try {
-            $result = $q->execute();
-        } catch (\Throwable $th) {
-            header("Location: admin-addbooks.php?errormsg=Failed to add book. Make sure that you aren't adding a duplicate book.");
+        if ($res == false){
+            echo print_r( sqlsrv_errors());
+            $e = sqlsrv_errors()[0][0];
+            header("Location: admin-addbooks.php?errormsg=Failed to add book. Make sure that you aren't adding a duplicate book. Error: $e");
         }
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.Item (library.Item.`Date Added`, library.Item.`Book Title ID`) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Book Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
-            $q = $conn->prepare($query);
-            $q->bind_param("s", $isbn);
+            $stmt = sqlsrv_prepare($conn, $query, array($isbn));
+            $res = sqlsrv_execute($stmt);
 
-            try {
-                $result = $q->execute();
-            } catch (\Throwable $th) {
+            if (!$res){
                 header("Location: admin-addbooks.php?errormsg=Failed to add copies of the book. Please contact system admin.");
             }
         }

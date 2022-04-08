@@ -15,7 +15,7 @@
     $userID = $_COOKIE["user-id"];
 
     // Check current number of held items
-    $result = $conn->query("SELECT COUNT(*) FROM Item WHERE library.Item.`Held By`=$userID");
+    $stmt = sqlsrv_query($conn, "SELECT COUNT(*) FROM Item WHERE library.Item.[Held By]=$userID"));
     $holdCount = $result->fetch_row()[0];
 
     if ($holdCount >= $maxDeviceHolds){
@@ -25,7 +25,7 @@
     $holdsLeft = $maxDeviceHolds - $holdCount;
 
     // Get account information
-    $result = $conn->query("SELECT Account.Type, Account.`User ID` FROM Account WHERE Account.`User ID`='$userID'");
+    $stmt = sqlsrv_query($conn, "SELECT Account.Type, Account.[User ID] FROM Account WHERE Account.[User ID]='$userID'"));
     $user = $result->fetch_row();
 
     if (!$user){
@@ -36,7 +36,7 @@
     $userID = $user[1];
 
     // Find an available item of this device and mark it as held.
-    $result = $conn->query("SELECT Item.`Item ID` FROM Item WHERE Item.`Device Title ID`='$modelNo' AND Item.`Held By` is NULL");
+    $stmt = sqlsrv_query($conn, "SELECT Item.[Item ID] FROM Item WHERE Item.[Device Title ID]='$modelNo' AND Item.[Held By] is NULL"));
     $item = $result->fetch_row();
 
     if (!$item){
@@ -45,7 +45,7 @@
     }
     $itemID = $item[0];
 
-    $result = $conn->query("UPDATE `library`.`Item` SET `Held By` = '$userID' WHERE (`Item ID` = '$itemID');");
+    $stmt = sqlsrv_query($conn, "UPDATE [library].[Item] SET [Held By] = '$userID' WHERE ([Item ID] = '$itemID');"));
     if ($result){
         header("Location: /device-details.php?modelNo=$modelNo&msg=Device is now sucessfully held. Please pick up your device at the front desk. You have $holdsleft holds left for devices.");
     }

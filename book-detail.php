@@ -6,16 +6,16 @@
         header("Location: /books.php");
     }
     $isbn = $_GET["isbn"];
-    $result = $conn->query(
-        "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, `Year Published`, DDN, ISBN, count(library.Item.`Book Title ID`) as Stock
-        FROM library.`Book Title`
-        LEFT OUTER JOIN library.Item ON library.`Book Title`.ISBN = library.Item.`Book Title ID`
-        AND library.Item.`Checked Out By` IS NULL AND library.Item.`Held By` IS NULL
-        WHERE library.`Book Title`.ISBN = '$isbn'
-        GROUP BY library.`Book Title`.ISBN
-        ORDER BY library.`Book Title`.Title"
+    $result = sqlsrv_query($conn,
+        "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], DDN, ISBN, count(i.[Book Title ID]) as Stock
+        FROM library.library.[Book Title] as b
+        LEFT OUTER JOIN library.library.Item as i ON b.ISBN = i.[Book Title ID]
+        AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
+        WHERE b.ISBN = '$isbn'
+        GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], DDN, ISBN
+        ORDER BY b.Title"
     );
-    $book = $result->fetch_row();
+    $book = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
     if (!$book){
         // Book not found
         http_response_code(404);
@@ -26,8 +26,8 @@
     $fullNameArray = array_filter($fullNameArray, 'strlen');
     $fullNameStr = join(", ", $fullNameArray);
 
-    $result = $conn->query("SELECT Account.Type from Account WHERE Account.`User ID`=$cookie_userID");
-    $userType = $result->fetch_row()[0];
+    $result = sqlsrv_query($conn, "SELECT a.Type from library.library.Account as a WHERE a.[User ID]=$cookie_userID");
+    $userType = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 ?>
 
 <!DOCTYPE html>
