@@ -44,7 +44,6 @@
                     WHERE library.Item.[Book Title ID] = library.[Book Title].ISBN
                         AND library.Item.[Held By] = $cookie_userID;"
                 );
-                $books = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
             ?>
             <table class="table table-striped">
                 <thead>
@@ -60,7 +59,7 @@
                 <tbody>
                     <?php
                         $i = 0;
-                        foreach($books as $row){
+                        while ( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC)) {
                             echo "<tr>";
 							for ($i = 0; $i < 2; $i++) {
 								echo "<td>$row[$i]</td>";
@@ -95,7 +94,6 @@
                     WHERE library.Item.[Media Title ID] = library.[Media Title].[Media ID]
                         AND library.Item.[Held By] = $cookie_userID;"
                 );
-                $books = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
             ?>
             <table class="table table-striped">
                 <thead>
@@ -110,7 +108,7 @@
                 <tbody>
                     <?php
                         $i = 0;
-                        foreach($books as $row){
+                        while ( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC)) {
                             echo "<tr>";
 							echo "<td>$row[0]</td>";
                             echo "<td>$row[1]</td>";
@@ -141,7 +139,6 @@
                     WHERE library.Item.[Device Title ID] = library.[Device Title].[Model No.]
                         AND library.Item.[Held By] = $cookie_userID;"
                 );
-                $books = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
             ?>
             <table class="table table-striped">
                 <thead>
@@ -157,7 +154,7 @@
                 <tbody>
                     <?php
                         $i = 0;
-                        foreach($books as $row){
+                        while ( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC)) {
                             echo "<tr>";
 							for ($i = 0; $i < 5; $i++) {
 								echo "<td>$row[$i]</td>";
