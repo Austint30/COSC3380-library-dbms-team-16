@@ -22,7 +22,7 @@
                     <h5 class="card-title">Users awaiting approval</h5>
                 </div>
                 <?php
-                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='0'"));
+                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='0'");
                     $unApprColumns = sqlsrv_fetch_metadata($result);
                     $unApprUsers = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
                 ?>
@@ -67,7 +67,7 @@
                     <h5 class="card-title">Active users</h5>
                 </div>
                 <?php
-                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='1'"));
+                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='1'");
                     $columns = sqlsrv_fetch_metadata($result);
                     $users = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
                 ?>

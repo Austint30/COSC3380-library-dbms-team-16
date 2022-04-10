@@ -9,7 +9,7 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Book Title]"));
+			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Book Title]");
 			$columns = sqlsrv_fetch_metadata($result);
 			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 		?>
@@ -49,7 +49,7 @@
 <!-------------------------------Here we have the media title table-------------------------------->
 
 		<?php
-			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Media Title]"));
+			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Media Title]");
 			$columns = sqlsrv_fetch_metadata($result);
 			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 		?>
@@ -89,7 +89,7 @@
 <!--------------------------------Here we have the device title table------------------------------->
 
 		<?php
-			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Device Title]"));
+			$stmt = sqlsrv_query($conn, "SELECT * FROM library.[Device Title]");
 			$columns = sqlsrv_fetch_metadata($result);
 			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 			$conn->close();

@@ -15,8 +15,8 @@
     $userID = $_COOKIE["user-id"];
 
     // Check current number of held items
-    $stmt = sqlsrv_query($conn, "SELECT COUNT(*) FROM Item WHERE library.Item.[Held By]=$userID"));
-    $holdCount = $result->fetch_row()[0];
+    $stmt = sqlsrv_query($conn, "SELECT COUNT(*) FROM library.library.Item WHERE library.library.Item.[Held By]=$userID");
+    $holdCount = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)[0];
 
     if ($holdCount >= $maxBookHolds){
         header("Location: /book-detail.php?isbn=$isbn&errormsg=You can only have $maxBookHolds book holds.");
@@ -25,8 +25,8 @@
     $holdsLeft = $maxBookHolds - $holdCount;
 
     // Get account information
-    $stmt = sqlsrv_query($conn, "SELECT Account.Type, Account.[User ID] FROM Account WHERE Account.[User ID]='$userID'"));
-    $user = $result->fetch_row();
+    $stmt = sqlsrv_query($conn, "SELECT a.Type, a.[User ID] FROM library.library.Account as a WHERE a.[User ID]='$userID'");
+    $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
 
     if (!$user){
         header("Location: /signin.php");
@@ -36,8 +36,8 @@
     $userID = $user[1];
 
     // Find an available item of this book and mark it as held.
-    $stmt = sqlsrv_query($conn, "SELECT Item.[Item ID] FROM Item WHERE Item.[Book Title ID]='$isbn' AND Item.[Held By] is NULL"));
-    $item = $result->fetch_row();
+    $stmt = sqlsrv_query($conn, "SELECT i.[Item ID] FROM library.library.Item as i WHERE i.[Book Title ID]='$isbn' AND i.[Held By] is NULL");
+    $item = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
 
     if (!$item){
         header("Location: /book-detail.php?errormsg=Sorry, this item is no longer in stock.");
@@ -45,13 +45,16 @@
     }
     $itemID = $item[0];
 
-    $stmt = sqlsrv_query($conn, "UPDATE [library].[Item] SET [Held By] = '$userID' WHERE ([Item ID] = '$itemID');"));
-    if ($result){
+    $stmt = sqlsrv_query($conn, "UPDATE library.library.Item SET library.library.Item.[Held By] = '$userID' WHERE (library.library.Item.[Item ID] = '$itemID');");
+    if ($stmt){
         header("Location: /book-detail.php?isbn=$isbn&msg=Book is now sucessfully held. Please pick up your book at the front desk. You have $holdsleft holds left for books.");
     }
     else
     {
-        header("Location: /book-detail.php?isbn=$isbn&errmsg=Something went wrong and you book is not held.");
+        $e = sqlsrv_errors();
+        $eCode = $e[0][0];
+        $eMsg = $e[0][2];
+        header("Location: /book-detail.php?isbn=$isbn&errormsg=Something went wrong and your book is not held. Error code: $eCode: $eMsg");
     }
     echo "holdCount: $holdCount, holdsLeft: $holdsLeft, maxBookHolds: $maxBookHolds";
 ?>

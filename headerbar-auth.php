@@ -79,12 +79,12 @@
         <?php
           if ($userType == "STAFF" || $userType == "ADMIN"){
             $link = null;
-            if ($pageName == 'checkout-item.php'){
-              $link = "<a class='nav-link active' aria-current='page' href='/checkout-item.php'>Check Out</a>";
+            if ($pageName == 'checkout.php'){
+              $link = "<a class='nav-link active' aria-current='page' href='/checkout.php'>Check Out</a>";
             }
             else
             {
-              $link = "<a class='nav-link' aria-current='page' href='/checkout-item.php'>Check Out</a>";
+              $link = "<a class='nav-link' aria-current='page' href='/checkout.php'>Check Out</a>";
             }
             echo "<li>$link</li>";
           }

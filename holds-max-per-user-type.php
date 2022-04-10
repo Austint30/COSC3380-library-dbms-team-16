@@ -4,8 +4,13 @@
     include 'connect.php';
     include 'require-signin.php';
 
-    $stmt = sqlsrv_query($conn, "SELECT Account.Type FROM Account WHERE Account.[User ID]=$cookie_userID"));
-    $user = $result->fetch_row();
+    $stmt = sqlsrv_query($conn, "SELECT a.Type FROM library.library.Account as a WHERE a.[User ID]=$cookie_userID");
+
+    if (!$stmt){
+        die("Failed to get account information.");
+    }
+
+    $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
 
     if(!$user){
         header("Location: /signin.php?errormsg=User no longer exists.");

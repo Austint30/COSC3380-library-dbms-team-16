@@ -2,7 +2,7 @@
     include 'connect.php';
 ?>
 <?php
-    $stmt = sqlsrv_query($conn, "SELECT * FROM library.Account WHERE Type = 'ADMIN'"));
+    $stmt = sqlsrv_query($conn, "SELECT * FROM library.Account WHERE Type = 'ADMIN'");
     $columns = sqlsrv_fetch_metadata($result);
     $results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
     $conn->close();

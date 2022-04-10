@@ -14,8 +14,8 @@
     $userID = $_COOKIE["user-id"];
 
     // Find items held by this user
-    $stmt = sqlsrv_query($conn, "SELECT Item.[Item ID] FROM Item WHERE Item.[Item ID]='$itemID' AND Item.[Held By]=$userID"));
-    $item = $result->fetch_row();
+    $stmt = sqlsrv_query($conn, "SELECT i.[Item ID] FROM library.library.Item as i WHERE i.[Item ID]='$itemID' AND i.[Held By]=$userID");
+    $item = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
 
     if (!$item){
         header("Location: /held-items.php?errormsg=Item is not held by your account.");
@@ -23,12 +23,15 @@
     }
     $itemID = $item[0];
 
-    $stmt = sqlsrv_query($conn, "UPDATE [library].[Item] SET [Held By] = NULL WHERE ([Item ID] = '$itemID');"));
-    if ($result){
+    $stmt = sqlsrv_query($conn, "UPDATE library.library.Item SET library.library.Item.[Held By] = NULL WHERE (library.library.Item.[Item ID] = '$itemID');");
+    if ($stmt){
         header("Location: /held-items.php?msg=Item removed from holds.");
     }
     else
     {
-        header("Location: /held-items.php?errormsg=Something went wrong and you book is not held.");
+        $e = sqlsrv_errors();
+        $eCode = $e[0][0];
+        $eMsg = $e[0][2];
+        header("Location: /held-items.php?errormsg=Something went wrong and you book is not held. Error code: $eCode: $eMsg");
     }
 ?>
