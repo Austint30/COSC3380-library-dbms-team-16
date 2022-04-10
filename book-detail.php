@@ -50,7 +50,7 @@
                 <div class="card-body">
                     <div class="d-flex">
                         <h5 class="card-title">Book Details</h5>
-                        <div class="d-flex" style="gap: 0.5rem;flex: 1;">
+                        <div class="d-flex align-items-start" style="gap: 0.5rem;margin-left: auto;">
                             <?php
                                 if ($userType == "STAFF" || $userType == "ADMIN"){
                                     echo "<a href='delistbook-response-server.php?isbn=$isbn' class='btn btn-outline-danger ms-auto'>Delist Book</a>";
