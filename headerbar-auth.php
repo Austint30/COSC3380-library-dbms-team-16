@@ -114,7 +114,7 @@
         ?>
         
       </ul>
-      <form class="d-flex" style="white-space: nowrap;" action="search.php" method="post">
+      <form class="d-flex align-items-center" style="white-space: nowrap;" action="search.php" method="post">
         <div class="input-group me-2">
           <select class="form-select" style="width: 7rem;" name="type">
             <?php
@@ -144,7 +144,15 @@
             </svg>
           </button>
         </div>
-        <a href="signout.php" class="btn btn-outline-light" style="border: none;">Sign out</a>
+        <?php
+          $sql = "SELECT a.[First Name], a.[Last Name] FROM library.library.Account as a WHERE a.[User ID] = ?";
+          $result = sqlsrv_query($conn, $sql, array($cookie_userID));
+          if ($result){
+            $user = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+            echo "<span class='text-white'>Hello, $user[0] $user[1]!</span>";
+          }
+        ?>
+        <a href="signout.php" class="btn btn-outline-light ms-3" >Sign out</a>
       </form>
   </div>
 </nav>
