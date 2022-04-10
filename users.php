@@ -17,14 +17,14 @@
         <?php include 'headerbar-auth.php' ?>
         <div class="container mt-5">
             <h1 class="mb-3">User Management</h1>
+            <?php include 'messages.php' ?>
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Users awaiting approval</h5>
                 </div>
                 <?php
-                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='0'");
-                    $unApprColumns = sqlsrv_fetch_metadata($result);
-                    $unApprUsers = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+                    $result = sqlsrv_query($conn, "SELECT a.[Last Name], a.[First Name], a.Type, a.[Email], a.[User ID] FROM library.library.Account as a WHERE a.Approved='0'");
+                    $unApprColumns = sqlsrv_field_metadata($result);
                 ?>
                 <table class="table table-striped table-hover mb-0">
                     <thead>
@@ -39,13 +39,9 @@
                     <thead>
                     <tbody>
                         <?php
-                            for ($j = 0; $j < count($unApprUsers); $j++) {
-                                $row = $unApprUsers[$j];
+                            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC)) {
                                 $userID = $row[4];
                                 $tdStyle = "";
-                                if ($j == count($unApprUsers)-1){
-                                    $tdStyle = "border-bottom: none;";
-                                }
                                 echo "<tr>";
                                 for ($i = 0; $i < count($row); $i++) {
                                     $value = $row[$i];
@@ -67,9 +63,8 @@
                     <h5 class="card-title">Active users</h5>
                 </div>
                 <?php
-                    $stmt = sqlsrv_query($conn, "SELECT Account.[Last Name], Account.[First Name], Account.Type, Account.[Email], Account.[User ID] FROM Account WHERE Account.Approved='1'");
-                    $columns = sqlsrv_fetch_metadata($result);
-                    $users = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+                    $result = sqlsrv_query($conn, "SELECT a.[Last Name], a.[First Name], a.Type, a.[Email], a.[User ID] FROM library.library.Account as a WHERE a.Approved='1'");
+                    $columns = sqlsrv_field_metadata($result);
                 ?>
                 <table class="table table-striped table-hover mb-0">
                     <thead>
@@ -84,13 +79,9 @@
                     <thead>
                     <tbody>
                         <?php
-                            for ($j = 0; $j < count($users); $j++) {
-                                $row = $users[$j];
+                            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC)) {
                                 $userID = $row[3];
                                 $tdStyle = "";
-                                if ($j == count($users)-1){
-                                    $tdStyle = "border-bottom: none;";
-                                }
                                 echo "<tr>";
                                 for ($i = 0; $i < count($row); $i++) {
                                     $value = $row[$i];

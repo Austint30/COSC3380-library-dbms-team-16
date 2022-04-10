@@ -3,7 +3,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $isbn = $_GET['isbn'];
 
-        $stmt = sqlsrv_query($conn, "UPDATE library.library.[Book Title] SET library.library.[Book Title].Delisted=1 WHERE library.library.[Book Title].ISBN=?", array($isbn);
+        $stmt = sqlsrv_query($conn, "UPDATE library.library.[Book Title] SET library.library.[Book Title].Delisted=1 WHERE library.library.[Book Title].ISBN=?", array($isbn));
 
         if ($stmt == false){
             $e = sqlsrv_errors()[0][0];

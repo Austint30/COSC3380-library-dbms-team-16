@@ -40,6 +40,8 @@
 					}
 				?>
 			</div>
+
+			<?php include 'messages.php' ?>
             
 			<?php
 				if (isset($_GET["search"])){
