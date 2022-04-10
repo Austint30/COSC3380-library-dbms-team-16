@@ -5,22 +5,16 @@
         $password = $_POST["password"];
 
         $result = sqlsrv_query($conn,"
-            SELECT Account.[User ID], Account.Password, Account.Type FROM Account WHERE Account.[User ID]='$userId' AND Account.Password='$password'
+            SELECT a.[User ID], a.Password, a.Type FROM library.library.Account as a WHERE a.[User ID]='$userId' AND a.Password='$password'
         ");
-        $rows = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
-        if (count($rows) > 0){
-            $row = $rows[0];
-            $storedPass = $row[1];
-            $type = $row[2];
-            if ($storedPass == $password){
-                // TODO: Add admin page
-                // if ($type == "ADMIN"){
-
-                // }
-                setcookie("signed-in", true, time() + (86400 * 30), "/"); // 86400 = 1 day
-                setcookie("user-id", $userId, time() + (86400 * 30*2), "/"); // 86400 = 2 days
-                header("Location: /");
-            }
+        if ($result){
+            header("Location: /signin.php?errormsg=Failed to sign in due to an unknown error.");
+        }
+        $hasResult = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+        if ($hasResult){
+            setcookie("signed-in", true, time() + (86400 * 30), "/"); // 86400 = 1 day
+            setcookie("user-id", $userId, time() + (86400 * 30*2), "/"); // 86400 = 2 days
+            header("Location: /");
         }
         else
         {

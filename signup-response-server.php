@@ -19,11 +19,19 @@
         echo $type;
 
         $result = sqlsrv_query($conn,"
-            INSERT INTO Account (Account.[First Name], Account.[Last Name], Account.[Middle Name], Account.Password, Account.Email, Account.Phone, Account.Type)
-            VALUES ('$firstName', '$lastName', '$middleName', '$password', '$email', '$phone', '$type');
-        ");
-        $res = sqlsrv_query($conn, 'SELECT LAST_INSERT_ID()');
-        $row = $res->fetch_array();
+            INSERT INTO library.library.Account (library.library.Account.[First Name], library.library..[Last Name], library.library..[Middle Name], library.library..Password, library.library..Email, library.library..Phone, library.library..Type)
+            OUTPUT INSERTED.[User ID] AS [New User ID]
+            VALUES (?, ?, ?, ?, ?, ?, ?);
+        ", array($firstName, $lastName, $middleName, $password, $email, $phone, $type));
+
+        if ($result){
+            $e = sqlsrv_errors();
+            $eMsg = $e[0][2];
+
+            header("Location: signup.php?errormsg=Failed to sign up due to an error. Error: $eMsg");
+        }
+
+        $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
         $userId = $row[0];
         if ($result){
             header("Location: signup-response.php?userId=$userId&email=$email");

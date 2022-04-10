@@ -2,7 +2,7 @@
     include 'connect.php';
 
     $userId = $_GET["userId"];
-    $stmt = sqlsrv_query($conn, "SELECT Account.Approved FROM Account WHERE Account.[User ID]='$userId'");
-    $rows = $result->fetch_array();
-    echo $rows[0];
+    $result = sqlsrv_query($conn, "SELECT a.Approved FROM library.library.Account as a WHERE a.[User ID]='$userId'");
+    $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+    echo $row[0];
 ?>

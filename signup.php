@@ -11,8 +11,8 @@
     <!--------------------------------------------------------------->
     <body>
         <?php include 'headerbar-unauth.php' ?>
-        <!-- <?php include 'usertable.php' ?> -->
         <form class="container mt-5" action="signup-response-server.php" method="post">
+            <?php include 'messages.php' ?>
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Sign up</h5>
