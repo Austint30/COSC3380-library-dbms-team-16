@@ -80,11 +80,11 @@
           if ($userType == "STAFF" || $userType == "ADMIN"){
             $link = null;
             if ($pageName == 'checkout.php'){
-              $link = "<a class='nav-link active' aria-current='page' href='/checkout.php'>Check Out</a>";
+              $link = "<a class='nav-link active' aria-current='page' href='/checkout.php'>Check Out/In</a>";
             }
             else
             {
-              $link = "<a class='nav-link' aria-current='page' href='/checkout.php'>Check Out</a>";
+              $link = "<a class='nav-link' aria-current='page' href='/checkout.php'>Check Out/In</a>";
             }
             echo "<li>$link</li>";
           }

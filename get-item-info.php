@@ -53,7 +53,7 @@
         }
         else if ($data['dModelNo']){
             $resultObj = (object) [
-                'Item Type' => 'Media',
+                'Item Type' => 'Device',
                 'Name' => $data['dName'],
                 'Manufacturer' => $data['dManu'],
                 'Type' => $data['dType'],
