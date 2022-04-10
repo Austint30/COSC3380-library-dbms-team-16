@@ -26,7 +26,8 @@
 	$conn = sqlsrv_connect($host, $connectionOptions);
 
 	if($conn == false){
-		die("Failed to connect to SQL Server");
+		$e = json_encode(sqlsrv_errors());
+		die("Failed to connect to SQL Server: Error: $e");
 	}
 
 	// --------------------------------------------------------------------------------
