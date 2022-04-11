@@ -3,36 +3,47 @@
 <!--------------------------------------------------------------->
     <head>
         <?php include 'bootstrap.php'; 
-		include 'connect.php';?>	
+		include 'connect.php';
+		include 'require-signin.php';
+		?>	
     </head>
 <!----------------------Here we have the media title table----------------------------------------->
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
 			$result = sqlsrv_query($conn,
-				"SELECT Title, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID], count(library.Item.[Media Title ID]) as Stock
-				FROM library.[Media Title]
-				LEFT OUTER JOIN library.Item ON library.[Media Title].[Media ID] = library.Item.[Media Title ID]
-				AND library.Item.[Checked Out By] IS NULL AND library.Item.[Held By] IS NULL
-				GROUP BY library.[Media Title].[Title]
-				ORDER BY library.[Media Title].Title"
+				"SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID], count(i.[Media Title ID]) as Stock
+				FROM library.library.[Media Title] as b
+				LEFT OUTER JOIN library.library.Item as i ON b.[Media ID] = i.[Media Title ID]
+				AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
+				WHERE b.Delisted = 0
+				GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID]
+				ORDER BY b.Title"
 			);
-			$columns = sqlsrv_fetch_metadata($result);
-			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+			if (!$result){
+				$e = json_encode(sqlsrv_errors());
+				die("Failed to get media. Error: $e");
+			}
+			$columns = sqlsrv_field_metadata($result);
 		?>
 		<div class="container mt-5">
 			<div class="mb-3 d-flex">
 				<h1 class="mb-0">Media</h1>
 				<?php
-					// TODO: Make this button only appear for ADMIN/STAFF users.
-					// if ($userType == 'ADMIN' || $userType == "STAFF"){
-						echo '<a href="/admin-addmedia.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Media<a>'
-					// }
+					// Add books button only appears for ADMIN or STAFF users
+					$stmt = sqlsrv_query($conn, "SELECT a.Type FROM library.library.Account as a WHERE a.[User ID]=$cookie_userID");
+					sqlsrv_fetch($stmt);
+					if ($user){
+						$userType = sqlsrv_get_field($stmt, 0);
+						if ($userType == 'ADMIN' || $userType == "STAFF"){
+							echo '<a href="/admin-addmedia.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Media<a>';
+						}
+					}
 				?>
 			</div>
-			<div class="alert alert-warning mb-3" role="alert">
-			This page is still a WIP. It may not work properly yet.
-			</div>
+
+			<?php include 'messages.php' ?>
+
 			<?php
 				if (isset($_GET["search"])){
 					// We have a search url parameter. Display a message.
@@ -44,22 +55,46 @@
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
-						<?php
-							foreach($columns as $colData){
-								$colName = $colData["Name"];
-								echo "<th>$colName</th>";
-							}
-						?>
-						<th>Learn More</th>
+						<th>Title</th>
+						<th>Genre</th>
+						<th>Author</th>
+						<th>Year Published</th>
+						<th>MediaID</th>
+						<th>Stock</th>
+						<th></th>
 					</tr>
 				<thead>
 				<tbody>
 					<?php
-						foreach($results as $row){
+						while( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC) ){
 							echo "<tr>";
-							for ($i = 0; $i < count($row); $i++) {
+							for ($i = 0; $i < 2; $i++) {
 								$value = $row[$i];
 								echo "<td>$value</td>";
+							}
+							$fullNameArray = [$row[2], $row[3], $row[4]];
+							$fullNameArray = array_filter($fullNameArray, 'strlen');
+							$fullNameStr = join(", ", $fullNameArray);
+							echo "<td>$fullNameStr</td>";
+							for ($i = 5; $i < count($row); $i++) {
+								$value = $row[$i];
+								if ($i == 7) { // Quantity column
+									if ($value == 0){
+										$value = "<span class='text-danger'>Out of stock</span>";
+									}
+									else if ($value < 4){
+										$value = "<span class='text-warning'>Limited stock</span>";
+									}
+									else
+									{
+										$value = "In stock";
+									}
+									echo "<td>$value</td>";
+								}
+								else
+								{
+									echo "<td>$value</td>";
+								}
 							}
 							echo "<td>
                                     <a href='#' class='btn btn-primary btn-small' style='float: left;'>
