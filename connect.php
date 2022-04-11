@@ -22,12 +22,11 @@
 	$pass = 'team16libraryuh';
 	$db_name = 'library';
 
-	$connectionOptions = array("Database"=>$db_name,"Uid"=>$user, "PWD"=>$pass);
+	$connectionOptions = array("Database"=>$db_name,"Uid"=>$user, "PWD"=>$pass, "TrustServerCertificate"=>true);
 	$conn = sqlsrv_connect($host, $connectionOptions);
-
+	$e = json_encode(sqlsrv_errors());
 	if($conn == false){
-		$e = json_encode(sqlsrv_errors());
-		die("Failed to connect to SQL Server: Error: $e");
+		die("Failed to connect to SQL Server $e");
 	}
 
 	// --------------------------------------------------------------------------------
