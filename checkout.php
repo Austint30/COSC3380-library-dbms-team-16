@@ -14,6 +14,7 @@
 			<div class="mb-3 d-flex">
 				<h1 class="mb-0">Check Out/In</h1>
 			</div>
+			<?php include 'messages.php' ?>
 			<?php
 				$result = sqlsrv_query($conn,
 					"SELECT a.[Last Name], a.[First Name], COUNT(i.[Item ID]) as Holds
@@ -33,11 +34,11 @@
 						<div class="row align-items-start mb-3">
 							<div class="col-6">
 								<label for="checkout-userid" class="form-label">User ID</label>
-								<input class="form-control" id="checkout-userid" name="userid" required>
+								<input class="form-control" id="checkout-userid" name="userID" required>
 							</div>
 							<div class="col-6">
 								<label for="checkout-itemid" class="form-label">Item ID</label>
-								<input class="form-control" id="checkout-itemid" name="itemid" required>
+								<input class="form-control" id="checkout-itemid" name="itemID" required>
 							</div>
 						</div>
 						<div class="row align-items-start mb-3">
@@ -47,7 +48,7 @@
 									$next_due_date = date('Y-m-d', strtotime('+30 days'));
 									$date = (new DateTime($next_due_date))->format('Y-m-d');
 								?>
-								<input type="date" class="form-control" id="checkout-duedate" name="duedate" required value="<?php echo $date ?>">
+								<input type="date" class="form-control" id="checkout-duedate" name="dueDate" required value="<?php echo $date ?>">
 								<div id="due-date-help" class="form-text">Automatically set to next month</div>
 							</div>
 						</div>
@@ -132,12 +133,22 @@
 
 		co_itemInput.addEventListener('input', updateCoItemInfo);
 
-		function renderItemHTML(dataObj){
+		function renderItemHTML(dataObj, warnCheckedOut=false, warnCheckedIn=false){
 			let html = `
 				<h5 class='mt-3'>Item information</h5>
-				<table class='table table-striped'>
-					<tbody>
 			`;
+
+			if (dataObj['Is Checked Out'] && warnCheckedOut){
+				html += "<div class='alert alert-warning mb-3'>This item is already checked out.</div>"
+			}
+
+			if (!dataObj['Is Checked Out'] && warnCheckedIn){
+				html += "<div class='alert alert-warning mb-3'>This item is already checked in.</div>";
+			}
+
+			html += `<table class='table table-striped'>
+					<tbody>`
+
 			let entries = Object.entries(dataObj);
 			if (entries.length <= 0){
 				return "<div class='alert alert-warning mb-0 mt-3'>Item not found</div>";
@@ -165,7 +176,7 @@
 			fetch('/get-item-info.php?itemid=' + itemid)
 			.then((resp) => resp.json())
 			.then((data) => {
-				const html = renderItemHTML(data);
+				const html = renderItemHTML(data, true);
 				co_itemInfo.innerHTML = html;
 			})
 			.catch((e) => {
@@ -288,7 +299,7 @@
 				.then((resp) => resp.json())
 				.then((data) => {
 					if (hasCheckedOutItem){
-						const html = renderItemHTML(data);
+						const html = renderItemHTML(data, false, true);
 						ci_itemInfo.innerHTML = html;
 					}
 					else

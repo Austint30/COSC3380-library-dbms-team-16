@@ -3,7 +3,7 @@
 
     if (isset($_GET["itemid"])){
 
-        $sql = "SELECT i.[Item ID],
+        $sql = "SELECT i.[Item ID], i.[Checked Out By] as chkOutBy,
             -- Book data --
             b.ISBN as bISBN, b.Title as bTitle, b.[Year Published] as bYearPub, b.AuthorFName as bAuthFName, b.AuthorMName as bAuthMName, b.AuthorLName as bAuthLName,
             b.Genre as bGenre, b.DDN as bDDN,
@@ -38,7 +38,8 @@
                 'Genre' => $data['bGenre'],
                 'DDN' => $data['bDDN'],
                 'ISBN' => $data['bISBN'],
-                'Year Published' => $data['bYearPub']
+                'Year Published' => $data['bYearPub'],
+                'Is Checked Out' => $data['chkOutBy'] ? true : false
             ];
         }
         else if ($data['mID']){
@@ -48,7 +49,8 @@
                 'Author' => join(", ", [ $data['mAuthLName'], $data['mAuthMName'], $data['mAuthLName'] ]),
                 'Genre' => $data['mGenre'],
                 'Year Published' => $data['bYearPub'],
-                'ID' => $data['mID']
+                'ID' => $data['mID'],
+                'Is Checked Out' => $data['chkOutBy'] ? true : false
             ];
         }
         else if ($data['dModelNo']){
@@ -57,13 +59,15 @@
                 'Name' => $data['dName'],
                 'Manufacturer' => $data['dManu'],
                 'Type' => $data['dType'],
-                'Model No.' => $data['dModelNo']
+                'Model No.' => $data['dModelNo'],
+                'Is Checked Out' => $data['chkOutBy'] ? true : false
             ];
         }
         else
         {
             $resultObj = (object) [
-                'Item Type' => 'Unknown'
+                'Item Type' => 'Unknown',
+                'Is Checked Out' => $data['chkOutBy'] ? true : false
             ];
         }
         
