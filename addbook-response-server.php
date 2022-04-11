@@ -35,11 +35,11 @@
         echo $query;
 
         $stmt = sqlsrv_prepare($conn, $query, array($isbn, $title, $genre, $authorfname, $authorlname, $authormname, $replacementcost, $ddn, $yearpublished));
+
         $res = sqlsrv_execute($stmt);
 
         if ($res == false){
-            echo print_r( sqlsrv_errors());
-            $e = sqlsrv_errors()[0][0];
+            $e = json_encode(sqlsrv_errors());
             header("Location: admin-addbooks.php?errormsg=Failed to add book. Make sure that you aren't adding a duplicate book. Error: $e");
         }
 

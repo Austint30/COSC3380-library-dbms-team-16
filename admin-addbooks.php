@@ -35,7 +35,7 @@
                         <div class="col-6 mb-3">
                             <label for="addbook-genre" class="form-label">Genre</label>
 							<select id="signup-type" class="form-select" name="bookGenre" required>
-                            <option value="" selected>Choose an account type</option>
+                            <option value="" selected>Choose a genre</option>
 							<option value="FANTASY">FANTASY</option>
                             <option value="SCI_FI">SCI_FI</option>
 							<option value="DYSTOPIAN">DYSTOPIAN</option>
@@ -59,7 +59,7 @@
                         </select>
                         </div>
                         <div class="col-6 mb-3">
-                            <label for="addbook-fname" class="form-label">AuthorFName </label>
+                            <label for="addbook-fname" class="form-label">AuthorFName</label>
                             <input class="form-control" id="addbook-fname" name="bookFName" required>
                         </div>
                     </div>
