@@ -67,9 +67,9 @@
 							</div>
 						</div>
 						<button type='submit' class='btn btn-primary'>Check in</button>
-						<div id="checkin-fee-info"></div>
-						<div id="checkin-item-info"></div>
 					</form>
+					<div id="checkin-fee-info"></div>
+					<div id="checkin-item-info"></div>
 				</div>
 			</div>
 			<div class='card'>
@@ -105,6 +105,23 @@
 						<tr></tr>
 					</tbody>
 				</table>
+			</div>
+		</div>
+
+		<!-- Payment success toast (popup saying the fee payment succeeded) -->
+		<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+			<div id="feeToast" class="toast text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="toast-body">
+					Fee payment successful.
+				</div>
+			</div>
+		</div>
+		<!-- Payment failure toast (popup saying the fee payment succeeded) -->
+		<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+			<div id="feeToastError" class="toast text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="toast-body" id="feeToastErrorBody">
+					Fee payment failed.
+				</div>
 			</div>
 		</div>
     </body>
@@ -185,11 +202,18 @@
 			// Compute columns
 			dataObj.fees.forEach(fee => {
 				let keys = Object.keys(fee);
-				keys.forEach(key => colNames.add(key));
+				for (let i = 0; i < keys.length; i++) {
+					const key = keys[i];
+					if (String(key).includes('hidden:')){
+						continue; // Skip hidden column
+					}
+					colNames.add(key);
+				}
 			})
 
 			// Put columns into html
-			colNames.forEach(col => html += `<th>${col}</th>`)
+			colNames.forEach(col => html += `<th>${col}</th>`);		
+			html += "<th/>"; // Extra column for payment button
 			html += "</tr></thead>";
 			html += "<tbody>";
 			
@@ -199,10 +223,18 @@
 				colNames.forEach(col => {
 					html += `<td>${fee[col]}</td>`;
 				});
+				html += `<td class='d-flex'>
+					<form class='d-flex ms-auto' onsubmit='handleFeePaymentForm(event, ${fee['hidden:feeID']})'>
+						<div class='input-group'>
+							<span class="input-group-text">$</span>
+							<input required value='0.00' type='number' min='0.00' max='${String(parseFloat(fee['Unpaid Balance'].replace('$', '')))}' step='1.00' class='form-control' style='max-width: 5rem;' />
+							<button type='submit' class='btn btn-primary'>Pay</button>
+						</div>
+					</form>
+				</td>`;
 				html += "</tr>";
 			}
 			html += "</tbody></table";
-			console.log('html', html);
 			return html;
 		}
 
@@ -274,6 +306,72 @@
 
 		}
 
+	</script>
+	<script>
+		const feeToast = document.getElementById('feeToast');
+		const errorToast = document.getElementById('feeToastError');
+		const feeToastErrorBody = document.getElementById('feeToastErrorBody');
+
+		function triggerSuccessToast(){
+			const toast = new bootstrap.Toast(feeToast);
+			toast.show();
+		}
+
+		function triggerErrorToast(content){
+			const toast = new bootstrap.Toast(errorToast);
+			feeToastErrorBody.innerHTML = content;
+			toast.show();
+		}
+
+		function handleFeePaymentForm(event, feeID){
+			
+			event.preventDefault(); // Prevents default behavior of submitting a form (changing page)
+			const payInput = event.target[0];
+			const value = payInput.value;
+			const fValue = parseFloat(value);
+
+			if (fValue == 0){
+				triggerErrorToast('Please enter a number greater than 0.');
+				return;
+			}
+			if (fValue < 0){
+				triggerErrorToast('Negative numbers are not allowed.');
+				return;
+			}
+
+			const options = {
+				method: 'POST',
+				body: JSON.stringify({
+					"feeid": feeID,
+					"amount": fValue
+				}),
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				}
+			}
+
+			fetch('/pay-fee.php', options)
+				.then( async (resp) => {
+					if (resp.status >= 200 && resp.status < 300){
+						let text = await resp.text();
+						if (text == 1){
+							triggerSuccessToast();
+							updateCiItemInfo();
+						}
+						else
+						{
+							triggerErrorToast('An error ocurred.');
+						}
+					}
+					else
+					{
+						triggerErrorToast('An error ocurred.');
+					}
+				})
+				.catch((e) => {
+					console.error(e);
+				})
+		}
 	</script>
 <!---------------------------------------------------------------> 
 </html>

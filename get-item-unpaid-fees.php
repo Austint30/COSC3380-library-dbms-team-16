@@ -8,7 +8,9 @@
         WHERE i.[Checked Out By] = a.[User ID] AND i.[Item ID] = ?
         ";
 
-        $result = sqlsrv_query($conn, $sql, array($_GET["itemid"]));
+        $itemid = $_GET["itemid"];
+
+        $result = sqlsrv_query($conn, $sql, array($itemid));
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 
         if (!$row){
@@ -21,7 +23,7 @@
         $userName = "$row[1] $row[2]";
 
         // This SQL utilizes a view
-        $sql = "SELECT [User ID]
+        $sql = "SELECT [Fee ID], [Item ID], [User ID]
                     ,[Amount Owed]
                     ,[Amount Paid]
                     ,[bISBN]
@@ -39,33 +41,48 @@
 
         while ( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
             $uBal = intval($row['Amount Owed']) - intval($row['Amount Paid']);
-            $feeObj = (object) [
-                'Unpaid Balance' => "$$uBal"
-            ];
             if ($row['bISBN']){
+                $name = $row['bTitle'];
+                if ($row['Item ID'] == $itemid){
+                    $name = "$name (This item)";
+                }
                 $feeObj = (object) [
+                    'hidden:feeID' => $row["Fee ID"],
                     'Unpaid Balance' => "$$uBal",
                     'Item Type' => 'Book',
-                    'Title/Name' => $row['bTitle']
+                    'Title/Name' => $name
                 ];
             }
             else if ($row['mID']){
+                $name = $row['mTitle'];
+                if ($row['Item ID'] == $itemid){
+                    $name = "$name (This item)";
+                }
                 $feeObj = (object) [
+                    'hidden:feeID' => $row["Fee ID"],
                     'Unpaid Balance' => "$$uBal",
                     'Item Type' => 'Media',
-                    'Title/Name' => $row['mTitle']
+                    'Title/Name' => $name
                 ];
             }
             else if ($row['dModelNo']){
+                $name =  $row['mTitle'];
+                if ($row['Item ID'] == $itemid){
+                    $name = "$name (This item)";
+                }
                 $feeObj = (object) [
+                    'hidden:feeID' => $row["Fee ID"],
                     'Unpaid Balance' => "$$uBal",
                     'Item Type' => 'Device',
-                    'Title/Name' => $row['dName']
+                    'Title/Name' => $name
                 ];
             }
             else
             {
-                $feeObj['Item Type'] = 'Unknown';
+                $feeObj = (object) [
+                    'hidden:feeID' => $row["Fee ID"],
+                    'Item Type' => 'Unknown',
+                ];
             }
             array_push($fees, $feeObj);
         }
