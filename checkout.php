@@ -5,6 +5,7 @@
         <?php include 'bootstrap.php'; 
 		include 'connect.php';
 		include 'require-signin.php';
+		include 'helper.php';
 		?>
     </head>
 <!----------------------Here we have the book title table----------------------------------------->
@@ -17,14 +18,15 @@
 			<?php include 'messages.php' ?>
 			<?php
 				$result = sqlsrv_query($conn,
-					"SELECT a.[Last Name], a.[First Name], COUNT(i.[Item ID]) as Holds
+					"SELECT a.[Last Name], a.[First Name], a.[User ID], COUNT(i.[Item ID]) as Holds
 					FROM library.library.Account as a
 					INNER JOIN library.library.Item as i ON i.[Held By] = a.[User ID]
-					GROUP BY a.[Last Name], a.[First Name]
+					GROUP BY a.[Last Name], a.[First Name], a.[User ID]
 					ORDER BY a.[Last Name], a.[First Name]"
 				);
 				if (!$result){
-					echo "<div class='alert alert-danger mb-3'>Failed to get holds.</div>";
+					$e = fmtErrJson();
+					echo "<div class='alert alert-danger mb-3'>Failed to get holds. Error: $e</div>";
 				}
 			?>
 			<div class='card mb-3'>
@@ -88,6 +90,7 @@
 					<tbody>
 						<?php
 							if ($result){
+								$i = 0;
 								while ( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
 									$lname = $row['Last Name'];
 									$fname = $row['First Name'];
@@ -95,11 +98,16 @@
 									echo "<tr>";
 									echo "<td>$lname</td>";
 									echo "<td>$fname</td>";
+
+									$showHoldsId = "show-holds-btn-".$i;
+									$userID = $row['User ID'];
 									echo "<td class='d-flex justify-content-between'>
 										$holds
-										<a href='#' class='btn btn-sm btn-outline-primary'>View Holds</a>
+										<button onclick=\"handleShowHoldClick(event, '$showHoldsId', '$userID')\" class='btn btn-sm btn-outline-primary'>Show Holds</button>
 									</td>";
 									echo "</tr>";
+									echo "<tr id='$showHoldsId' class='holds-hidden-table' data-collapsed='true'></tr>";
+									$i++;
 								}
 							}
 						?>
@@ -127,6 +135,11 @@
 		</div>
     </body>
 	<?php include 'scripts.php' ?>
+	<style>
+		.holds-hidden-table {
+			display: none;
+		}
+	</style>
 	<script>
 		const co_itemInput = document.getElementById("checkout-itemid");
 		const co_itemInfo = document.getElementById("checkout-item-info");
@@ -382,6 +395,58 @@
 				.catch((e) => {
 					console.error(e);
 				})
+		}
+	</script>
+	<script>
+		const co_userInput = document.getElementById("checkout-userid");
+
+		function addListenersToUseHoldBtns(){
+			const btns = document.getElementsByClassName("use-hold-btn");
+			for (let i = 0; i < btns.length; i++) {
+				const btn = btns[i];
+				const userID = btn.getAttribute('data-userid');
+				const itemID = btn.getAttribute('data-itemid');
+				btn.addEventListener('click', () => {
+					co_userInput.value = userID;
+					co_itemInput.value = itemID;
+					co_userInput.scrollIntoView();
+				});
+			}
+		}
+
+		function handleShowHoldClick(event, containerID, userID){
+			const holdsTableContain = document.getElementById(containerID);
+			const collapsed = holdsTableContain.getAttribute('data-collapsed');
+
+			if (collapsed == 'true'){
+				holdsTableContain.setAttribute('style', 'display: table-row;');
+				holdsTableContain.setAttribute('data-collapsed', 'false');
+				fetch('/components/user-holds.php?userID=' + userID + '&tableClass=table-secondary&showCheckBtn=true')
+					.then(async (resp) => {
+						if (resp.status >= 200 && resp.status < 300){
+							holdsTableContain.innerHTML = "<td colspan='100%'>" + await resp.text() + "</td>";
+							event.target.innerHMTL = "Hide Holds";
+							addListenersToUseHoldBtns();
+							updateCoItemInfo();
+						}
+						else
+						{
+							throw Error("Error");
+						}
+					})
+					.catch((e) => {
+						console.error(e);
+						holdsTableContain.innerHTML = "<td colspan='100%' class='p-3 text-danger'>Failed to get holds.</td>";
+						event.target.innerHMTL = "Hide Holds";
+					})
+			}
+			else
+			{
+				holdsTableContain.setAttribute('style', 'display: none;');
+				holdsTableContain.setAttribute('data-collapsed', 'true');
+				event.target.innerHMTL = "Show Holds";
+			}
+
 		}
 	</script>
 <!---------------------------------------------------------------> 

@@ -1,0 +1,1 @@
+I named this components because these are reusable php functions.
