@@ -9,15 +9,32 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = sqlsrv_query($conn,
-				"SELECT dt.[Model No.], dt.[Name], dt.[Manufacturer], dt.[Date Added], dt.[Type], COUNT(i.[Device Title ID]) as Stock
-				FROM library.library.[Device Title] as dt
-				LEFT OUTER JOIN library.library.Item as i ON i.[Device Title ID] = dt.[Model No.]
-				AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
-				WHERE dt.Delisted = 0
+
+			$sql = "SELECT dt.[Model No.], dt.[Name], dt.[Manufacturer], dt.[Date Added], dt.[Type], COUNT(i.[Device Title ID]) as Stock
+			FROM library.library.[Device Title] as dt
+			LEFT OUTER JOIN library.library.Item as i ON i.[Device Title ID] = dt.[Model No.]
+			AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
+			WHERE dt.Delisted = 0";
+
+			$search = "";
+			if (isset($_GET["search"])){
+				$search = $_GET["search"];
+				$sql = $sql." AND dt.Name collate SQL_Latin1_General_CP1_CI_AS LIKE ? ";
+				// SQL_Latin1_General_CP1_CI_AS somehow gets it to be case insensitive
+			}
+
+			$sql = $sql."
 				GROUP BY dt.[Model No.], dt.[Name], dt.[Manufacturer], dt.[Date Added], dt.[Type]
-				ORDER BY dt.[Name];"
-			);
+				ORDER BY dt.[Name];";
+
+			if (isset($_GET["search"])){
+				$result = sqlsrv_query($conn, $sql, array("%".$search."%"));
+			}
+			else
+			{
+				$result = sqlsrv_query($conn, $sql);
+			}
+
 			if (!$result){
 				die("Failed to fetch devices");
 			}
@@ -33,7 +50,7 @@
 					// We have a search url parameter. Display a message.
 					echo "<p>Searching for: <i>\"";
 					echo $_GET["search"];
-					echo "</i>\" (doesn't actually work yet)</p>";
+					echo "</i>\"</p>";
 				}
 			?>
 			<table class="table table-hover table-striped">

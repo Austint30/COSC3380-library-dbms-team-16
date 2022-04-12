@@ -11,15 +11,29 @@
     <body>
 	    <?php include 'headerbar-auth.php' ?>		
 		<?php
-			$result = sqlsrv_query($conn,
-				"SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID], count(i.[Media Title ID]) as Stock
-				FROM library.library.[Media Title] as b
-				LEFT OUTER JOIN library.library.Item as i ON b.[Media ID] = i.[Media Title ID]
-				AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
-				WHERE b.Delisted = 0
-				GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID]
-				ORDER BY b.Title"
-			);
+			$sql = "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID], count(i.[Media Title ID]) as Stock
+			FROM library.library.[Media Title] as b
+			LEFT OUTER JOIN library.library.Item as i ON b.[Media ID] = i.[Media Title ID]
+			AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
+			WHERE b.Delisted = 0";
+
+			$search = "";
+			if (isset($_GET["search"])){
+				$search = $_GET["search"];
+				$sql = $sql." AND b.Title collate SQL_Latin1_General_CP1_CI_AS LIKE ? ";
+				// SQL_Latin1_General_CP1_CI_AS somehow gets it to be case insensitive
+			}
+
+			$sql = $sql."GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID] ORDER BY b.Title";
+
+			if (isset($_GET["search"])){
+				$result = sqlsrv_query($conn, $sql, array("%".$search."%"));
+			}
+			else
+			{
+				$result = sqlsrv_query($conn, $sql);
+			}
+
 			if (!$result){
 				$e = json_encode(sqlsrv_errors());
 				die("Failed to get media. Error: $e");
@@ -49,7 +63,7 @@
 					// We have a search url parameter. Display a message.
 					echo "<p>Searching for: <i>\"";
 					echo $_GET["search"];
-					echo "</i>\" (doesn't actually work yet)</p>";
+					echo "</i>\"</p>";
 				}
 			?>
 			<table class="table table-hover table-striped">
