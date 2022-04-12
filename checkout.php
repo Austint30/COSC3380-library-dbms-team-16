@@ -62,7 +62,7 @@
 			<div class='card mb-3'>
 				<div class='card-body'>
 					<h5 class='card-title'>Check in an item</h5>
-					<form method='post' action='/checkout-response-server.php'>
+					<form method='post' action='/checkin-response-server.php'>
 						<div class="row align-items-start mb-3">
 							<div class="col-6">
 								<label for="checkin-itemid" class="form-label">Item ID</label>
