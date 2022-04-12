@@ -78,6 +78,11 @@
         </li>
         <?php
           if ($userType == "STAFF" || $userType == "ADMIN"){
+            echo "<li class='border-start' style='opacity: 0.5;' />";
+          }
+        ?>
+        <?php
+          if ($userType == "STAFF" || $userType == "ADMIN"){
             $link = null;
             if ($pageName == 'checkout.php'){
               $link = "<a class='nav-link active' aria-current='page' href='/checkout.php'>Check Out/In</a>";
