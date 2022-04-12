@@ -71,6 +71,7 @@
 						</div>
 						<button type='submit' class='btn btn-primary'>Check in</button>
 					</form>
+					<div id="checkin-user-info"></div>
 					<div id="checkin-fee-info"></div>
 					<div id="checkin-item-info"></div>
 				</div>
@@ -152,7 +153,7 @@
 
 		function renderItemHTML(dataObj, warnCheckedOut=false, warnCheckedIn=false){
 			let html = `
-				<h5 class='mt-3'>Item information</h5>
+				<h6 class='mt-3'>Item information</h6>
 			`;
 
 			if (dataObj['Is Checked Out'] && warnCheckedOut){
@@ -206,6 +207,7 @@
 		const ci_itemInput = document.getElementById("checkin-itemid");
 		const ci_feeInfo = document.getElementById("checkin-fee-info");
 		const ci_itemInfo = document.getElementById("checkin-item-info");
+		const ci_userInfo = document.getElementById("checkin-user-info");
 
 		ci_itemInput.addEventListener('input', updateCiItemInfo);
 
@@ -214,7 +216,7 @@
 		function renderFeesHTML(dataObj){
 			console.log('dataObj', dataObj);
 			let html = `
-				<h5 class='mt-3'>Fee info for ${dataObj.userName}</h5>
+				<h6>Fee info</h6>
 			`;
 
 			if (dataObj.fees.length <= 0){
@@ -296,6 +298,8 @@
 						console.log('data received: ', data);
 						const html = renderFeesHTML(data);
 						ci_feeInfo.innerHTML = html;
+						ci_userInfo.innerHTML = "<h5 class='my-3'>Item checked out by " + data.userName + ".</h5>";
+
 					})
 					fetchItemInfo();
 				}
