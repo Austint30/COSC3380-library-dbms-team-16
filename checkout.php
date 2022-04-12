@@ -18,10 +18,10 @@
 			<?php include 'messages.php' ?>
 			<?php
 				$result = sqlsrv_query($conn,
-					"SELECT a.[Last Name], a.[First Name], a.[User ID], COUNT(i.[Item ID]) as Holds
+					"SELECT a.[Last Name], a.[First Name], a.[User ID], a.Type, COUNT(i.[Item ID]) as Holds
 					FROM library.library.Account as a
 					INNER JOIN library.library.Item as i ON i.[Held By] = a.[User ID]
-					GROUP BY a.[Last Name], a.[First Name], a.[User ID]
+					GROUP BY a.[Last Name], a.[First Name], a.[User ID], a.Type
 					ORDER BY a.[Last Name], a.[First Name]"
 				);
 				if (!$result){
@@ -82,9 +82,11 @@
 				<table class='table table-striped mb-0'>
 					<thead>
 						<tr>
-							<td>Last name</td>
-							<td>First name</td>
-							<td>No. Holds</td>
+							<th>Last name</th>
+							<th>First name</th>
+							<th>User ID</th>
+							<th>Role</th>
+							<th>No. Holds</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -98,6 +100,8 @@
 									echo "<tr>";
 									echo "<td>$lname</td>";
 									echo "<td>$fname</td>";
+									echo "<td>".$row['User ID']."</td>";
+									echo "<td>".$row['Type']."</td>";
 
 									$showHoldsId = "show-holds-btn-".$i;
 									$userID = $row['User ID'];
