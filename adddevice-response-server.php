@@ -1,4 +1,4 @@
-<?php
+\\<?php
     include 'connect.php';
     include 'require-signin.php';
 
