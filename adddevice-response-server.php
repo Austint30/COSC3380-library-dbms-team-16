@@ -1,7 +1,7 @@
 <?php
     include 'connect.php';
     include 'require-signin.php';
-    
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $modelNo = $_POST['modelNo'];
         $deviceName = $_POST['deviceName'];
@@ -25,8 +25,8 @@
         ";*/
 		
 		$query = "
-            INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.AuthorMName, library.library.[Replacement Cost], library.library.[Date Added])
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.[Replacement Cost], library.library.[Date Added])
+            VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);
         ";
 
         echo $query;
@@ -41,7 +41,7 @@
         }		
         
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.AuthorMName, library.library.[Replacement Cost], library.library.[Date Added]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Device Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $stmt = sqlsrv_prepare($conn, $query, array($modelNo));
             $res = sqlsrv_execute($stmt);
