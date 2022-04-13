@@ -75,12 +75,12 @@
                             <label for="addmedia-mediaCost" class="form-label">Media Cost</label>
                             <input class="form-control" id="addbook-mediaCost" name="mediaCost" required>
                         </div>
-                    <div class = "row align-items-start">
+<!-- /*                     <div class = "row align-items-start">
                         <div class="col-6 mb-3">
                             <label for="addmedia-dateAdded" class="form-label">Date Added</label>
                             <input class="form-control" id="addmedia-dateAdded" name="dateAdded" required>
                         </div>
-                    </div>
+                    </div> */ -->
                     <div class = "row align-items-start">
                         <div class="col-6 mb-3">
                             <label for="addmedia-dateAdded" class="form-label">Media Title</label>
