@@ -30,7 +30,7 @@
                         <div class="col-6 mb-3">
                             <label for="addmedia-genre" class="form-label">Genre</label>
 							<select id="signup-type" class="form-select" name="mediaGenre" required>
-                            <option value="" selected>Choose an account type</option>
+                            <option value="" selected>Choose a genre</option>
 							<option value="FANTASY">FANTASY</option>
                             <option value="SCI_FI">SCI_FI</option>
 							<option value="DYSTOPIAN">DYSTOPIAN</option>
