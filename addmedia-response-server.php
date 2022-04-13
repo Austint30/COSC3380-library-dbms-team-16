@@ -26,14 +26,46 @@
         echo $dateAdded;
         echo $replacementCost;
 
-        $query = "
+        /*$query = "
             INSERT INTO [Media Title] ([Media Title].[Media ID], [Media Title].Title, [Media Title].[Year Published], [Media Title].AuthorFName, [Media Title].AuthorLName, [Media Title].AuthorMName, [Media Title].Genre, [Media Title].[Date Added], [Media Title].[Replacement Cost])
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+        ";*/
+		
+		$query = "
+            INSERT INTO library.library.[Media Title] (library.library.[Media ID], library.library.Title, library.library.[Year Published], library.library.AuthorFName, library.library.AuthorLName, library.library.AuthorMName, library.library.[Genre], library.library.[Date Added], library.library.[Replacement Cost])
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         ";
 
         echo $query;
+		
+		$stmt = sqlsrv_prepare($conn, $query, array($mediaID, $title, $yearPublished, $authorfname, $authorlname, $authormname, $genre, $dateAdded, $replacementCost));
 
-        $q = $conn->prepare($query);
+        $res = sqlsrv_execute($stmt);
+
+        if ($res == false){
+            $e = json_encode(sqlsrv_errors());
+            header("Location: admin-addmedia.php?errormsg=Failed to add media. Make sure that you aren't adding a duplicate media. Error: $e");
+        }
+
+        for ($i=0; $i < $quantity; $i++) { 
+            $query = "INSERT INTO library.library.[Media Title] (library.library.[Media ID], library.library.Title, library.library.[Year Published], library.library.AuthorFName, library.library.AuthorLName, library.library.AuthorMName, library.library.[Genre], library.library.[Date Added], library.library.[Replacement Cost]) VALUES (CURRENT_TIMESTAMP, ?)";
+
+            $stmt = sqlsrv_prepare($conn, $query, array($mediaID));
+            $res = sqlsrv_execute($stmt);
+
+            if (!$res){
+                header("Location: admin-addmedia.php?errormsg=Failed to add copies of the media. Please contact system admin.");
+            }
+        }
+
+        header("Location: admin-addmedia.php?msg=Media sucessfully added.");
+    }
+    else
+    {
+        $result = "YOU SHOULDN'T BE HERE!";
+    }		
+
+        /*$q = $conn->prepare($query);
         $q->bind_param("sssssssss", $mediaID, $title, $yearPublished, $authorfname, $authorlname, $authormname, $genre, $dateAdded, $replacementCost);
 
         try {
@@ -59,4 +91,5 @@
     } else {
         $result = "Error";
     }
+	*/
 ?>
