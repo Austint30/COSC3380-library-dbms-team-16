@@ -25,8 +25,8 @@
         ";*/
 		
 		$query = "
-            INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.[Replacement Cost], library.library.[Date Added])
-            VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);
+            INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.[Date Added])
+            VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP);
         ";
 
         echo $query;

@@ -53,17 +53,11 @@
                             <label for="adddevice-replacementcost" class="form-label">Replacement Cost</label>
                             <input class="form-control" id="adddevice-replacementcost" name="deviceCost" required>
                         </div>
-                    </div> 
-                    <div class="row align-items-start">
-                        <div class="col-6 mb-3">
-                            <label for="adddevice-Date" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="adddevice-Date" name="deviceDate" required>
-                        </div>
                         <div class="col-6 mb-3">
                             <label for="addbook-ddn" class="form-label">Quantity</label>
                             <input type="number" max="100" min="1" class="form-control" id="adddevice-quantity" name="quantity" value="1" required>
                         </div>
-                    </div>					
+                    </div>
                     <button id="adddevice-button" type="submit" class="btn btn-primary">Add Device</button>
                 </div>
             </div>
