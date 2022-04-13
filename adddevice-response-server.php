@@ -29,7 +29,7 @@
 
         echo $query;
 		
-		$stmt = sqlsrv_prepare($conn, $query, array($modelNo, $deviceName, $type, $manufacturer, $replacementcost, $dateAdded);
+		$stmt = sqlsrv_prepare($conn, $query, array($modelNo, $deviceName, $type, $manufacturer, $replacementcost, $dateAdded));
 
         $res = sqlsrv_execute($stmt);
 		
