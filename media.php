@@ -111,7 +111,7 @@
 								}
 							}
 							echo "<td>
-                                    <a href='#' class='btn btn-primary btn-small' style='float: left;'>
+                                    <a href='media-detail.php' class='btn btn-primary btn-small' style='float: left;'>
                                         Learn More
                                     </a>
                                 </td>";
