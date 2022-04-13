@@ -1,4 +1,4 @@
-<?php
+\\<?php
     include 'connect.php';
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $modelNo = $_POST['modelNo'];
@@ -23,8 +23,8 @@
         ";*/
 		
 		$query = "
-            INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.AuthorMName, library.library.[Replacement Cost], library.library.[Date Added])
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.[Name], library.library.[Type], library.library.[Manufacturer], library.library.[Replacement Cost], library.library.[Date Added])
+        VALUES (?, ?, ?, ?, ?, ?);
         ";
 
         echo $query;
