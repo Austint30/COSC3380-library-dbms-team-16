@@ -1,6 +1,7 @@
 <?php
     include 'connect.php';
     include 'holds-max-per-user-type.php';
+    include 'require-signin.php';
 
     if (!isset($_COOKIE["user-id"])){
         header("Location: /signin.php");

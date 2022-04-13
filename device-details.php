@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
     if (!isset($_GET["modelNo"])){
         // Redirect to devices page if no model number is specified.
         header("Location: /devices.php");

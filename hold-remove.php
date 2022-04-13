@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
 
     if (!isset($_COOKIE["user-id"])){
         header("Location: /signin.php");

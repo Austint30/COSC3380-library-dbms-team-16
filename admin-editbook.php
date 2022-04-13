@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
 
     if (!isset($_GET["isbn"])){
         // Redirect to books page if no isbn is specified.
