@@ -49,7 +49,7 @@
             }
         }
 
-        header("Location: admin-adddevices.php?msg=Book sucessfully added.");
+        header("Location: admin-adddevices.php?msg=Device sucessfully added.");
     }
     else
     {
