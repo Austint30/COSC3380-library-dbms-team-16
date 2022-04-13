@@ -111,7 +111,7 @@
 								}
 							}
 							echo "<td>
-                                    <a href='media-detail.php' class='btn btn-primary btn-small' style='float: left;'>
+                                    <a href='media-detail.php?mediaID=$[Media ID]' class='btn btn-primary btn-small' style='float: left;'>
                                         Learn More
                                     </a>
                                 </td>";

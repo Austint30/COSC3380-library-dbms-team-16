@@ -1,11 +1,11 @@
 <?php
     include 'connect.php';
     include 'require-signin.php';
-    if (!isset($_GET["isbn"])){
-        // Redirect to books page if no isbn is specified.
-        header("Location: /books.php");
+    if (!isset($_GET["Media ID"])){
+        // Redirect to media page if no isbn is specified.
+        header("Location: /media.php");
     }
-    $isbn = $_GET["isbn"];
+    $mediaID = $_GET["Media ID"];
     $result = sqlsrv_query($conn,
         "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], DDN, ISBN, count(i.[Book Title ID]) as Stock
         FROM library.library.[Book Title] as b
