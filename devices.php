@@ -42,10 +42,24 @@
 			$columns = sqlsrv_field_metadata($result);
 		?>
 		<div class="container mt-5">
-            <h1>Devices</h1>
-			<div class="alert alert-warning mb-3" role="alert">
-			This page is still a WIP. It may not work properly yet.
+					<div class="mb-3 d-flex">
+				<h1 class="mb-0">Devices</h1>
+				<?php
+					// Add books button only appears for ADMIN or STAFF users
+					$stmt = sqlsrv_query($conn, "SELECT a.Type FROM library.library.Account as a WHERE a.[User ID]=$cookie_userID");
+					sqlsrv_fetch($stmt);
+					if ($user){
+						$userType = sqlsrv_get_field($stmt, 0);
+						if ($userType == 'ADMIN' || $userType == "STAFF"){
+							echo '<a href="/admin-adddevices.php" class="btn btn-success ms-auto" style="height: fit-content; align-self: end;">Add Devices<a>';
+						}
+					}
+				?>
 			</div>
+            <!-- <h1>Devices</h1> -->
+<!-- 			<div class="alert alert-warning mb-3" role="alert">
+			This page is still a WIP. It may not work properly yet.
+			</div> -->
 			<?php
 				if (isset($_GET["search"])){
 					// We have a search url parameter. Display a message.
