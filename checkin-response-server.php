@@ -29,13 +29,10 @@
             library.library.Item.State = 'CHECKED IN'
         WHERE library.library.Item.[Item ID]=?;
 
-        IF EXISTS (SELECT 1 FROM library.library.Item_Due_Date as idd WHERE idd.[Item ID]=?)
-        BEGIN
-            DELETE FROM idd WHERE idd.[Item ID]=?
-        END
+        DELETE FROM library.library.Item_Due_Date WHERE library.library.Item_Due_Date.[Item ID]=?;
         ";
 
-        $result = sqlsrv_query($conn, $sql, array($itemid, $itemid, $itemid));
+        $result = sqlsrv_query($conn, $sql, array($itemid, $itemid));
 
         if (!$result){
             $e = fmtErrJson();

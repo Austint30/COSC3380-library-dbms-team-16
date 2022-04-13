@@ -8,6 +8,10 @@
         $itemID = $_POST["itemID"];
         $dueDate = $_POST["dueDate"];
 
+        $dueDateObj = new DateTime($dueDate, new DateTimeZone("America/Chicago"));
+        $dueDateObj->setTimezone(new DateTimeZone("UTC"));
+        $dueDate = $dueDateObj->format('Y-m-d H:i:s');
+
         // Check if item is not already checked out
         $sql = "SELECT i.[Item ID] FROM library.library.Item as i WHERE i.[Item ID]=? AND i.[Checked Out By] IS NULL";
         $result = sqlsrv_query($conn, $sql, array($itemID));

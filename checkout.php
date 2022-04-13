@@ -47,8 +47,9 @@
 							<div class="col-6">
 								<label for="checkout-duedate" class="form-label">Set Due Date</label>
 								<?php
-									$next_due_date = date('Y-m-d\TH:i:s', strtotime('+30 days'));
-									$date = (new DateTime($next_due_date))->format('Y-m-d\TH:i:s');
+									$next_due_date = new DateTime(date('Y-m-d\TH:i:s', strtotime('+30 days')));
+									$next_due_date->setTimezone(new DateTimeZone('America/Chicago')); // Convert to Houston time
+									$date = $next_due_date->format('Y-m-d\TH:i:s');
 								?>
 								<input type="datetime-local" class="form-control" id="checkout-duedate" name="dueDate" required value="<?php echo $date ?>">
 								<div id="due-date-help" class="form-text">Automatically set to next month</div>
