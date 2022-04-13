@@ -38,7 +38,7 @@
 
         echo $query;
 		
-		$stmt = sqlsrv_prepare($conn, $query, array($title, $yearPublished, $authorfname, $authorlname, $authormname, $genre, $dateAdded, $replacementCost));
+		$stmt = sqlsrv_prepare($conn, $query, array($title, $yearPublished, $authorfname, $authorlname, $authormname, $genre, $replacementCost));
 
         $res = sqlsrv_execute($stmt);
 
