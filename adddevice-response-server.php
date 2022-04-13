@@ -16,14 +16,47 @@
         echo $manufacturer;
         echo $replacementcost;
 		echo $dateAdded;
-        $query = "
+        
+		/*$query = "
             INSERT INTO [Device Title] ([Device Title].[Model No.], [Device Title].Name, [Device Title].Type, [Device Title].Manufacturer, [Device Title].[Replacement Cost], [Device Title].[Date Added])
             VALUES (?, ?, ?, ?, ?, ?);
+        ";*/
+		
+		$query = "
+            INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.AuthorMName, library.library.[Replacement Cost], library.library.[Date Added])
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         ";
 
         echo $query;
+		
+		$stmt = sqlsrv_prepare($conn, $query, array($modelNo, $deviceName, $type, $manufacturer, $replacementcost, $dateAdded);
 
-        $q = $conn->prepare($query);
+        $res = sqlsrv_execute($stmt);
+		
+        if ($res == false){
+            $e = json_encode(sqlsrv_errors());
+            header("Location: admin-adddevices.php?errormsg=Failed to add device. Make sure that you aren't adding a duplicate device. Error: $e");
+        }		
+        
+        for ($i=0; $i < $quantity; $i++) { 
+            $query = "INSERT INTO library.library.[Device Title] (library.library.[Model No.], library.library.Name, library.library.Type, library.library.Manufacturer, library.library.[Replacement Cost], library.library.AuthorMName, library.library.[Replacement Cost], library.library.[Date Added]) VALUES (CURRENT_TIMESTAMP, ?)";
+
+            $stmt = sqlsrv_prepare($conn, $query, array($modelNo));
+            $res = sqlsrv_execute($stmt);
+
+            if (!$res){
+                header("Location: admin-adddevices.php?errormsg=Failed to add copies of the device. Please contact system admin.");
+            }
+        }
+
+        header("Location: admin-adddevices.php?msg=Book sucessfully added.");
+    }
+    else
+    {
+        $result = "YOU SHOULDN'T BE HERE!";
+    }
+
+		/*$q = $conn->prepare($query);
         $q->bind_param("ssssss", $modelNo, $deviceName, $type, $manufacturer, $replacementcost, $dateAdded);
 
         try {
@@ -49,7 +82,7 @@
     else
     {
         $result = "YOU SHOULDN'T BE HERE!";
-    }
+    }*/
 ?>
 
 <html>
