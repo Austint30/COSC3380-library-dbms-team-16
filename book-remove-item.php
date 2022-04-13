@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
 
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $isbn = $_GET["isbn"];

@@ -47,10 +47,10 @@
 							<div class="col-6">
 								<label for="checkout-duedate" class="form-label">Set Due Date</label>
 								<?php
-									$next_due_date = date('Y-m-d', strtotime('+30 days'));
-									$date = (new DateTime($next_due_date))->format('Y-m-d');
+									$next_due_date = date('Y-m-d\TH:i:s', strtotime('+30 days'));
+									$date = (new DateTime($next_due_date))->format('Y-m-d\TH:i:s');
 								?>
-								<input type="date" class="form-control" id="checkout-duedate" name="dueDate" required value="<?php echo $date ?>">
+								<input type="datetime-local" class="form-control" id="checkout-duedate" name="dueDate" required value="<?php echo $date ?>">
 								<div id="due-date-help" class="form-text">Automatically set to next month</div>
 							</div>
 						</div>

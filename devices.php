@@ -2,8 +2,9 @@
 <html>
 <!--------------------------------------------------------------->
     <head>
-        <?php include 'bootstrap.php'; 
-		include 'connect.php';?>	
+        <?php include 'bootstrap.php';
+		include 'connect.php';
+		include 'require-signin.php';?>	
     </head>
 <!----------------------Here we have the device title table----------------------------------------->
     <body>

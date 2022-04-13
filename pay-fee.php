@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
     $_POST = json_decode(file_get_contents('php://input'), true);
     if (isset($_POST["feeid"]) && isset($_POST["amount"])){
 

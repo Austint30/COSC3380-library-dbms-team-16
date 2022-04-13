@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
 ?>
 <?php
     $stmt = sqlsrv_query($conn, "SELECT * FROM library.Account WHERE Type = 'ADMIN'");

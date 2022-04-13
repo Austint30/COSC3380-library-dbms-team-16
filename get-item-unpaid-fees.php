@@ -1,5 +1,6 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
     if (isset($_GET["itemid"])){
 
         // Find the ID of the user who is checking the item in

@@ -1,5 +1,7 @@
 <?php
     include 'connect.php';
+    include 'require-signin.php';
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $modelNo = $_POST['modelNo'];
         $deviceName = $_POST['deviceName'];
