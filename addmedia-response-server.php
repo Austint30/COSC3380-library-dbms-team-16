@@ -3,7 +3,7 @@
     include 'require-signin.php';
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $mediaID = $_POST['mediaID'];
+        //$mediaID = $_POST['mediaID'];
         $title = $_POST['mediaTitle'];
         $yearPublished = $_POST['yearPublished'];    
         $authorfname = $_POST["mediaFName"];
@@ -16,7 +16,7 @@
         
 
         echo "POST received. Values are below:";
-        echo $mediaID;
+        //echo $mediaID;
         echo $title;
         echo $yearPublished;
         echo $authorfname;
@@ -32,13 +32,13 @@
         ";*/
 		
 		$query = "
-            INSERT INTO library.library.[Media Title] (library.library.[Media ID], library.library.Title, library.library.[Year Published], library.library.AuthorFName, library.library.AuthorLName, library.library.AuthorMName, library.library.[Genre], library.library.[Date Added], library.library.[Replacement Cost])
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO library.library.[Media Title] (library.library.[Title], library.library.[Year Published], library.library.[AuthorFName], library.library.[AuthorLName], library.library.[AuthorMName], library.library.[Genre], library.library.[Date Added], library.library.[Replacement Cost])
+            VALUES (?, ?, ?, ? ,? ,? ,CURRENT_TIMESTAMP,?);
         ";
 
         echo $query;
 		
-		$stmt = sqlsrv_prepare($conn, $query, array($mediaID, $title, $yearPublished, $authorfname, $authorlname, $authormname, $genre, $dateAdded, $replacementCost));
+		$stmt = sqlsrv_prepare($conn, $query, array($title, $yearPublished, $authorfname, $authorlname, $authormname, $genre, $dateAdded, $replacementCost));
 
         $res = sqlsrv_execute($stmt);
 

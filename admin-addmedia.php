@@ -21,10 +21,10 @@
                <div class = "card-body">
                     <h5 class = "card-title">Add Media</h5>
                     <div class = "row-align-items-start">
-                        <div class = "col-6 mb-3">
+<!--                         <div class = "col-6 mb-3">
                             <label for = "addmedia-mediaID" class = "form-label">Media ID</label>
                             <input class = "form-control" id = "addMedia-mediaID" name = "mediaID" required>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row align-items-start">
                         <div class="col-6 mb-3">
