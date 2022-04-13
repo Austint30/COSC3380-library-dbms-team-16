@@ -48,7 +48,7 @@
         }
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.library.[Media Title] (library.library.[Media ID], library.library.Title, library.library.[Year Published], library.library.AuthorFName, library.library.AuthorLName, library.library.AuthorMName, library.library.[Genre], library.library.[Date Added], library.library.[Replacement Cost]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Media Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $stmt = sqlsrv_prepare($conn, $query, array($mediaID));
             $res = sqlsrv_execute($stmt);
