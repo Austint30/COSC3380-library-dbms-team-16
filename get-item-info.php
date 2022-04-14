@@ -8,17 +8,17 @@
             -- Book data --
             b.ISBN as bISBN, b.Title as bTitle, b.[Year Published] as bYearPub, b.AuthorFName as bAuthFName, b.AuthorMName as bAuthMName, b.AuthorLName as bAuthLName,
             b.Genre as bGenre, b.DDN as bDDN,
-    
+            
             -- Media data --
             m.[Media ID] as mID, m.Title as mTitle, m.[Year Published] as mYearPub, m.Genre as mGenre, m.AuthorFName as mAuthFName, m.AuthorMName as mAuthMName, m.AuthorLName as mAuthLName,
-    
+            
             -- Device data --
             d.[Model No.] as dModelNo, d.Name as dName, d.Type as dType, d.Manufacturer as dManu
-        FROM library.library.Item as i
-        LEFT OUTER JOIN library.library.[Book Title] as b ON i.[Book Title ID] = b.ISBN
-        LEFT OUTER JOIN library.library.[Device Title] as d ON i.[Device Title ID] = d.[Model No.]
-        LEFT OUTER JOIN library.library.[Media Title] as m ON i.[Media Title ID] = m.[Media ID]
-        WHERE i.[Item ID] = ?";
+            FROM Items_With_Check_Out as i
+            LEFT OUTER JOIN library.library.[Book Title] as b ON i.[Book Title ID] = b.ISBN
+            LEFT OUTER JOIN library.library.[Device Title] as d ON i.[Device Title ID] = d.[Model No.]
+            LEFT OUTER JOIN library.library.[Media Title] as m ON i.[Media Title ID] = m.[Media ID]
+            WHERE i.[Item ID] = ?";
 
         $result = sqlsrv_query($conn, $sql, array($_GET["itemid"]));
         $data = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);

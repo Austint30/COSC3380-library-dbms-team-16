@@ -13,7 +13,7 @@
 
 			$sql = "SELECT dt.[Model No.], dt.[Name], dt.[Manufacturer], dt.[Date Added], dt.[Type], COUNT(i.[Device Title ID]) as Stock
 			FROM library.library.[Device Title] as dt
-			LEFT OUTER JOIN library.library.Item as i ON i.[Device Title ID] = dt.[Model No.]
+			LEFT OUTER JOIN Items_With_Check_Out as i ON i.[Device Title ID] = dt.[Model No.]
 			AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
 			WHERE dt.Delisted = 0";
 

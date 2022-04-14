@@ -7,14 +7,15 @@
     }
     $modelNo = $_GET["modelNo"];
     $result = sqlsrv_query($conn,
-        "SELECT [Model No.], [Name], [Manufacturer], [Type], count(library.Item.[Device Title ID]) as Stock
-        FROM library.[Device Title]
-        LEFT OUTER JOIN library.Item ON library.[Device Title].[Model No.] = library.Item.[Device Title ID]
-        AND library.Item.[Checked Out By] IS NULL AND library.Item.[Held By] IS NULL
-        WHERE library.[Device Title].[Model No.] = '$modelNo'
-        GROUP BY library.[Device Title].[Name]"
+        "SELECT [Model No.], [Name], [Manufacturer], [Type], count(Items_With_Check_Out.[Device Title ID]) as Stock
+        FROM library.library.[Device Title]
+        LEFT OUTER JOIN Items_With_Check_Out ON library.library.[Device Title].[Model No.] = Items_With_Check_Out.[Device Title ID]
+        AND Items_With_Check_Out.[Checked Out By] IS NULL AND Items_With_Check_Out.[Held By] IS NULL
+        WHERE library.library.[Device Title].[Model No.] = ?
+        GROUP BY [Model No.], [Name], [Manufacturer], [Type]",
+        array($modelNo)
     );
-    $device = $result->fetch_row();
+    $device = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
     if (!$device){
         // Device not found die in a hole
         http_response_code(404);

@@ -13,7 +13,7 @@
         $dueDate = $dueDateObj->format('Y-m-d H:i:s');
 
         // Check if item is not already checked out
-        $sql = "SELECT i.[Item ID] FROM library.library.Item as i WHERE i.[Item ID]=? AND i.[Checked Out By] IS NULL";
+        $sql = "SELECT i.[Item ID] FROM library.dbo.Items_With_Check_Out as i WHERE i.[Item ID]=? AND i.[Checked Out By] IS NULL";
         $result = sqlsrv_query($conn, $sql, array($itemID));
 
         if (!$result){
@@ -46,21 +46,13 @@
             return;
         }
 
-        $sql = "UPDATE library.library.Item
-            SET
-                library.library.Item.[Held By] = NULL,
-                library.library.Item.[Checked Out By] = ?,
-                library.library.Item.State = 'CHECKED OUT',
-                library.library.Item.[Checkout Appr By Librarian] = ?
-            
-            WHERE
-                library.library.Item.[Item ID] = ?
-
-            INSERT INTO library.library.Item_Due_Date (library.library.Item_Due_Date.[Item ID], library.library.Item_Due_Date.[Due Date])
-            VALUES (?, ?);
+        $sql = "
+            USE library
+            INSERT INTO library.Checked_Out_Items ([Item ID], [Checked Out By], [Check Out Time], [Approving Librarian], [Due Date])
+            VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);
             ";
 
-        $result = sqlsrv_query($conn, $sql, array($userID, $cookie_userID, $itemID, $itemID, $dueDate));
+        $result = sqlsrv_query($conn, $sql, array($itemID, $userID, $cookie_userID, $dueDate));
 
         if ($result){
             header("Location: /checkout.php?msg=Item checked out successfully.");

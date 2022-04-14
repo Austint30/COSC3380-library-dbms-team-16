@@ -7,7 +7,7 @@
         $itemid = $_POST["itemid"];
 
         // Make sure item isn't already checked in
-        $sql = "SELECT i.[Item ID] FROM library.library.Item as i WHERE i.[Item ID]=? AND i.[Checked Out By] IS NOT NULL";
+        $sql = "SELECT i.[Item ID] FROM library.dbo.Items_With_Check_Out as i WHERE i.[Item ID]=? AND i.[Checked Out By] IS NOT NULL";
 
         $result = sqlsrv_query($conn, $sql, array($itemid));
 
@@ -22,15 +22,7 @@
             return;
         }
 
-        $sql = "UPDATE library.library.Item
-        SET
-            library.library.Item.[Checked Out By]=NULL,
-            library.library.Item.[Checkout Appr By Librarian]=NULL,
-            library.library.Item.State = 'CHECKED IN'
-        WHERE library.library.Item.[Item ID]=?;
-
-        DELETE FROM library.library.Item_Due_Date WHERE library.library.Item_Due_Date.[Item ID]=?;
-        ";
+        $sql = "DELETE FROM library.library.Checked_Out_Items WHERE library.library.Checked_Out_Items.[Item ID]=?;";
 
         $result = sqlsrv_query($conn, $sql, array($itemid, $itemid));
 

@@ -40,9 +40,9 @@
             <?php
                 $result = sqlsrv_query($conn,
                     "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], ISBN, Item.[Book Title ID], Item.[Item ID]
-                    FROM library.Item, library.[Book Title]
-                    WHERE library.Item.[Book Title ID] = library.[Book Title].ISBN
-                        AND library.Item.[Held By] = $cookie_userID;"
+                    FROM dbo.Avail_Items, library.[Book Title]
+                    WHERE dbo.Avail_Items.[Book Title ID] = library.[Book Title].ISBN
+                        AND dbo.Avail_Items.[Held By] = $cookie_userID;"
                 );
             ?>
             <table class="table table-striped">
@@ -90,9 +90,9 @@
             <?php
                 $result = sqlsrv_query($conn,
                     "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published]
-                    FROM library.Item, library.[Media Title]
-                    WHERE library.Item.[Media Title ID] = library.[Media Title].[Media ID]
-                        AND library.Item.[Held By] = $cookie_userID;"
+                    FROM dbo.Avail_Items, library.[Media Title]
+                    WHERE dbo.Avail_Items.[Media Title ID] = library.[Media Title].[Media ID]
+                        AND dbo.Avail_Items.[Held By] = $cookie_userID;"
                 );
             ?>
             <table class="table table-striped">
@@ -135,9 +135,9 @@
             <?php
                 $result = sqlsrv_query($conn,
                     "SELECT library.[Device Title].[Name], library.[Device Title].[Type], library.[Device Title].Manufacturer, library.[Device Title].[Model No.], library.[Device Title].[Date Added]
-                    FROM library.Item, library.[Device Title]
-                    WHERE library.Item.[Device Title ID] = library.[Device Title].[Model No.]
-                        AND library.Item.[Held By] = $cookie_userID;"
+                    FROM dbo.Avail_Items, library.[Device Title]
+                    WHERE dbo.Avail_Items.[Device Title ID] = library.[Device Title].[Model No.]
+                        AND dbo.Avail_Items.[Held By] = $cookie_userID;"
                 );
             ?>
             <table class="table table-striped">

@@ -117,7 +117,7 @@
                     $bookISBN = $book[7];
                     $result = sqlsrv_query($conn,
                     "SELECT i.[Item ID]
-                    FROM library.library.Item as i
+                    FROM Items_With_Check_Out as i
                     WHERE i.[Book Title ID]='$bookISBN'
                         AND i.[Checked Out By] IS NULL
                         AND i.[Held By] IS NULL",
@@ -159,7 +159,7 @@
                                 echo "<tr>";
                                 echo "<td>$row[0]</td>";
                                 echo "<td>
-                                    <a href='/book-remove-item.php?isbn=$bookISBN&itemID=$row[0]' class='btn btn-outline-danger' style='float: right;'>Remove Item</a>
+                                    <a href='/book-remove-item.php?isbn=$bookISBN&itemID=$row[0]' class='btn btn-outline-danger' style='float: right;'>Delist Item</a>
                                 </td>";
                                 echo "</tr>";
                             }

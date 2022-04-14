@@ -16,19 +16,6 @@
 				<h1 class="mb-0">Check Out/In</h1>
 			</div>
 			<?php include 'messages.php' ?>
-			<?php
-				$result = sqlsrv_query($conn,
-					"SELECT a.[Last Name], a.[First Name], a.[User ID], a.Type, COUNT(i.[Item ID]) as Holds
-					FROM library.library.Account as a
-					INNER JOIN library.library.Item as i ON i.[Held By] = a.[User ID]
-					GROUP BY a.[Last Name], a.[First Name], a.[User ID], a.Type
-					ORDER BY a.[Last Name], a.[First Name]"
-				);
-				if (!$result){
-					$e = fmtErrJson();
-					echo "<div class='alert alert-danger mb-3'>Failed to get holds. Error: $e</div>";
-				}
-			?>
 			<div class='card mb-3'>
 				<div class='card-body'>
 					<h5 class='card-title'>Check out an item</h5>
@@ -77,7 +64,20 @@
 					<div id="checkin-item-info"></div>
 				</div>
 			</div>
-			<div class='card'>
+			<?php
+				$result = sqlsrv_query($conn,
+					"SELECT a.[Last Name], a.[First Name], a.[User ID], a.Type, COUNT(i.[Item ID]) as Holds
+					FROM library.library.Account as a
+					INNER JOIN dbo.Avail_Items as i ON i.[Held By] = a.[User ID]
+					GROUP BY a.[Last Name], a.[First Name], a.[User ID], a.Type
+					ORDER BY a.[Last Name], a.[First Name]"
+				);
+				if (!$result){
+					$e = fmtErrJson();
+					echo "<div class='alert alert-danger mb-3'>Failed to get holds. Error: $e</div>";
+				}
+			?>
+			<div class='card mb-3'>
 				<div class='card-body'>
 					<h5 class='card-title'>Users with holds</h5>
 				</div>
@@ -121,6 +121,63 @@
 					</tbody>
 				</table>
 			</div>
+			<?php
+				$result = sqlsrv_query($conn,
+					"SELECT a.[Last Name], a.[First Name], a.[User ID], a.Type, COUNT(i.[Item ID]) as [No. Items]
+					FROM library.library.Account as a
+					INNER JOIN dbo.Items_With_Check_Out as i ON i.[Checked Out By] = a.[User ID]
+					GROUP BY a.[Last Name], a.[First Name], a.[User ID], a.Type
+					ORDER BY a.[Last Name], a.[First Name]"
+				);
+				if (!$result){
+					$e = fmtErrJson();
+					echo "<div class='alert alert-danger mb-3'>Failed to get holds. Error: $e</div>";
+				}
+			?>
+			<div class='card mb-3'>
+				<div class='card-body'>
+					<h5 class='card-title'>Users with checked out items</h5>
+				</div>
+				<table class='table table-striped mb-0'>
+					<thead>
+						<tr>
+							<th>Last name</th>
+							<th>First name</th>
+							<th>User ID</th>
+							<th>Role</th>
+							<th>No. items</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+							if ($result){
+								$i = 0;
+								while ( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+									$lname = $row['Last Name'];
+									$fname = $row['First Name'];
+									$coItems = $row['No. Items'];
+									echo "<tr>";
+									echo "<td>$lname</td>";
+									echo "<td>$fname</td>";
+									echo "<td>".$row['User ID']."</td>";
+									echo "<td>".$row['Type']."</td>";
+
+									$showCOItemsId = "show-items-btn-".$i;
+									$userID = $row['User ID'];
+									echo "<td class='d-flex justify-content-between'>
+										$coItems
+										<button onclick=\"handleShowItemClick(event, '$showCOItemsId', '$userID')\" class='btn btn-sm btn-outline-primary'>Show Items</button>
+									</td>";
+									echo "</tr>";
+									echo "<tr id='$showCOItemsId' class='co-items-hidden-table' data-collapsed='true'></tr>";
+									$i++;
+								}
+							}
+						?>
+						<tr></tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 
 		<!-- Payment success toast (popup saying the fee payment succeeded) -->
@@ -142,7 +199,7 @@
     </body>
 	<?php include 'scripts.php' ?>
 	<style>
-		.holds-hidden-table {
+		.holds-hidden-table, .co-items-hidden-table {
 			display: none;
 		}
 	</style>
@@ -454,6 +511,54 @@
 				holdsTableContain.setAttribute('style', 'display: none;');
 				holdsTableContain.setAttribute('data-collapsed', 'true');
 				event.target.innerHMTL = "Show Holds";
+			}
+
+		}
+	</script>
+	<script>
+		function addListenersToUseItemBtns(){
+			const btns = document.getElementsByClassName("use-co-item-btn");
+			for (let i = 0; i < btns.length; i++) {
+				const btn = btns[i];
+				const itemID = btn.getAttribute('data-itemid');
+				btn.addEventListener('click', () => {
+					ci_itemInput.value = itemID;
+					ci_itemInput.scrollIntoView();
+				});
+			}
+		}
+
+		function handleShowItemClick(event, containerID, userID){
+			const itemsTableContain = document.getElementById(containerID);
+			const collapsed = itemsTableContain.getAttribute('data-collapsed');
+
+			if (collapsed == 'true'){
+				itemsTableContain.setAttribute('style', 'display: table-row;');
+				itemsTableContain.setAttribute('data-collapsed', 'false');
+				fetch('/components/user-co-items.php?userID=' + userID + '&tableClass=table-secondary&showCheckBtn=true')
+					.then(async (resp) => {
+						if (resp.status >= 200 && resp.status < 300){
+							itemsTableContain.innerHTML = "<td colspan='100%'>" + await resp.text() + "</td>";
+							event.target.innerHMTL = "Hide Items";
+							addListenersToUseItemBtns();
+							updateCoItemInfo();
+						}
+						else
+						{
+							throw Error("Error");
+						}
+					})
+					.catch((e) => {
+						console.error(e);
+						itemsTableContain.innerHTML = "<td colspan='100%' class='p-3 text-danger'>Failed to get items.</td>";
+						event.target.innerHMTL = "Hide Items";
+					})
+			}
+			else
+			{
+				itemsTableContain.setAttribute('style', 'display: none;');
+				itemsTableContain.setAttribute('data-collapsed', 'true');
+				event.target.innerHMTL = "Show Items";
 			}
 
 		}

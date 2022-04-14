@@ -16,7 +16,7 @@
     $userID = $_COOKIE["user-id"];
 
     // Check current number of held items
-    $stmt = sqlsrv_query($conn, "SELECT COUNT(*) FROM Item WHERE library.Item.[Held By]=$userID");
+    $stmt = sqlsrv_query($conn, "SELECT COUNT(*) FROM Item WHERE dbo.Avail_Items.[Held By]=$userID");
     $holdCount = $result->fetch_row()[0];
 
     if ($holdCount >= $maxDeviceHolds){

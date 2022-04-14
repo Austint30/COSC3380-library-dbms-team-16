@@ -41,7 +41,7 @@
         }		
         
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Device Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO dbo.Avail_Items (dbo.Avail_Items.[Date Added], dbo.Avail_Items.[Device Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $stmt = sqlsrv_prepare($conn, $query, array($modelNo));
             $res = sqlsrv_execute($stmt);
@@ -68,7 +68,7 @@
         }
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.Item (library.Item.[Date Added], library.Item.[Device Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO dbo.Avail_Items (dbo.Avail_Items.[Date Added], dbo.Avail_Items.[Device Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $q = $conn->prepare($query);
             $q->bind_param("s", $modelNo);

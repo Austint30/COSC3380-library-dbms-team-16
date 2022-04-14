@@ -15,7 +15,7 @@
     $userID = $_COOKIE["user-id"];
 
     // Find items held by this user
-    $stmt = sqlsrv_query($conn, "SELECT i.[Item ID] FROM library.library.Item as i WHERE i.[Item ID]='$itemID' AND i.[Held By]=$userID");
+    $stmt = sqlsrv_query($conn, "SELECT i.[Item ID] FROM dbo.Avail_Items as i WHERE i.[Item ID]='$itemID' AND i.[Held By]=$userID");
     $item = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
 
     if (!$item){
@@ -24,7 +24,7 @@
     }
     $itemID = $item[0];
 
-    $stmt = sqlsrv_query($conn, "UPDATE library.library.Item SET library.library.Item.[Held By] = NULL WHERE (library.library.Item.[Item ID] = '$itemID');");
+    $stmt = sqlsrv_query($conn, "UPDATE dbo.Avail_Items SET dbo.Avail_Items.[Held By] = NULL WHERE (dbo.Avail_Items.[Item ID] = '$itemID');");
     if ($stmt){
         header("Location: /held-items.php?msg=Item removed from holds.");
     }

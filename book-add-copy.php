@@ -7,7 +7,7 @@
         $numCopies = $_POST["numCopies"];
 
         for ($i=0; $i < $numCopies; $i++) { 
-            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Book Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO dbo.Avail_Items (dbo.Avail_Items.[Date Added], dbo.Avail_Items.[Book Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $stmt = sqlsrv_prepare($conn, $query, array($isbn));
 

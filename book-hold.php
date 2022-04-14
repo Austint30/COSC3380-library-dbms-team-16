@@ -16,7 +16,7 @@
     $userID = $_COOKIE["user-id"];
 
     // Check current number of held items
-    $stmt = sqlsrv_query($conn, "SELECT COUNT(*) FROM library.library.Item WHERE library.library.Item.[Held By]=$userID");
+    $stmt = sqlsrv_query($conn, "SELECT COUNT(*) FROM dbo.Avail_Items WHERE dbo.Avail_Items.[Held By]=$userID");
     $holdCount = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)[0];
 
     if ($holdCount >= $maxBookHolds){
@@ -37,7 +37,7 @@
     $userID = $user[1];
 
     // Find an available item of this book and mark it as held.
-    $stmt = sqlsrv_query($conn, "SELECT i.[Item ID] FROM library.library.Item as i WHERE i.[Book Title ID]='$isbn' AND i.[Held By] is NULL");
+    $stmt = sqlsrv_query($conn, "SELECT i.[Item ID] FROM dbo.Avail_Items as i WHERE i.[Book Title ID]='$isbn' AND i.[Held By] is NULL");
     $item = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
 
     if (!$item){
@@ -46,7 +46,7 @@
     }
     $itemID = $item[0];
 
-    $stmt = sqlsrv_query($conn, "UPDATE library.library.Item SET library.library.Item.[Held By] = '$userID' WHERE (library.library.Item.[Item ID] = '$itemID');");
+    $stmt = sqlsrv_query($conn, "UPDATE dbo.Avail_Items SET dbo.Avail_Items.[Held By] = '$userID' WHERE (dbo.Avail_Items.[Item ID] = '$itemID');");
     if ($stmt){
         header("Location: /book-detail.php?isbn=$isbn&msg=Book is now sucessfully held. Please pick up your book at the front desk. You have $holdsleft holds left for books.");
     }

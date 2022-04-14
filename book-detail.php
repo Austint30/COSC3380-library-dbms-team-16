@@ -9,7 +9,7 @@
     $result = sqlsrv_query($conn,
         "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], DDN, ISBN, count(i.[Book Title ID]) as Stock
         FROM library.library.[Book Title] as b
-        LEFT OUTER JOIN library.library.Item as i ON b.ISBN = i.[Book Title ID]
+        LEFT OUTER JOIN library.dbo.Items_With_Check_Out as i ON b.ISBN = i.[Book Title ID]
         AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
         WHERE b.ISBN = '$isbn'
         GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], DDN, ISBN

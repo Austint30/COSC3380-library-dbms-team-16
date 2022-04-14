@@ -5,7 +5,7 @@
 
         // Find the ID of the user who is checking the item in
         $sql = "SELECT a.[User ID], a.[First Name], a.[Last Name]
-        FROM library.library.Item as i, library.library.Account as a
+        FROM Items_With_Check_Out as i, library.library.Account as a
         WHERE i.[Checked Out By] = a.[User ID] AND i.[Item ID] = ?
         ";
 

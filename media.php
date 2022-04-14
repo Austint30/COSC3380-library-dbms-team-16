@@ -13,7 +13,7 @@
 		<?php
 			$sql = "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Media ID], count(i.[Media Title ID]) as Stock
 			FROM library.library.[Media Title] as b
-			LEFT OUTER JOIN library.library.Item as i ON b.[Media ID] = i.[Media Title ID]
+			LEFT OUTER JOIN Items_With_Check_Out as i ON b.[Media ID] = i.[Media Title ID]
 			AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
 			WHERE b.Delisted = 0";
 
