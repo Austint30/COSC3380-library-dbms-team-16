@@ -81,6 +81,7 @@
 				<tbody>
 					<?php
 						while( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC) ){
+							$mediaID = $row[6];
 							echo "<tr>";
 							for ($i = 0; $i < 2; $i++) {
 								$value = $row[$i];
@@ -111,7 +112,7 @@
 								}
 							}
 							echo "<td>
-                                    <a href='media-detail.php?mediaID=$[Media ID]' class='btn btn-primary btn-small' style='float: left;'>
+                                    <a href='media-detail.php?mediaID=$mediaID' class='btn btn-primary btn-small' style='float: left;'>
                                         Learn More
                                     </a>
                                 </td>";

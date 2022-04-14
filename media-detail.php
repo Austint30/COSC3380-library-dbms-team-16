@@ -1,28 +1,30 @@
 <?php
     include 'connect.php';
     include 'require-signin.php';
-    if (!isset($_GET["Media ID"])){
-        // Redirect to media page if no isbn is specified.
+    if (!isset($_GET["mediaID"])){
+        // Redirect to media page if no model id is specified.
         header("Location: /media.php");
+        return;
     }
-    $mediaID = $_GET["Media ID"];
+    $mediaID = $_GET["mediaID"];
     $result = sqlsrv_query($conn,
-        "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], DDN, ISBN, count(i.[Book Title ID]) as Stock
-        FROM library.library.[Book Title] as b
-        LEFT OUTER JOIN library.library.Item as i ON b.ISBN = i.[Book Title ID]
+        "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], count(i.[Media Title ID]) as Stock
+        FROM library.library.[Media Title] as m
+        LEFT OUTER JOIN library.dbo.Avail_Items as i ON m.[Media ID] = i.[Media Title ID]
         AND i.[Checked Out By] IS NULL AND i.[Held By] IS NULL
-        WHERE b.ISBN = '$isbn'
-        GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], DDN, ISBN
-        ORDER BY b.Title"
+        WHERE m.[Media ID] = ?
+        GROUP BY Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published]
+        ORDER BY m.Title",
+        array($mediaID)
     );
-    $book = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
-    if (!$book){
+    $media = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+    if (!$media){
         // Book not found
         http_response_code(404);
         include '404.php';
         die();
     }
-    $fullNameArray = [$book[2], $book[3], $book[4]];
+    $fullNameArray = [$media[2], $media[3], $media[4]];
     $fullNameArray = array_filter($fullNameArray, 'strlen');
     $fullNameStr = join(", ", $fullNameArray);
 
@@ -42,8 +44,8 @@
         <form class="container mt-5">
             <nav aria-label="breadcrumb mb-3">
                 <ol class="breadcrumb h3">
-                    <li class="breadcrumb-item" aria-current="page"><a href="/books.php">Books</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><?php echo $book[0] ?></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="/media.php">Books</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?php echo $media[0] ?></li>
                 </ol>
             </nav>
             <div class="card">
@@ -53,16 +55,16 @@
                         <div class="d-flex align-items-start" style="gap: 0.5rem;margin-left: auto;">
                             <?php
                                 if ($userType == "STAFF" || $userType == "ADMIN"){
-                                    echo "<a href='delistbook-response-server.php?isbn=$isbn' class='btn btn-outline-danger ms-auto'>Delist Book</a>";
-                                    echo "<a href='admin-editbook.php?isbn=$isbn' class='btn btn-outline-primary'>Edit Book</a>";
+                                    echo "<a href='delistmedia-response-server.php?mediaID=$mediaID' class='btn btn-outline-danger ms-auto'>Delist Book</a>";
+                                    echo "<a href='admin-editmedia.php?mediaID=$mediaID' class='btn btn-outline-primary'>Edit Book</a>";
                                 }
                             ?>
                             <div class="d-flex flex-column justfy-content-end">
                                 <a
-                                    href="book-hold.php?isbn=<?php echo $isbn ?>"
-                                    class="ms-auto btn btn-success <?php if ($book[8] == 0) { echo "disabled"; } ?>"
+                                    href="media-hold.php?mediaID=<?php echo $mediaID ?>"
+                                    class="ms-auto btn btn-success <?php if ($media[8] == 0) { echo "disabled"; } ?>"
                                 >Place Hold</a>
-                                <?php if ($book[8] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
+                                <?php if ($media[6] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
                             </div>
                         </div>
                         
@@ -72,11 +74,11 @@
                         <tbody>
                             <tr>
                                 <td class="text-bold">Title</td>
-                                <?php echo "<td>$book[0]</td>" ?>
+                                <?php echo "<td>$media[0]</td>" ?>
                             </tr>
                             <tr>
                                 <td class="text-bold">Genre</td>
-                                <?php echo "<td>$book[1]</td>" ?>
+                                <?php echo "<td>$media[1]</td>" ?>
                             </tr>
                             <tr>
                                 <td class="text-bold">Author</td>
@@ -84,20 +86,12 @@
                             </tr>
                             <tr>
                                 <td class="text-bold">Year Published</td>
-                                <?php echo "<td>$book[5]</td>" ?>
-                            </tr>
-                            <tr>
-                                <td class="text-bold">DDN</td>
-                                <?php echo "<td>$book[6]</td>" ?>
-                            </tr>
-                            <tr>
-                                <td class="text-bold">ISBN</td>
-                                <?php echo "<td>$book[7]</td>" ?>
+                                <?php echo "<td>$media[5]</td>" ?>
                             </tr>
                             <tr>
                                 <td class="text-bold">Stock</td>
                                 <?php
-                                    $stock = $book[8];
+                                    $stock = $media[6];
                                     if ($stock == 0){
 										$stock = "<span class='text-danger'>Out of stock</span>";
 									}
