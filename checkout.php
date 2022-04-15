@@ -476,6 +476,7 @@
 					co_userInput.value = userID;
 					co_itemInput.value = itemID;
 					co_userInput.scrollIntoView();
+					updateCoItemInfo();
 				});
 			}
 		}
@@ -493,7 +494,6 @@
 							holdsTableContain.innerHTML = "<td colspan='100%'>" + await resp.text() + "</td>";
 							event.target.innerHMTL = "Hide Holds";
 							addListenersToUseHoldBtns();
-							updateCoItemInfo();
 						}
 						else
 						{
@@ -524,6 +524,7 @@
 				btn.addEventListener('click', () => {
 					ci_itemInput.value = itemID;
 					ci_itemInput.scrollIntoView();
+					updateCiItemInfo();
 				});
 			}
 		}
@@ -541,7 +542,6 @@
 							itemsTableContain.innerHTML = "<td colspan='100%'>" + await resp.text() + "</td>";
 							event.target.innerHMTL = "Hide Items";
 							addListenersToUseItemBtns();
-							updateCoItemInfo();
 						}
 						else
 						{

@@ -5,7 +5,7 @@
         include '../connect.php';
         $sql = "SELECT ISBN, bTitle, [Media ID], mTitle, [Model No.], dName, d.[Item ID]
         FROM library.dbo.Items_With_Title_Details as d, library.library.Checked_Out_Items as co
-        WHERE d.[Item ID] = co.[Item ID]";
+        WHERE d.[Item ID] = co.[Item ID] AND co.[Checked Out By]=?";
         
         $result = sqlsrv_query($conn, $sql, array($userID));
 
