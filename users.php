@@ -57,7 +57,7 @@
                         </div>
                         <div class="mb-3">
                             <label id="newuser-phone-label" for="newuser-phone" class="form-label">Phone</label>
-                            <input type="phone" class="form-control" id="newuser-phone" disabled name="phone" required>
+                            <input type="tel" class="form-control" id="newuser-phone" disabled name="phone" required>
                         </div>
                         <div class="d-flex align-items-center">
                             <button id="newuser-button" type="submit" class="btn btn-primary" disabled>Add account</button>

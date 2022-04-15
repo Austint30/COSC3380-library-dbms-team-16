@@ -44,7 +44,7 @@
                     </div>
                     <div class="mb-3">
                         <label id="signup-phone-label" for="signup-phone" class="form-label">Phone</label>
-                        <input type="phone" class="form-control" id="signup-phone" disabled name="phone" required>
+                        <input type="tel" class="form-control" id="signup-phone" disabled name="phone" required>
                     </div>
                     <button id="signup-button" type="submit" class="btn btn-primary" disabled>Sign Up</button>
                 </div>
