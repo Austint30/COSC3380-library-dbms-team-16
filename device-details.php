@@ -44,6 +44,15 @@
                 <div class="card-body">
                     <div class="d-flex">
                         <h5 class="card-title">Device Details</h5>
+						<div class="d-flex align-items-start" style="gap: 0.5rem;margin-left: auto;">
+                            <?php
+                                if ($userType == "STAFF" || $userType == "ADMIN"){
+                                    echo "<a href='delistdevice-response-server.php?modelNo=$modelNo' class='btn btn-outline-danger ms-auto'>Delist Device</a>";
+                                    echo "<a href='admin-editdevice.php?modelNo=$modelNo' class='btn btn-outline-primary'>Edit Device</a>";
+                                }
+                            ?>
+                        
+						
                         <div class="ms-auto d-flex flex-column justfy-content-end">
                             <a
                                 href="device-hold.php?modelNo=<?php echo $modelNo ?>"
@@ -51,6 +60,7 @@
                             >Place Hold</a>
                             <?php if ($device[4] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
                             
+							</div>
                         </div>
                     </div>
                     
