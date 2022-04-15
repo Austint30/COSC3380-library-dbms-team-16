@@ -19,7 +19,7 @@
     );
     $media = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
     if (!$media){
-        // Book not found
+        // Media not found
         http_response_code(404);
         include '404.php';
         die();
@@ -44,19 +44,19 @@
         <form class="container mt-5">
             <nav aria-label="breadcrumb mb-3">
                 <ol class="breadcrumb h3">
-                    <li class="breadcrumb-item" aria-current="page"><a href="/media.php">Books</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="/media.php">Media</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><?php echo $media[0] ?></li>
                 </ol>
             </nav>
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex">
-                        <h5 class="card-title">Book Details</h5>
+                        <h5 class="card-title">Media Details</h5>
                         <div class="d-flex align-items-start" style="gap: 0.5rem;margin-left: auto;">
                             <?php
                                 if ($userType == "STAFF" || $userType == "ADMIN"){
-                                    echo "<a href='delistmedia-response-server.php?mediaID=$mediaID' class='btn btn-outline-danger ms-auto'>Delist Book</a>";
-                                    echo "<a href='admin-editmedia.php?mediaID=$mediaID' class='btn btn-outline-primary'>Edit Book</a>";
+                                    echo "<a href='delistmedia-response-server.php?mediaID=$mediaID' class='btn btn-outline-danger ms-auto'>Delist Media</a>";
+                                    echo "<a href='admin-editmedia.php?mediaID=$mediaID' class='btn btn-outline-primary'>Edit Media</a>";
                                 }
                             ?>
                             <div class="d-flex flex-column justfy-content-end">

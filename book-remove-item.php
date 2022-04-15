@@ -6,7 +6,7 @@
         $isbn = $_GET["isbn"];
         $itemID = $_GET["itemID"];
 
-        $query = "UPDATE dbo.Avail_Items (Delisted) VALUES (1) WHERE dbo.Avail_Items.[Item ID] = ?";
+        $query = "UPDATE library.library.Item SET library.library.Item.Delisted=1 WHERE library.library.Item.[Item ID] = ?";
 
         $stmt = sqlsrv_prepare($conn, $query, array($itemID));
 
