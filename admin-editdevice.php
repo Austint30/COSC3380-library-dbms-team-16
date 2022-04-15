@@ -55,9 +55,9 @@
                         <div class="col-6 mb-3">
                             <label for="adddevice-type" class="form-label">Type</label>
 							<select id="signup-type" class="form-select" name="deviceType" required>
-                                <option value="" <?php echo $device[1] == "" ? "selected" : "" ?>>Choose an type</option>
+                                <option value="" <?php echo $device[1] == "" ? "selected" : "" ?>>Choose a type</option>
                                 <option value="LAPTOP" <?php echo $device[1] == "LAPTOP" ? "selected" : "" ?>>LAPTOP</option>
-                                <option value="CALULATOR" <?php echo $device[1] == "CALCULATOR" ? "selected" : "" ?>>CALCULATOR</option>
+                                <option value="CALCULATOR" <?php echo $device[1] == "CALCULATOR" ? "selected" : "" ?>>CALCULATOR</option>
                                 <option value="TABLET" <?php echo $device[1] == "TABLET" ? "selected" : "" ?>>TABLET</option>
                                 <option value="USB" <?php echo $device[1] == "USB" ? "selected" : "" ?>>USB</option>
 

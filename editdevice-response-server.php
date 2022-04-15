@@ -19,23 +19,22 @@
         $query = "
             UPDATE library.library.[Device Title]
             SET
-                library.library.[Device Title].[Model No.] = ?,
                 library.library.[Device Title].Name = ?,
                 library.library.[Device Title].Type = ?,
                 library.library.[Device Title].Manufacturer = ?,
-                library.library.[Device Title].[Replacement Cost] = ?,
-            WHERE library.library.[Device Title].ISBN = ?
+                library.library.[Device Title].[Replacement Cost] = ?
+            WHERE library.library.[Device Title].[Model No.] = ?
         ";
 
         echo $query;
 
-        $stmt = sqlsrv_prepare($conn, $query, array($modelNo, $name, $type, $manufacturer, $replacementcost, $modelNo));
+        $stmt = sqlsrv_prepare($conn, $query, array($name, $type, $manufacturer, $replacementcost, $modelNo));
         $res = sqlsrv_execute($stmt);
 
-        if ($res == false){
-            echo print_r( sqlsrv_errors());
-            $e = sqlsrv_errors()[0][0];
-            header("Location: admin-editdevice.php?modelNo=$modelNo&errormsg=Failed to modify device. Make sure that you aren't adding a duplicate device. Error: $e");
+        if (!$res){
+            $e = json_encode( sqlsrv_errors());
+            header("Location: admin-editdevice.php?modelNo=$modelNo&errormsg=Failed to modify device.  Error: $e");
+            return;
         }
 
         header("Location: admin-editdevice.php?modelNo=$modelNo&msg=Changes saved successfully.");
