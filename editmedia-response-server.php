@@ -6,13 +6,11 @@
         $mediaID = $_POST['mediaID'];
         $title = $_POST['mediaTitle'];
         $yearPublished = $_POST['yearPublished'];    
-        $authorfname = $_POST["mediaFName"];
-        $authorlname = $_POST['mediaLName'];
-        $authormname = $_POST['mediaMName'];
+        $authorfname = $_POST["authorFName"];
+        $authorlname = $_POST['authorLName'];
+        $authormname = $_POST['authorMName'];
         $genre = $_POST['mediaGenre'];
-        $dateAdded = $_POST['dateAdded'];
-        $replacementCost = $_POST['mediaCost'];
-        $quantity = $_POST['quantity'];
+        $replacementCost = $_POST['replacementCost'];
         
 
         echo "POST received. Values are below:";
@@ -23,36 +21,33 @@
         echo $authorlname;
         echo $authormname;
         echo $genre;
-        echo $dateAdded;
         echo $replacementCost;
 
-        // $query = "
-        //     UPDATE library.library.[Media Title]
-        //     SET
-        //         library.library.[Media Title].[Media ID] = ?
-        //         library.library.[Media Title].Title = ?,
-        //         library.library.[Media Title].Genre = ?,
-        //         library.library.[Media Title].AuthorFName = ?,
-        //         library.library.[Media Title].AuthorLName = ?,
-        //         library.library.[Media Title].AuthorMName = ?,
-        //         library.library.[Media Title].[Replacement Cost] = ?,
-        //         library.library.[Media Title].[Date Added] = ?,
-        //         library.library.[Media Title].[Year Published] = ?
-        //     WHERE library.library.[Media Title].[Media ID] = ?
-        // ";
+        $query = "
+            UPDATE library.library.[Media Title]
+            SET
+                library.library.[Media Title].Title = ?,
+                library.library.[Media Title].Genre = ?,
+                library.library.[Media Title].AuthorFName = ?,
+                library.library.[Media Title].AuthorLName = ?,
+                library.library.[Media Title].AuthorMName = ?,
+                library.library.[Media Title].[Replacement Cost] = ?,
+                library.library.[Media Title].[Year Published] = ?
+            WHERE library.library.[Media Title].[Media ID] = ?
+        ";
 
         echo $query;
 
-        // $stmt = sqlsrv_prepare($conn, $query, array($mediaID, $title, $genre, $authorfname, $authorlname, $authormname, $replacementCost, $dateAdded, $yearPublished, $mediaID));
-        // $res = sqlsrv_execute($stmt);
+        $stmt = sqlsrv_prepare($conn, $query, array($title, $genre, $authorfname, $authorlname, $authormname, $replacementCost, $yearPublished, $mediaID));
+        $res = sqlsrv_execute($stmt);
 
-        // if ($res == false){
-        //     echo print_r( sqlsrv_errors());
-        //     $e = sqlsrv_errors()[0][0];
-        //     header("Location: admin-editmedia.php?mediaID=$mediaID&errormsg=Failed to add book. Make sure that you aren't adding a duplicate media entity. Error: $e");
-        // }
+        if (!$res){
+            echo print_r( sqlsrv_errors());
+            $e = sqlsrv_errors()[0][0];
+            header("Location: admin-editmedia.php?mediaID=$mediaID&errormsg=Failed to add book. Make sure that you aren't adding a duplicate media entity. Error: $e");
+        }
 
-        // header("Location: admin-editmedia.php?mediaID=$mediaID&msg=Changes saved successfully.");
+        header("Location: admin-editmedia.php?mediaID=$mediaID&msg=Changes saved successfully.");
     }
     else
     {

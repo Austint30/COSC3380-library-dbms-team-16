@@ -44,7 +44,7 @@
                     <div class="row align-items-start">
                         <div class="col-6 mb-3">
                             <label for="addbook-isbn" class="form-label">ISBN</label>
-                            <input class="form-control" id="addbook-isbn" name="bookISBN" value="<?php echo $book[7] ?>" disabled>
+                            <input class="form-control" id="addbook-isbn" name="bookISBN" value="<?php echo $book[7] ?>" readonly>
                         </div>
                         <div class="col-6 mb-3">
                             <label for="addbook-title" class="form-label">Title</label>

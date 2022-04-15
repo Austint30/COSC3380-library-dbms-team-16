@@ -38,13 +38,13 @@
                     <li class="breadcrumb-item active" aria-current="page">Edit media</li>
                 </ol>
             </nav>
-            <form class="card mb-4" action="editmedia-response-server.php?mediaID=<?php echo $mediaID ?>" method="post">
+            <form class="card mb-4" action="/editmedia-response-server.php" method="post">
                 <div class="card-body">
                     <h5 class="card-title">Edit Media</h5>
                     <div class="row align-items-start">
                         <div class="col-6 mb-3">
                             <label for="addmedia-mediaID" class="form-label">Media ID</label>
-                            <input class="form-control" id="addmedia-mediaID" name="mediaID" value="<?php echo $media[8] ?>" disabled>
+                            <input class="form-control" id="addmedia-mediaID" name="mediaID" value="<?php echo $media[8] ?>" readonly>
                         </div>
                         <div class="col-6 mb-3">
                             <label for="addmedia-title" class="form-label">Title</label>
