@@ -42,7 +42,7 @@
                     "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], ISBN, i.[Book Title ID], i.[Item ID]
                     FROM dbo.Avail_Items as i, library.[Book Title]
                     WHERE i.[Book Title ID] = library.[Book Title].ISBN
-                        AND i.[Held By] = 22;"
+                        AND i.[Held By] = '$cookie_userID';"
                 );
             ?>
             <table class="table table-striped">
@@ -73,12 +73,7 @@
 								echo "<td>$value</td>";
 							}
 							echo "<td>
-                                <button class='btn btn-secondary dropdown-toggle' type='button' id='heldBooksDropdownMenuButton$i' data-bs-toggle='dropdown' aria-expanded='false'>
-                                    Actions
-                                </button>
-                                <ul class='dropdown-menu' aria-labelledby='heldBooksDropdownMenuButton$i'>
-                                    <li><a class='dropdown-item' href='hold-remove.php?item-id=$row[8]'>Remove Hold</a></li>
-                                </ul>
+                                <a href='hold-remove.php?item-id=$row[8]' class='btn btn-outline-danger'>Remove Hold</a>
                             </td>";
 							echo "</tr>";
                             $i++;
@@ -92,7 +87,7 @@
                     "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Item ID]
                     FROM dbo.Avail_Items as i, library.[Media Title]
                     WHERE i.[Media Title ID] = library.[Media Title].[Media ID]
-                        AND i.[Held By] = 22;"
+                        AND i.[Held By] = '$cookie_userID';"
                 );
             ?>
             <table class="table table-striped">
@@ -118,12 +113,7 @@
 							echo "<td>$fullNameStr</td>";
 							echo "<td>$row[5]</td>";
 							echo "<td>
-                                <button class='btn btn-secondary dropdown-toggle' type='button' id='heldMediaDropdownMenuButton$i' data-bs-toggle='dropdown' aria-expanded='false'>
-                                    Actions
-                                </button>
-                                <ul class='dropdown-menu' aria-labelledby='heldMediaDropdownMenuButton$i'>
-                                    <li><a class='dropdown-item' href='hold-remove.php?item-id=$row[6]'>Remove Hold</a></li>
-                                </ul>
+                                <a href='hold-remove.php?item-id=$row[6]' class='btn btn-outline-danger'>Remove Hold</a>
                             </td>";
 							echo "</tr>";
                             $i++;
@@ -134,10 +124,10 @@
             <h2 id="holds-devices" class="mt-5">Held Devices</h2>
             <?php
                 $result = sqlsrv_query($conn,
-                    "SELECT library.[Device Title].[Name], library.[Device Title].[Type], library.[Device Title].Manufacturer, library.[Device Title].[Model No.], library.[Device Title].[Date Added]
+                    "SELECT library.[Device Title].[Name], library.[Device Title].[Type], library.[Device Title].Manufacturer, library.[Device Title].[Model No.], library.[Device Title].[Date Added], i.[Item ID]
                     FROM dbo.Avail_Items as i, library.[Device Title]
                     WHERE i.[Device Title ID] = library.[Device Title].[Model No.]
-                        AND i.[Held By] = 22;"
+                        AND i.[Held By] = '$cookie_userID';"
                 );
             ?>
             <table class="table table-striped">
@@ -147,7 +137,6 @@
                         <th>Type</th>
                         <th>Manufacturer</th>
                         <th>Model No.</th>
-                        <th>Date Added</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -156,16 +145,11 @@
                         $i = 0;
                         while ( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC)) {
                             echo "<tr>";
-							for ($i = 0; $i < 5; $i++) {
+							for ($i = 0; $i < 4; $i++) {
 								echo "<td>$row[$i]</td>";
 							}
 							echo "<td>
-                                <button class='btn btn-secondary dropdown-toggle' type='button' id='heldDevicesDropdownMenuButton$i' data-bs-toggle='dropdown' aria-expanded='false'>
-                                    Actions
-                                </button>
-                                <ul class='dropdown-menu' aria-labelledby='heldDevicesDropdownMenuButton$i'>
-                                    <li><a class='dropdown-item' href='hold-remove.php?item-id=$row[8]'>Remove Hold</a></li>
-                                </ul>
+                                <a href='hold-remove.php?item-id=$row[5]' class='btn btn-outline-danger'>Remove Hold</a>
                             </td>";
 							echo "</tr>";
                             $i++;

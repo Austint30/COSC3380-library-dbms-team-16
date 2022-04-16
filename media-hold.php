@@ -23,7 +23,7 @@
         header("Location: /media-detail.php?mediaID=$mediaID&errormsg=You can only have $maxMediaHolds media holds.");
     }
 
-    $holdsLeft = $maxMediaHolds - $holdCount;
+    $holdsLeft = intval($maxMediaHolds) - intval($holdCount);
 
     // Get account information
     $stmt = sqlsrv_query($conn, "SELECT a.Type, a.[User ID] FROM library.library.Account as a WHERE a.[User ID]='$userID'");
@@ -52,10 +52,8 @@
     }
     else
     {
-        $e = sqlsrv_errors();
-        $eCode = $e[0][0];
-        $eMsg = $e[0][2];
-        header("Location: /media-detail.php?mediaID=$mediaID&errormsg=Something went wrong and your media is not held. Error code: $eCode: $eMsg");
+        $e = json_encode(sqlsrv_errors());
+        header("Location: /media-detail.php?mediaID=$mediaID&errormsg=Something went wrong and your media is not held. Error code: $e");
     }
     echo "holdCount: $holdCount, holdsLeft: $holdsLeft, maxMediaHolds: $maxMediaHolds";
 ?>
