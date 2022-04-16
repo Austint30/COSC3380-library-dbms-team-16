@@ -50,7 +50,7 @@
     <body>
         <?php include 'headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
-            <h1>Account creation failed!</h1>
+            <h3>Account creation failed!</h3>
             <p>
                 <?php echo $result ?>
             </p>

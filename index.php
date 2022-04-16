@@ -14,7 +14,7 @@
 	<body>
 		<?php include 'headerbar-auth.php' ?>		
 		<div class="container mt-5">
-			<h1>Our Most Popular Books</h1>
+			<h3>Our Most Popular Books</h3>
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
@@ -72,7 +72,7 @@
 		</div>
 <!-------------------------------Here we have the popular media-------------------------------->
 <div class="container mt-5">
-			<h1>Our Most Popular Media</h1>
+			<h3>Our Most Popular Media</h3>
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
@@ -98,7 +98,7 @@
 		</div>
 <!--------------------------------Here we have the popular devices------------------------------->
 <div class="container mt-5">
-			<h1>Our Most Popular Devices</h1>
+			<h3>Our Most Popular Devices</h3>
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>

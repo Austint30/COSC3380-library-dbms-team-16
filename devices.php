@@ -43,7 +43,7 @@
 		?>
 		<div class="container mt-5">
 					<div class="mb-3 d-flex">
-				<h1 class="mb-0">Devices</h1>
+				<h3 class="mb-0">Devices</h3>
 				<?php
 					// Add books button only appears for ADMIN or STAFF users
 					$stmt = sqlsrv_query($conn, "SELECT a.Type FROM library.library.Account as a WHERE a.[User ID]=$cookie_userID");
@@ -57,7 +57,7 @@
 				?>
 			</div>
 			<?php include 'messages.php' ?>
-            <!-- <h1>Devices</h1> -->
+            <!-- <h3>Devices</h3> -->
 <!-- 			<div class="alert alert-warning mb-3" role="alert">
 			This page is still a WIP. It may not work properly yet.
 			</div> -->

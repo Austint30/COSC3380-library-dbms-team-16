@@ -34,7 +34,7 @@
     <body>
         <?php include 'headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
-            <h1>Sign in failed</h1>
+            <h3>Sign in failed</h3>
             <p>
                 <?php echo $result ?>
             </p>

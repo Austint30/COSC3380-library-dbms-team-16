@@ -14,7 +14,7 @@
 			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 		?>
 		<div class="container mt-5">
-            <h1>Our Favorite Books</h1>
+            <h3>Our Favorite Books</h3>
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>
@@ -54,7 +54,7 @@
 			$results = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
 		?>
 		<div class="container">
-            <h1 class="mt-5">Our Favorite Media</h1>
+            <h3 class="mt-5">Our Favorite Media</h3>
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
@@ -95,7 +95,7 @@
 			$conn->close();
 		?>
 		<div class="container">
-            <h1 class="mt-5">Most Popular Devices</h1>
+            <h3 class="mt-5">Most Popular Devices</h3>
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>

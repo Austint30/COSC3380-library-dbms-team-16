@@ -13,7 +13,7 @@
 	    <?php include 'headerbar-auth.php' ?>
 		<div class="container mt-5">
 			<div class="mb-3 d-flex">
-				<h1 class="mb-0">Check Out/In</h1>
+				<h3 class="mb-0">Check Out/In</h3>
 			</div>
 			<?php include 'messages.php' ?>
 			<div class='card mb-3'>

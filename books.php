@@ -43,7 +43,7 @@
 		?>
 		<div class="container mt-5">
 			<div class="mb-3 d-flex">
-				<h1 class="mb-0">Books</h1>
+				<h3 class="mb-0">Books</h3>
 				<?php
 					// Add books button only appears for ADMIN or STAFF users
 					$stmt = sqlsrv_query($conn, "SELECT a.Type FROM library.library.Account as a WHERE a.[User ID]=$cookie_userID");

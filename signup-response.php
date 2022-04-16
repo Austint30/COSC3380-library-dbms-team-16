@@ -7,7 +7,7 @@
     <body>
         <?php include 'headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
-            <h1>Account creation successful!</h1>
+            <h3>Account creation successful!</h3>
             <p>
                 Please wait until your account to be approved before you log in.
             </p>

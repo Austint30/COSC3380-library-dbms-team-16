@@ -6,7 +6,7 @@
 	<body>
         <?php include 'headerbar-unauth.php' ?>
         <div class="mt-5 text-center">
-            <h1>404 not found</h1>
+            <h3>404 not found</h3>
             <p>Sorry, the item you are looking far wasn't found.</p>
         </div>
     </body>

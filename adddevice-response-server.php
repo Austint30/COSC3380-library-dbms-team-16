@@ -95,7 +95,7 @@
     <body>
         <?php include 'headerbar-unauth.php' ?>
         <div class="container mt-5 text-center">
-            <h1></h1>
+            <h3></h3>
             <p>
                 
             </p>

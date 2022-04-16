@@ -17,7 +17,7 @@
         <?php include 'headerbar-auth.php' ?>
         <div class="container mt-5">
             <div class="mb-3 d-flex">
-                <h1 class="mb-0">User Management</h1>
+                <h3 class="mb-0">User Management</h3>
                 <button class="btn btn-primary ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
                     Add user
                 </button>
