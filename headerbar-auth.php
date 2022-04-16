@@ -92,6 +92,16 @@
               $link = "<a class='nav-link' aria-current='page' href='/checkout.php'>Check Out/In</a>";
             }
             echo "<li>$link</li>";
+
+            $link = null;
+            if ($pageName == 'reports.php' || $pageName == 'reports/checkout.php'){
+              $link = "<a class='nav-link active' aria-current='page' href='/reports.php'>Reports</a>";
+            }
+            else
+            {
+              $link = "<a class='nav-link' aria-current='page' href='/reports.php'>Reports</a>";
+            }
+            echo "<li>$link</li>";
           }
         ?>
         <?php
@@ -117,7 +127,6 @@
             echo "<li>$link</li>";
           }
         ?>
-        
       </ul>
       <form class="d-flex align-items-center" style="white-space: nowrap;" action="search.php" method="post">
         <div class="input-group me-2">
