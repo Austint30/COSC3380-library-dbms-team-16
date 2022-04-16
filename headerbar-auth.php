@@ -166,7 +166,7 @@
             echo "<span class='text-white'>Hello, $user[0] $user[1]!</span>";
           }
         ?>
-        <a href="signout.php" class="btn btn-outline-light ms-3" >Sign out</a>
+        <a href="/signout.php" class="btn btn-outline-light ms-3" >Sign out</a>
       </form>
   </div>
 </nav>
