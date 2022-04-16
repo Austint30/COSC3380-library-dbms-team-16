@@ -7,9 +7,9 @@
         $numCopies = $_POST["numCopies"];
 
         for ($i=0; $i < $numCopies; $i++) { 
-            $query = "INSERT INTO dbo.Avail_Items (dbo.Avail_Items.[Date Added], dbo.Avail_Items.[Book Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Book Title ID], library.library.Item.[Created By]) VALUES (CURRENT_TIMESTAMP, ?, ?)";
 
-            $stmt = sqlsrv_prepare($conn, $query, array($isbn));
+            $stmt = sqlsrv_prepare($conn, $query, array($isbn, $cookie_userID));
 
             if (!$stmt){
                 header("Location: /admin-editbook.php?isbn=$isbn&errormsg=Failed to add copies of the book. (1)");
@@ -24,7 +24,7 @@
             }
         }
 
-        header("Location: /admin-editbook.php?isbn=$isbn");
+        header("Location: /admin-editbook.php?isbn=$isbn&msg=Successfully added $numCopies copies.");
         return;
     }
     else

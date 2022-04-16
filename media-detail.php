@@ -62,7 +62,7 @@
                             <div class="d-flex flex-column justfy-content-end">
                                 <a
                                     href="media-hold.php?mediaID=<?php echo $mediaID ?>"
-                                    class="ms-auto btn btn-success <?php if ($media[8] == 0) { echo "disabled"; } ?>"
+                                    class="ms-auto btn btn-success <?php if ($media[6] == 0) { echo "disabled"; } ?>"
                                 >Place Hold</a>
                                 <?php if ($media[6] == 0) { echo '<div class="text-secondary">Sorry, we\'re out of stock</div>'; } ?>
                             </div>

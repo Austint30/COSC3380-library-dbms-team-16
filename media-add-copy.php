@@ -7,9 +7,9 @@
         $numCopies = $_POST["numCopies"];
 
         for ($i=0; $i < $numCopies; $i++) { 
-            $query = "INSERT INTO dbo.Avail_Items (dbo.Avail_Items.[Date Added], dbo.Avail_Items.[Media Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Media Title ID], library.library.Item.[Created By]) VALUES (CURRENT_TIMESTAMP, ?, ?)";
 
-            $stmt = sqlsrv_prepare($conn, $query, array($mediaID));
+            $stmt = sqlsrv_prepare($conn, $query, array($mediaID, $cookie_userID));
 
             if (!$stmt){
                 header("Location: /admin-editmedia.php?mediaID=$mediaID&errormsg=Failed to add copies of the media. (1)");
@@ -24,7 +24,7 @@
             }
         }
 
-        header("Location: /admin-editmedia.php?mediaID=$mediaID");
+        header("Location: /admin-editmedia.php?mediaID=$mediaID&msg=Successfully added $numCopies copies.");
         return;
     }
     else

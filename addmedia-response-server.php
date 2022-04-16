@@ -48,9 +48,9 @@
         }
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO dbo.Avail_Items (dbo.Avail_Items.[Date Added], dbo.Avail_Items.[Media Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Media Title ID], , library.library.Item.[Created By]) VALUES (CURRENT_TIMESTAMP, ?, )";
 
-            $stmt = sqlsrv_prepare($conn, $query, array($mediaID));
+            $stmt = sqlsrv_prepare($conn, $query, array($mediaID, $cookie_userID));
             $res = sqlsrv_execute($stmt);
 
             if (!$res){
@@ -75,7 +75,7 @@
         }
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO dbo.Avail_Items (dbo.Avail_Items.[Date Added], dbo.Avail_Items.[Media Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Media Title ID]) VALUES (CURRENT_TIMESTAMP, ?)";
 
             $q = $conn->prepare($query);
             $q->bind_param("s", $mediaID);

@@ -46,7 +46,7 @@
     }
     $itemID = $item[0];
 
-    $stmt = sqlsrv_query($conn, "UPDATE dbo.Avail_Items SET dbo.Avail_Items.[Held By] = '$userID' WHERE (dbo.Avail_Items.[Item ID] = '$itemID');");
+    $stmt = sqlsrv_query($conn, "UPDATE library.library.Item SET library.library.Item.[Held By] = '$userID', library.library.Item.[Modified By]='$cookie_userID' WHERE (library.library.Item.[Item ID] = '$itemID');");
     if ($stmt){
         header("Location: /book-detail.php?isbn=$isbn&msg=Book is now sucessfully held. Please pick up your book at the front desk. You have $holdsleft holds left for books.");
     }

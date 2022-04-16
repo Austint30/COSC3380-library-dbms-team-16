@@ -89,7 +89,7 @@
             <h2 id="holds-media" class="mt-5">Held Media</h2>
             <?php
                 $result = sqlsrv_query($conn,
-                    "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published]
+                    "SELECT Title, Genre, AuthorLName, AuthorMName, AuthorFName, [Year Published], [Item ID]
                     FROM dbo.Avail_Items as i, library.[Media Title]
                     WHERE i.[Media Title ID] = library.[Media Title].[Media ID]
                         AND i.[Held By] = 22;"
@@ -122,7 +122,7 @@
                                     Actions
                                 </button>
                                 <ul class='dropdown-menu' aria-labelledby='heldMediaDropdownMenuButton$i'>
-                                    <li><a class='dropdown-item' href='hold-remove.php?item-id=$row[8]'>Remove Hold</a></li>
+                                    <li><a class='dropdown-item' href='hold-remove.php?item-id=$row[6]'>Remove Hold</a></li>
                                 </ul>
                             </td>";
 							echo "</tr>";
