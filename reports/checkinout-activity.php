@@ -112,13 +112,7 @@
 
                     $options = array("ReturnDatesAsStrings"=>true, "Scrollable" => 'static');
 
-                    if (!$userID){
-                        $stmt = sqlsrv_prepare($conn, $sql, $args, $options);
-                    }
-                    else
-                    {
-                        $stmt = sqlsrv_prepare($conn, $sql, $args, $options);
-                    }
+                    $stmt = sqlsrv_prepare($conn, $sql, $args, $options);
 
                     if (!$stmt){
                         $e = json_encode(sqlsrv_errors());
