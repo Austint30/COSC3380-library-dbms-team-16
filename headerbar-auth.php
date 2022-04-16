@@ -94,7 +94,7 @@
             echo "<li>$link</li>";
 
             $link = null;
-            if ($pageName == 'reports.php' || $pageName == 'reports/checkout.php'){
+            if ($pageName == 'reports.php' || $pageName == 'inventory-changes.php' || 'checkinout-activity.php'){
               $link = "<a class='nav-link active' aria-current='page' href='/reports.php'>Reports</a>";
             }
             else

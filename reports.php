@@ -20,15 +20,15 @@
                         <div>Reports changes in inventory, including adding of items, modification of items, and delisting of items.</div>
                     </div>
                 </li>
-                <li href="/reports/checkinout-activity.php" class="list-group-item d-flex justify-content-between align-items-start">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <a class="block fw-bold">Check out/Check in activity</a>
+                        <a href="/reports/checkinout-activity.php" class="block fw-bold">Check out/Check in activity</a>
                         <div>Reports check ins and check outs of various items as well as when an item becomes late</div>
                     </div>
                 </li>
-                <li href="/reports/unpaid-fees.php" class="list-group-item d-flex justify-content-between align-items-start">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <a class="block fw-bold">Unpaid Fees</a>
+                        <a href="/reports/unpaid-fees.php" href="/reports/unpaid-fees.php" class="block fw-bold">Unpaid Fees</a>
                         <div>Reports fees that are currently unpaid</div>
                     </div>
                 </li>

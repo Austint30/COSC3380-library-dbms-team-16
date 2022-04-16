@@ -11,7 +11,7 @@
 	<body>
 		<?php include '../headerbar-auth.php' ?>
 		<div class="container mt-5">
-            <h3>Inventory changes report</h2>
+            <h3>Check in and out activity</h2>
             <?php include '../messages.php' ?>
             <div class="card mb-3">
                 <div class="card-body">
@@ -30,16 +30,21 @@
                                 <label for="report-activity-type" class="form-label">Activity Type</label>
                                 <select id="report-activity-type" class="form-select" name="activityType" required>
                                     <option value="" selected>Choose an activity type</option>
-                                    <option value="CREATE">Item created</option>
-                                    <option value="MODIFY">Item modified</option>
-                                    <option value="HOLD">Item held</option>
-                                    <option value="REM_HOLD">Item hold removed</option>
-                                    <option value="DELIST">Item delisted</option>
+                                    <option value="CHECK_OUT">Item checked out</option>
+                                    <option value="CHECK_IN">Item checked in</option>
+                                    <option value="LATE">Item late</option>
+                                    <option value="MODIFY">Item check out modified</option>
                                 </select>
                             </div>
                             <div class="col-3 mb-3">
-                                <label for="report-user-id" class="form-label">Filter by user ID</label>
-                                <input class="form-control" id="report-user-id" name="userID">
+                                <label for="report-check-out-user-id" class="form-label">Filter checked out user ID</label>
+                                <input class="form-control" id="report-check-out-user-id" name="checkOutUserID">
+                            </div>
+                        </div>
+                        <div class="row align-items-start">
+                            <div class="col-3 mb-3">
+                                <label for="report-approving-user-id" class="form-label">Filter approving user ID</label>
+                                <input class="form-control" id="report-approving-user-id" name="approvingUserID">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -53,47 +58,54 @@
                     $startTime = (new DateTime($_POST["startTime"]))->format('Y-m-d H:i:s');
                     $endTime = (new DateTime($_POST["endTime"]))->format('Y-m-d H:i:s');
                     $activityType = $_POST["activityType"];
-                    $userID = $_POST["userID"];
+                    $checkOutUserID = $_POST["checkOutUserID"];
+                    $approvingUserID = $_POST["approvingUserID"];
 
                     $sql = "SELECT [Trans ID]
-                            ,it.[Item ID]
-                            ,[Trans Time]
-                            ,[Created By]
-                            ,[Modified By]
-                            ,a.[Last Name] + ', ' + a.[First Name] as [Modified By Name]
-                            ,[Delisted By]
-                            ,[Trans Type]
-                            ,it.[Held By],
-                        CASE
-                            WHEN i.ISBN IS NOT NULL THEN i.bTitle
-                            WHEN i.[Media ID] IS NOT NULL THEN i.mTitle
-                            WHEN i.[Model No.] IS NOT NULL THEN i.dName
-                        END AS [Title/Name],
-                        CASE
-                            WHEN i.ISBN IS NOT NULL THEN 'Book'
-                            WHEN i.[Media ID] IS NOT NULL THEN 'Media'
-                            WHEN i.[Model No.] IS NOT NULL THEN 'Device'
-                        END AS [Item Type],
-                        CASE
-                            WHEN i.ISBN IS NOT NULL THEN i.ISBN + ' (ISBN)'
-                            WHEN i.[Media ID] IS NOT NULL THEN CAST(i.[Media ID] as nvarchar(100)) + ' (Media ID)'
-                            WHEN i.[Model No.] IS NOT NULL THEN i.[Model No.] + ' (Model No.)'
-                        END AS [ISBN/Media ID/Model No.],
-                        CASE
-                            WHEN i.ISBN IS NOT NULL THEN i.bAuthLName + ', ' + i.bAuthMName + ', ' + i.bAuthFName + ' (Author)'
-                            WHEN i.[Media ID] IS NOT NULL THEN i.mAuthLName + ', ' + i.mAuthMName + ', ' + i.mAuthFName + ' (Author)'
-                            WHEN i.[Model No.] IS NOT NULL THEN i.Manufacturer + ' (Manu)'
-                        END AS [Author/Manufacturer]
-                        FROM [library].[library].[Item Transaction] as it, library.dbo.Items_With_Title_Details as i, library.library.Account as a
-                        WHERE i.[Item ID] = it.[Item ID]
-                            AND it.[Modified By] = a.[User ID]
-                            AND it.[Trans Time] >= ?
-                            AND it.[Trans Time] <= ?
-                            AND it.[Trans Type] = ?
+                                ,coit.[Item ID]
+                                ,[Trans Time]
+                                ,coit.[Checked Out By]
+                                ,aa.[Last Name] + ', ' + aa.[First Name] as [Checked Out By Name]
+                                ,coit.[Approving Librarian]
+                                ,ab.[Last Name] + ', ' + ab.[First Name] as [Approving Librarian Name]
+                                ,[Trans Type],
+                            CASE
+                                WHEN i.ISBN IS NOT NULL THEN i.bTitle
+                                WHEN i.[Media ID] IS NOT NULL THEN i.mTitle
+                                WHEN i.[Model No.] IS NOT NULL THEN i.dName
+                            END AS [Title/Name],
+                            CASE
+                                WHEN i.ISBN IS NOT NULL THEN 'Book'
+                                WHEN i.[Media ID] IS NOT NULL THEN 'Media'
+                                WHEN i.[Model No.] IS NOT NULL THEN 'Device'
+                            END AS [Item Type],
+                            CASE
+                                WHEN i.ISBN IS NOT NULL THEN i.ISBN + ' (ISBN)'
+                                WHEN i.[Media ID] IS NOT NULL THEN CAST(i.[Media ID] as nvarchar(100)) + ' (Media ID)'
+                                WHEN i.[Model No.] IS NOT NULL THEN i.[Model No.] + ' (Model No.)'
+                            END AS [ISBN/Media ID/Model No.],
+                            CASE
+                                WHEN i.ISBN IS NOT NULL THEN i.bAuthLName + ', ' + i.bAuthMName + ', ' + i.bAuthFName + ' (Author)'
+                                WHEN i.[Media ID] IS NOT NULL THEN i.mAuthLName + ', ' + i.mAuthMName + ', ' + i.mAuthFName + ' (Author)'
+                                WHEN i.[Model No.] IS NOT NULL THEN i.Manufacturer + ' (Manu)'
+                            END AS [Author/Manufacturer]
+                            FROM [library].[library].[Checked_Out_Items_Transactions] as coit, library.dbo.Items_With_Title_Details as i, library.library.Account as aa, library.library.Account as ab
+                            WHERE i.[Item ID] = coit.[Item ID] AND coit.[Checked Out By] = aa.[User ID] AND coit.[Approving Librarian] = ab.[User ID]
+                                AND coit.[Trans Time] >= ?
+                                AND coit.[Trans Time] <= ?
+                                AND coit.[Trans Type] = ?
                         ";
                     
-                    if ($userID){
-                        $sql = $sql." AND it.[Modified By]=?";
+                    $args = array($startTime, $endTime, $activityType);
+
+                    if ($checkOutUserID){
+                        array_push($args, $checkOutUserID);
+                        $sql = $sql." AND coit.[Checked Out By]=?";
+                    }
+
+                    if ($approvingUserID){
+                        array_push($args, $approvingUserID);
+                        $sql = $sql." AND coit.[Approving Librarian]=?";
                     }
                     
                     $sql = $sql." ORDER BY [Trans Time] DESC";
@@ -101,11 +113,11 @@
                     $options = array("ReturnDatesAsStrings"=>true, "Scrollable" => 'static');
 
                     if (!$userID){
-                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime, $activityType), $options);
+                        $stmt = sqlsrv_prepare($conn, $sql, $args, $options);
                     }
                     else
                     {
-                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime, $activityType, $userID), $options);
+                        $stmt = sqlsrv_prepare($conn, $sql, $args, $options);
                     }
 
                     if (!$stmt){
