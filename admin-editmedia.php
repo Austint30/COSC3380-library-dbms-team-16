@@ -97,7 +97,7 @@
                     <div class="row align-items-start">
                         <div class="col-6 mb-3">
                             <label for="addmedia-replacementcost" class="form-label">Replacement Cost</label>
-                            <input class="form-control" id="addmedia-replacementcost" name="replacementCost" value="<?php echo $media[8] ?>" required>
+                            <input class="form-control" id="addmedia-replacementcost" name="replacementCost" value="<?php echo $media[6] ?>" required>
                         </div>
                     </div> 
                     <div class="row align-items-start">
