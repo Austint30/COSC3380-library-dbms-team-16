@@ -18,23 +18,42 @@
         echo $phone;
         echo $type;
 
-        $result = sqlsrv_query($conn,"
-            INSERT INTO library.library.Account (library.library.Account.[First Name], library.library..[Last Name], library.library..[Middle Name], library.library..Password, library.library..Email, library.library..Phone, library.library..Type)
-            OUTPUT INSERTED.[User ID] AS [New User ID]
-            VALUES (?, ?, ?, ?, ?, ?, ?);
-        ", array($firstName, $lastName, $middleName, $password, $email, $phone, $type));
+        $result = sqlsrv_query($conn,
+            "SET NOCOUNT ON
+            DECLARE @temp TABLE(user_id int)
 
-        if ($result){
-            $e = sqlsrv_errors();
-            $eMsg = $e[0][2];
+            INSERT INTO library.library.Account (
+                library.library.Account.[First Name], 
+                library.library.Account.[Last Name], 
+                library.library.Account.[Middle Name], 
+                library.library.Account.Password, 
+                library.library.Account.Email, 
+                library.library.Account.Phone, 
+                library.library.Account.Type
+            )
+            OUTPUT INSERTED.[User ID] AS user_id INTO @temp
+            VALUES (?, ?, ?, ?, ?, ?, ?)
 
-            header("Location: signup.php?errormsg=Failed to sign up due to an error. Error: $eMsg");
+            SELECT user_id FROM @temp",
+            array($firstName, $lastName, $middleName, $password, $email, $phone, $type));
+
+        if ($result == false){
+            $e = json_encode(sqlsrv_errors());
+
+            header("Location: signup.php?errormsg=Failed to sign up due to an error. Error: $e");
+            return;
         }
 
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
+        if (!$row){
+            $e = json_encode(sqlsrv_errors());
+            header("Location: signup.php?errormsg=Failed to sign up due to an error. Your account was still created. Contact system admin because this should not happen! Error: $e");
+            return;
+        }
         $userId = $row[0];
+        $json = json_encode($row);
         if ($result){
-            header("Location: signup-response.php?userId=$userId&email=$email");
+            header("Location: signup-response.php?userId=$userId&email=$email&row=$json");
         }
     }
     else

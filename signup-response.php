@@ -15,7 +15,7 @@
                 if (isset($_GET['userId']) && isset($_GET['email'])){
                     $userId = $_GET['userId'];
                     $email = $_GET['email'];
-                    echo "<p>Your User ID is <strong>$userId</strong>. Please use this to login next time. An email was sent to $email.</p>";
+                    echo "<p>Your User ID is <strong>$userId</strong>. Please use this to login next time.</p>";
                 }
                 else
                 {
@@ -40,6 +40,7 @@
         // }
 
         function fetchIsUserApproved(){
+            console.log('Checking if user is approved...');
             fetch('isuserapproved.php?userId=' + userId)
             .then((result) => result.text())
             .then((text) => {
@@ -60,7 +61,10 @@
                     window.location = '/index.php';
                 }
             })
+            .catch((e) => console.error(e))
         }
+
+        fetchIsUserApproved();
 
         setInterval(fetchIsUserApproved, 5000);
     </script>

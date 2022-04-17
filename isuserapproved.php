@@ -1,6 +1,5 @@
 <?php
     include 'connect.php';
-    include 'require-signin.php';
 
     $userId = $_GET["userId"];
     $result = sqlsrv_query($conn, "SELECT a.Approved FROM library.library.Account as a WHERE a.[User ID]='$userId'");
