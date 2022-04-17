@@ -21,19 +21,15 @@
 
         $result = sqlsrv_query($conn,"
             INSERT INTO library.library.Account (library.library.Account.[First Name], library.library.Account.[Last Name], library.library.Account.[Middle Name], library.library.Account.Password, library.library.Account.Email, library.library.Account.Phone, library.library.Account.Type, library.library.Account.Approved)
-            OUTPUT INSERTED.[User ID] AS [New User ID]
             VALUES (?, ?, ?, ?, ?, ?, ?, 1);
         ", array($firstName, $lastName, $middleName, $password, $email, $phone, $type));
 
-        if ($result){
+        if (!$result){
             $e = sqlsrv_errors();
             $eMsg = $e[0][2];
 
             header("Location: users.php?errormsg=Failed to sign up due to an error. Error: $eMsg");
         }
-
-        $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_NUMERIC);
-        $userId = $row[0];
         if ($result){
             header("Location: users.php?msg=User successfully created.");
         }
