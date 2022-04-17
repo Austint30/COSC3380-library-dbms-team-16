@@ -34,7 +34,7 @@
             <nav aria-label="breadcrumb mb-3">
                 <ol class="breadcrumb h3">
                     <li class="breadcrumb-item" aria-current="page"><a href="/Devices.php">Devices</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="/device-detail.php?modelNo=<?php echo $modelNo ?>"><?php echo $device[0] ?></a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="/device-details.php?modelNo=<?php echo $modelNo ?>"><?php echo $device[0] ?></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Edit device</li>
                 </ol>
             </nav>
