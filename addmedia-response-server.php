@@ -10,7 +10,6 @@
         $authorlname = $_POST['mediaLName'];
         $authormname = $_POST['mediaMName'];
         $genre = $_POST['mediaGenre'];
-        $dateAdded = $_POST['dateAdded'];
         $replacementCost = $_POST['mediaCost'];
         $quantity = $_POST['quantity'];
         
@@ -23,7 +22,6 @@
         echo $authorlname;
         echo $authormname;
         echo $genre;
-        echo $dateAdded;
         echo $replacementCost;
 
         /*$query = "
@@ -33,6 +31,7 @@
 		
 		$query = "
             INSERT INTO library.library.[Media Title] (library.library.[Title], library.library.[Year Published], library.library.[AuthorFName], library.library.[AuthorLName], library.library.[AuthorMName], library.library.[Genre], library.library.[Date Added], library.library.[Replacement Cost])
+            OUTPUT INSERTED.[Media ID]
             VALUES (?, ?, ?, ? ,? ,? ,CURRENT_TIMESTAMP,?);
         ";
 
@@ -46,6 +45,10 @@
             $e = json_encode(sqlsrv_errors());
             header("Location: admin-addmedia.php?errormsg=Failed to add media. Make sure that you aren't adding a duplicate media. Error: $e");
         }
+
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+
+        $mediaID = $row[0];
 
         for ($i=0; $i < $quantity; $i++) { 
             $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Media Title ID], library.library.Item.[Created By]) VALUES (CURRENT_TIMESTAMP, ?, ?)";
