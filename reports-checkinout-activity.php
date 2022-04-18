@@ -2,17 +2,17 @@
 <html>
 <!--------------------------------------------------------------->
     <head>
-        <?php include '../bootstrap.php'; 
-		include '../connect.php';
-        include '../require-signin.php';
+        <?php include 'bootstrap.php'; 
+		include 'connect.php';
+        include 'require-signin.php';
         ?>	
     </head>
 <!----------------------Here we have the popular books----------------------------------------->
 	<body>
-		<?php include '../headerbar-auth.php' ?>
+		<?php include 'headerbar-auth.php' ?>
 		<div class="container mt-5">
             <h3>Check in and out activity</h2>
-            <?php include '../messages.php' ?>
+            <?php include 'messages.php' ?>
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Set criteria</h5>
@@ -158,6 +158,6 @@
             ?>
         </div>
     </body>
-    <?php include '../scripts.php' ?>
+    <?php include 'scripts.php' ?>
 <!---------------------------------------------------------------> 
 </html>

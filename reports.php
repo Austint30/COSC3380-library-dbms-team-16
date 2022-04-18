@@ -16,19 +16,19 @@
             <ol class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <a href="/reports/inventory-changes.php" class="block fw-bold">Inventory changes</a>
+                        <a href="/reports-inventory-changes.php" class="block fw-bold">Inventory changes</a>
                         <div>Reports changes in inventory, including adding of items, modification of items, and delisting of items.</div>
                     </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <a href="/reports/checkinout-activity.php" class="block fw-bold">Check out/Check in activity</a>
+                        <a href="/reports-checkinout-activity.php" class="block fw-bold">Check out/Check in activity</a>
                         <div>Reports check ins and check outs of various items as well as when an item becomes late</div>
                     </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <a href="/reports/unpaid-fees.php" href="/reports/unpaid-fees.php" class="block fw-bold">Unpaid Fees</a>
+                        <a href="/reports-unpaid-fees.php" href="/reports/unpaid-fees.php" class="block fw-bold">Unpaid Fees</a>
                         <div>Reports fees that are currently unpaid</div>
                     </div>
                 </li>

@@ -2,43 +2,32 @@
 <html>
 <!--------------------------------------------------------------->
     <head>
-        <?php include '../bootstrap.php'; 
-		include '../connect.php';
-        include '../require-signin.php';
+        <?php include 'bootstrap.php'; 
+		include 'connect.php';
+        include 'require-signin.php';
         ?>	
     </head>
 <!----------------------Here we have the popular books----------------------------------------->
 	<body>
-		<?php include '../headerbar-auth.php' ?>
+		<?php include 'headerbar-auth.php' ?>
 		<div class="container mt-5">
-            <h3>Inventory changes report</h2>
-            <?php include '../messages.php' ?>
+            <h3>Unpaid fees report</h2>
+            <?php include 'messages.php' ?>
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Set criteria</h5>
                     <form method="post">
                         <div class="row align-items-start">
-                            <div class="col-3 mb-3">
+                            <div class="col-4 mb-3">
                                 <label for="report-datetime-start" class="form-label">Start time (UTC)</label>
                                 <input type="datetime-local" class="form-control" id="report-datetime-start" name="startTime" required>
                             </div>
-                            <div class="col-3 mb-3">
+                            <div class="col-4 mb-3">
                                 <label for="report-datetime-end" class="form-label">End time (UTC)</label>
                                 <input type="datetime-local" class="form-control" id="report-datetime-end" name="endTime" required>
                             </div>
-                            <div class="col-3 mb-3">
-                                <label for="report-activity-type" class="form-label">Activity Type</label>
-                                <select id="report-activity-type" class="form-select" name="activityType" required>
-                                    <option value="" selected>Choose an activity type</option>
-                                    <option value="CREATE">Item created</option>
-                                    <option value="MODIFY">Item modified</option>
-                                    <option value="HOLD">Item held</option>
-                                    <option value="REM_HOLD">Item hold removed</option>
-                                    <option value="DELIST">Item delisted</option>
-                                </select>
-                            </div>
-                            <div class="col-3 mb-3">
-                                <label for="report-user-id" class="form-label">Filter by user ID</label>
+                            <div class="col-4 mb-3">
+                                <label for="report-user-id" class="form-label">Filter by fee paying user ID</label>
                                 <input class="form-control" id="report-user-id" name="userID">
                             </div>
                         </div>
@@ -52,18 +41,16 @@
                 if ($_SERVER["REQUEST_METHOD"] == "POST"){
                     $startTime = (new DateTime($_POST["startTime"]))->format('Y-m-d H:i:s');
                     $endTime = (new DateTime($_POST["endTime"]))->format('Y-m-d H:i:s');
-                    $activityType = $_POST["activityType"];
                     $userID = $_POST["userID"];
 
-                    $sql = "SELECT [Trans ID]
-                            ,it.[Item ID]
-                            ,[Trans Time]
-                            ,[Created By]
-                            ,[Modified By]
-                            ,a.[Last Name] + ', ' + a.[First Name] as [Modified By Name]
-                            ,[Delisted By]
-                            ,[Trans Type]
-                            ,it.[Held By],
+                    $sql = "SELECT f.[Fee ID]
+                            ,f.[Item ID]
+                            ,f.[Date Added]
+                            ,f.[User ID] as [Fee Payer]
+                            ,aa.[Last Name] + ', ' + aa.[First Name] as [Fee Payer Name]
+                            ,f.[Amount Owed]
+                            ,f.[Amount Paid]
+                            ,f.[Checked Out Time],
                         CASE
                             WHEN i.ISBN IS NOT NULL THEN i.bTitle
                             WHEN i.[Media ID] IS NOT NULL THEN i.mTitle
@@ -84,28 +71,26 @@
                             WHEN i.[Media ID] IS NOT NULL THEN i.mAuthLName + ', ' + i.mAuthMName + ', ' + i.mAuthFName + ' (Author)'
                             WHEN i.[Model No.] IS NOT NULL THEN i.Manufacturer + ' (Manu)'
                         END AS [Author/Manufacturer]
-                        FROM [library].[library].[Item Transaction] as it, library.dbo.Items_With_Title_Details as i, library.library.Account as a
-                        WHERE i.[Item ID] = it.[Item ID]
-                            AND it.[Modified By] = a.[User ID]
-                            AND it.[Trans Time] >= ?
-                            AND it.[Trans Time] <= ?
-                            AND it.[Trans Type] = ?
+                        FROM [library].[library].Fee as f, library.dbo.Items_With_Title_Details as i, library.library.Account as aa
+                        WHERE i.[Item ID] = f.[Item ID] AND f.[User ID] = aa.[User ID] AND f.[Amount Owed] > f.[Amount Paid]
+                            AND f.[Date Added] >= ?
+                            AND f.[Date Added] <= ?
                         ";
                     
                     if ($userID){
-                        $sql = $sql." AND it.[Modified By]=?";
+                        $sql = $sql." AND f.[User ID]=?";
                     }
                     
-                    $sql = $sql." ORDER BY [Trans Time] DESC";
+                    $sql = $sql." ORDER BY [Date Added] DESC";
 
                     $options = array("ReturnDatesAsStrings"=>true, "Scrollable" => 'static');
 
                     if (!$userID){
-                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime, $activityType), $options);
+                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime), $options);
                     }
                     else
                     {
-                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime, $activityType, $userID), $options);
+                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime, $userID), $options);
                     }
 
                     if (!$stmt){
@@ -152,6 +137,6 @@
             ?>
         </div>
     </body>
-    <?php include '../scripts.php' ?>
+    <?php include 'scripts.php' ?>
 <!---------------------------------------------------------------> 
 </html>
