@@ -7,9 +7,9 @@
         $numCopies = $_POST["numCopies"];
 
         for ($i=0; $i < $numCopies; $i++) { 
-            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Device Title ID], library.library.Item.[Created By]) VALUES (CURRENT_TIMESTAMP, ?, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Device Title ID], library.library.Item.[Created By], library.library.Item.[Modified By]) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)";
 
-            $stmt = sqlsrv_prepare($conn, $query, array($modelNo, $cookie_userID));
+            $stmt = sqlsrv_prepare($conn, $query, array($modelNo, $cookie_userID, $cookie_userID));
 
             if (!$stmt){
                 header("Location: /admin-editdevice.php?modelNo=$modelNo&errormsg=Failed to add copies of the media. (1)");

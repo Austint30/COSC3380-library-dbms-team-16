@@ -51,9 +51,9 @@
         $mediaID = $row[0];
 
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Media Title ID], library.library.Item.[Created By]) VALUES (CURRENT_TIMESTAMP, ?, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Media Title ID], library.library.Item.[Created By], library.library.Item.[Modified By]) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)";
 
-            $stmt = sqlsrv_prepare($conn, $query, array($mediaID, $cookie_userID));
+            $stmt = sqlsrv_prepare($conn, $query, array($mediaID, $cookie_userID, $cookie_userID));
             $res = sqlsrv_execute($stmt);
 
             if (!$res){

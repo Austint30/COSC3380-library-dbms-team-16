@@ -58,10 +58,12 @@
                     $sql = "SELECT [Trans ID]
                             ,it.[Item ID]
                             ,[Trans Time]
-                            ,[Created By]
-                            ,[Modified By]
-                            ,a.[Last Name] + ', ' + a.[First Name] as [Modified By Name]
-                            ,[Delisted By]
+                            ,it.[Created By]
+                            ,ca.[Last Name] + ', ' + ca.[First Name] as [Created By Name]
+                            ,it.[Modified By]
+                            ,ma.[Last Name] + ', ' + ma.[First Name] as [Modified By Name]
+                            ,it.[Delisted By]
+                            ,da.[Last Name] + ', ' + da.[First Name] as [Delisted By Name]
                             ,[Trans Type]
                             ,it.[Held By],
                         CASE
@@ -84,16 +86,27 @@
                             WHEN i.[Media ID] IS NOT NULL THEN i.mAuthLName + ', ' + i.mAuthMName + ', ' + i.mAuthFName + ' (Author)'
                             WHEN i.[Model No.] IS NOT NULL THEN i.Manufacturer + ' (Manu)'
                         END AS [Author/Manufacturer]
-                        FROM [library].[library].[Item Transaction] as it, library.dbo.Items_With_Title_Details as i, library.library.Account as a
+                        FROM [library].[library].[Item Transaction] as it
+                        LEFT OUTER JOIN library.library.Account as ca ON it.[Created By] = ca.[User ID]
+                        LEFT OUTER JOIN library.library.Account as ma ON it.[Modified By] = ma.[User ID]
+                        LEFT OUTER JOIN library.library.Account as da ON it.[Delisted By] = da.[User ID]
+                        INNER JOIN library.dbo.Items_With_Title_Details_No_Delist as i ON i.[Item ID] = it.[Item ID]
                         WHERE i.[Item ID] = it.[Item ID]
-                            AND it.[Modified By] = a.[User ID]
                             AND it.[Trans Time] >= ?
                             AND it.[Trans Time] <= ?
                             AND it.[Trans Type] = ?
                         ";
                     
                     if ($userID){
-                        $sql = $sql." AND it.[Modified By]=?";
+                        if ($activityType == "CREATE"){
+                            $sql = $sql." AND it.[Created By]=?";
+                        }
+                        else if ($activityType == "DELIST"){
+                            $sql = $sql." AND it.[Delisted By]=?";
+                        }
+                        else if ($activityType == "MODIFY"){
+                            $sql = $sql." AND it.[Modified By]=?";
+                        }
                     }
                     
                     $sql = $sql." ORDER BY [Trans Time] DESC";
