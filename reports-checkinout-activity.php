@@ -89,7 +89,7 @@
                                 WHEN i.[Media ID] IS NOT NULL THEN i.mAuthLName + ', ' + i.mAuthMName + ', ' + i.mAuthFName + ' (Author)'
                                 WHEN i.[Model No.] IS NOT NULL THEN i.Manufacturer + ' (Manu)'
                             END AS [Author/Manufacturer]
-                            FROM [library].[library].[Checked_Out_Items_Transactions] as coit, library.dbo.Items_With_Title_Details as i, library.library.Account as aa, library.library.Account as ab
+                            FROM [library].[library].[Checked_Out_Items_Transactions] as coit, library.dbo.Items_With_Title_Details_No_Delist as i, library.library.Account as aa, library.library.Account as ab
                             WHERE i.[Item ID] = coit.[Item ID] AND coit.[Checked Out By] = aa.[User ID] AND coit.[Approving Librarian] = ab.[User ID]
                                 AND coit.[Trans Time] >= ?
                                 AND coit.[Trans Time] <= ?
