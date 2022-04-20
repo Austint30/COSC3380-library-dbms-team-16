@@ -41,7 +41,7 @@
         }		
         
         for ($i=0; $i < $quantity; $i++) { 
-            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Device Title ID], library.library.Item., library.library.Item.[Modified By]) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)";
+            $query = "INSERT INTO library.library.Item (library.library.Item.[Date Added], library.library.Item.[Device Title ID], library.library.Item.[Created By], library.library.Item.[Modified By]) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)";
 
             $stmt = sqlsrv_prepare($conn, $query, array($modelNo, $cookie_userID, $cookie_userID));
             $res = sqlsrv_execute($stmt);
