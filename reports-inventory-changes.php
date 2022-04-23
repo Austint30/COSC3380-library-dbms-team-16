@@ -270,7 +270,7 @@
 
 
 
-                        echo "<tfoot><tr>";
+                        echo "<tfoot class='table-dark'><tr>";
                         echo "<th colspan='3' style='text-align: right;'>Total:</th>";
                         echo "<th>$total</th>";
                         echo "</tr></tfoot>";
