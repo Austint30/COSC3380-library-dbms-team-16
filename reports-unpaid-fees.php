@@ -11,7 +11,12 @@
 	<body>
 		<?php include 'headerbar-auth.php' ?>
 		<div class="container mt-5">
-            <h3>Unpaid fees report</h2>
+            <nav aria-label="breadcrumb mb-3">
+                <ol class="breadcrumb h3">
+                    <li class="breadcrumb-item" aria-current="page"><a href="/reports.php">Reports</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Unpaid fees report</li>
+                </ol>
+            </nav>
             <?php include 'messages.php' ?>
             <div class="card mb-3">
                 <div class="card-body">

@@ -13,7 +13,7 @@
         <?php include 'messages.php' ?>	
 		<div class="container mt-5">
             <h3>Reports</h2>
-            <ol class="list-group">
+            <ol class="list-group mt-3">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
                         <a href="/reports-inventory-changes.php" class="block fw-bold">Inventory changes</a>

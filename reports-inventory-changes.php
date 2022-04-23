@@ -39,7 +39,12 @@
 	<body>
 		<?php include 'headerbar-auth.php' ?>
 		<div class="container mt-5">
-            <h3>Inventory changes report</h2>
+            <nav aria-label="breadcrumb mb-3">
+                <ol class="breadcrumb h3">
+                    <li class="breadcrumb-item" aria-current="page"><a href="/reports.php">Reports</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Inventory changes</li>
+                </ol>
+            </nav>
             <?php include 'messages.php' ?>
             <div class="card mb-3">
                 <div class="card-body">
@@ -169,29 +174,39 @@
                         LEFT OUTER JOIN library.library.Account as da ON it.[Delisted By] = da.[User ID]
                         INNER JOIN library.dbo.Items_With_Title_Details_No_Delist as i ON i.[Item ID] = it.[Item ID]
                         WHERE i.[Item ID] = it.[Item ID]";
+
+                    $params = array();
+
+                    $userSql = "";
+                    
+                    if ($userID){
+                        if ($activityType == "CREATE"){
+                            $userSql = " AND it.[Created By]=?";
+                            array_push($params, $userID);
+                        }
+                        else if ($activityType == "DELIST"){
+                            $userSql = " AND it.[Delisted By]=?";
+                            array_push($params, $userID);
+                        }
+                        else if ($activityType == "MODIFY"){
+                            $userSql = " AND it.[Modified By]=?";
+                            array_push($params, $userID);
+                        }
+                    }
                     
                     if ($reportType == "detail"){
-                        $sql = $detail." 
+                        $sql = $detail."
+                                $userSql
                                 AND it.[Trans Time] >= ?
                                 AND it.[Trans Time] <= ?
                                 AND it.[Trans Type] = ?
                                 ORDER BY [Trans Time] DESC
                             ";
-                        if ($userID){
-                            if ($activityType == "CREATE"){
-                                $sql = $sql." AND it.[Created By]=?";
-                            }
-                            else if ($activityType == "DELIST"){
-                                $sql = $sql." AND it.[Delisted By]=?";
-                            }
-                            else if ($activityType == "MODIFY"){
-                                $sql = $sql." AND it.[Modified By]=?";
-                            }
-                        }
                     }
                     else
                     {
                         $sql = $summary." 
+                                $userSql
                                 AND it.[Trans Time] >= ?
                                 AND it.[Trans Time] <= ?
                                 AND it.[Trans Type] = ?
@@ -201,12 +216,7 @@
 
                     $options = array("ReturnDatesAsStrings"=>true, "Scrollable" => 'static');
                     
-
-                    $params = array($startTime, $endTime, $activityType);
-
-                    if ($userID){
-                        array_push($params, $userID);
-                    }
+                    array_push($params, $startTime, $endTime, $activityType);
                     
                     $stmt = sqlsrv_prepare($conn, $sql, $params, $options);
 
@@ -228,7 +238,7 @@
                         echo "<div class='container'>";
                     }
 
-                    echo "<h5>".sqlsrv_num_rows($stmt)." records found from ".$uf_startTime->format('l M j, y \a\t g:iA \U\T\C')." to ".$uf_endTime->format('l M j, y \a\t g:iA \U\T\C')."</h5>";
+                    echo "<h5>".sqlsrv_num_rows($stmt)." records found from ".$uf_startTime->format('l M j, y \a\t g:iA')." to ".$uf_endTime->format('l M j, y \a\t g:iA')."</h5>";
 
                     echo "<div class='table-responsive'><table class='table table-hover table-striped table-sm table-bordered'>";
                     echo "<thead class='table-success'><tr>";
