@@ -7,7 +7,35 @@
         include 'require-signin.php';
         ?>	
     </head>
-<!----------------------Here we have the popular books----------------------------------------->
+    <?php
+
+        $df_startTime = "";
+        $df_endTime = "";
+        $df_activityType = "";
+        $df_userID = "";
+        $df_reportType = "";
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST"){
+            $df_startTime = $_POST["startTime"];
+            $df_endTime = $_POST["endTime"];
+            $df_activityType = $_POST["activityType"];
+            $df_userID = $_POST["userID"];
+            $df_reportType = $_POST["report-type"];
+
+        }
+
+        function echoSelected($var, $value, $default=false){
+            if ($var == $value || $default){
+                echo "selected";
+            }
+        }
+
+        function echoChecked($var, $value, $default=false){
+            if ($var == $value || $default){
+                echo "checked";
+            }
+        }
+    ?>
 	<body>
 		<?php include 'headerbar-auth.php' ?>
 		<div class="container mt-5">
@@ -17,29 +45,41 @@
                 <div class="card-body">
                     <h5 class="card-title">Set criteria</h5>
                     <form method="post">
+                        <div class="row my-3">
+                            <div class="col">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="report-type" id="inlineRadio1" value="summary" <?php echoChecked($df_reportType, "summary", true) ?>>
+                                    <label class="form-check-label" for="inlineRadio1">Summary report</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="report-type" id="inlineRadio2" value="detail" <?php echoChecked($df_reportType, "detail") ?>>
+                                    <label class="form-check-label" for="inlineRadio2">Detail report</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row align-items-start">
                             <div class="col-3 mb-3">
                                 <label for="report-datetime-start" class="form-label">Start time (UTC)</label>
-                                <input type="datetime-local" class="form-control" id="report-datetime-start" name="startTime" required>
+                                <input type="datetime-local" class="form-control" id="report-datetime-start" name="startTime" required value="<?php echo $df_startTime ?>">
                             </div>
                             <div class="col-3 mb-3">
                                 <label for="report-datetime-end" class="form-label">End time (UTC)</label>
-                                <input type="datetime-local" class="form-control" id="report-datetime-end" name="endTime" required>
+                                <input type="datetime-local" class="form-control" id="report-datetime-end" name="endTime" required value="<?php echo $df_endTime ?>">
                             </div>
-                            <div class="col-3 mb-3">
+                            <div class="col-3 mb-3" id="activity-container">
                                 <label for="report-activity-type" class="form-label">Activity Type</label>
                                 <select id="report-activity-type" class="form-select" name="activityType" required>
-                                    <option value="" selected>Choose an activity type</option>
-                                    <option value="CREATE">Item created</option>
-                                    <option value="MODIFY">Item modified</option>
-                                    <option value="HOLD">Item held</option>
-                                    <option value="REM_HOLD">Item hold removed</option>
-                                    <option value="DELIST">Item delisted</option>
+                                    <option value="" <?php echoSelected($df_activityType, "", true) ?>>Choose an activity type</option>
+                                    <option value="CREATE" <?php echoSelected($df_activityType, "CREATE") ?>>Item created</option>
+                                    <option value="MODIFY" <?php echoSelected($df_activityType, "MODIFY") ?>>Item modified</option>
+                                    <option value="HOLD" <?php echoSelected($df_activityType, "HOLD") ?>>Item held</option>
+                                    <option value="REM_HOLD" <?php echoSelected($df_activityType, "REM_HOLD") ?>>Item hold removed</option>
+                                    <option value="DELIST" <?php echoSelected($df_activityType, "DELIST") ?>>Item delisted</option>
                                 </select>
                             </div>
                             <div class="col-3 mb-3">
                                 <label for="report-user-id" class="form-label">Filter by user ID</label>
-                                <input class="form-control" id="report-user-id" name="userID">
+                                <input class="form-control" id="report-user-id" name="userID" value="<?php echo $df_userID ?>">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -50,12 +90,49 @@
         <div class="container-fluid">
         <?php
                 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-                    $startTime = (new DateTime($_POST["startTime"]))->format('Y-m-d H:i:s');
-                    $endTime = (new DateTime($_POST["endTime"]))->format('Y-m-d H:i:s');
+                    $uf_startTime = new DateTime($_POST["startTime"]);
+                    $uf_endTime = new DateTime($_POST["endTime"]);
+
+                    $startTime = $uf_startTime->format('Y-m-d H:i:s');
+                    $endTime = $uf_endTime->format('Y-m-d H:i:s');
                     $activityType = $_POST["activityType"];
                     $userID = $_POST["userID"];
+                    $reportType = $_POST["report-type"];
 
-                    $sql = "SELECT [Trans ID]
+                    $cmd = "";
+                    $summTitle = "";
+
+                    switch ($activityType) {
+                        case 'CREATE':
+                            $cmd = "[Created By]";
+                            $summTitle = "[No. Items Created]";
+                            break;
+                        case 'DELIST':
+                            $cmd = "[Delisted By]";
+                            $summTitle = "[No. Items Delisted]";
+                            break;
+                        case 'HOLD':
+                            $cmd = "[Held By]";
+                            $summTitle = "[No. Items Held]";
+                            break;
+                        case 'REM_HOLD':
+                            $cmd = "[Modified By]";
+                            $summTitle = "[No. Items Hold Removed]";
+                            break;
+                        case 'MODIFY':
+                        default:
+                            $cmd = "[Modified By]";
+                            $summTitle = "[No. Items Modified]";
+                            break;
+                    }
+
+                    $summary = "SELECT it.$cmd ,ca.[Last Name] + ', ' + ca.[First Name] as [User Name], ca.Type as [User Type], COUNT(*) as $summTitle
+                        FROM [library].[library].[Item Transaction] as it
+                        LEFT JOIN library.library.Account as ca ON it.$cmd = ca.[User ID]
+                        RIGHT JOIN library.dbo.Items_With_Title_Details_No_Delist as i ON i.[Item ID] = it.[Item ID]
+                        WHERE i.[Item ID] = it.[Item ID]";
+                    
+                    $detail = "SELECT [Trans ID]
                             ,it.[Item ID]
                             ,[Trans Time]
                             ,it.[Created By]
@@ -91,35 +168,47 @@
                         LEFT OUTER JOIN library.library.Account as ma ON it.[Modified By] = ma.[User ID]
                         LEFT OUTER JOIN library.library.Account as da ON it.[Delisted By] = da.[User ID]
                         INNER JOIN library.dbo.Items_With_Title_Details_No_Delist as i ON i.[Item ID] = it.[Item ID]
-                        WHERE i.[Item ID] = it.[Item ID]
-                            AND it.[Trans Time] >= ?
-                            AND it.[Trans Time] <= ?
-                            AND it.[Trans Type] = ?
-                        ";
+                        WHERE i.[Item ID] = it.[Item ID]";
                     
-                    if ($userID){
-                        if ($activityType == "CREATE"){
-                            $sql = $sql." AND it.[Created By]=?";
+                    if ($reportType == "detail"){
+                        $sql = $detail." 
+                                AND it.[Trans Time] >= ?
+                                AND it.[Trans Time] <= ?
+                                AND it.[Trans Type] = ?
+                                ORDER BY [Trans Time] DESC
+                            ";
+                        if ($userID){
+                            if ($activityType == "CREATE"){
+                                $sql = $sql." AND it.[Created By]=?";
+                            }
+                            else if ($activityType == "DELIST"){
+                                $sql = $sql." AND it.[Delisted By]=?";
+                            }
+                            else if ($activityType == "MODIFY"){
+                                $sql = $sql." AND it.[Modified By]=?";
+                            }
                         }
-                        else if ($activityType == "DELIST"){
-                            $sql = $sql." AND it.[Delisted By]=?";
-                        }
-                        else if ($activityType == "MODIFY"){
-                            $sql = $sql." AND it.[Modified By]=?";
-                        }
-                    }
-                    
-                    $sql = $sql." ORDER BY [Trans Time] DESC";
-
-                    $options = array("ReturnDatesAsStrings"=>true, "Scrollable" => 'static');
-
-                    if (!$userID){
-                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime, $activityType), $options);
                     }
                     else
                     {
-                        $stmt = sqlsrv_prepare($conn, $sql, array($startTime, $endTime, $activityType, $userID), $options);
+                        $sql = $summary." 
+                                AND it.[Trans Time] >= ?
+                                AND it.[Trans Time] <= ?
+                                AND it.[Trans Type] = ?
+                                GROUP BY it.$cmd ,ca.[Last Name] + ', ' + ca.[First Name], ca.Type
+                            ";
                     }
+
+                    $options = array("ReturnDatesAsStrings"=>true, "Scrollable" => 'static');
+                    
+
+                    $params = array($startTime, $endTime, $activityType);
+
+                    if ($userID){
+                        array_push($params, $userID);
+                    }
+                    
+                    $stmt = sqlsrv_prepare($conn, $sql, $params, $options);
 
                     if (!$stmt){
                         $e = json_encode(sqlsrv_errors());
@@ -135,7 +224,11 @@
 
                     $columns = sqlsrv_field_metadata($stmt);
 
-                    echo "<h5>".sqlsrv_num_rows($stmt)." records found</h5>";
+                    if ($reportType == "summary"){
+                        echo "<div class='container'>";
+                    }
+
+                    echo "<h5>".sqlsrv_num_rows($stmt)." records found from ".$uf_startTime->format('l M j, y \a\t g:iA \U\T\C')." to ".$uf_endTime->format('l M j, y \a\t g:iA \U\T\C')."</h5>";
 
                     echo "<div class='table-responsive'><table class='table table-hover table-striped table-sm table-bordered'>";
                     echo "<thead class='table-success'><tr>";
@@ -148,7 +241,12 @@
                     echo "</tr></thead>";
                     echo "<tbody>";
 
+                    $total = 0;
+
                     while( $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC) ){
+                        if ($reportType == "summary"){
+                            $total += $row[3];
+                        }
                         echo "<tr>";
                         foreach($row as $col){
                             echo "<td>$col</td>";
@@ -156,7 +254,23 @@
                         echo "</tr>";
                     }
 
-                    echo "</tbody></table></div>";
+                    echo "</tbody>";
+
+                    if ($reportType == "summary"){
+
+
+
+                        echo "<tfoot><tr>";
+                        echo "<th colspan='3' style='text-align: right;'>Total:</th>";
+                        echo "<th>$total</th>";
+                        echo "</tr></tfoot>";
+                    }
+
+                    echo "</table></div>";
+
+                    if ($reportType == "summary"){
+                        echo "</div>";
+                    }
 
                     sqlsrv_free_stmt($stmt);  
                     sqlsrv_close($conn);  
@@ -165,6 +279,50 @@
             ?>
         </div>
     </body>
+    <!-- <script>
+        const activityContainer = document.getElementById('activity-container');
+        const acChildren = activityContainer.children;
+        const acChildrenClones = [];
+
+        for (let i = 0; i < acChildren.length; i++) {
+            const child = acChildren[i];
+            acChildrenClones.push(child.cloneNode(true));
+        }
+
+        function removeChildNodes(parent){
+            while (parent.firstChild){
+                parent.removeChild(parent.firstChild);
+            }
+        }
+
+        function handleReportTypeChange(e){
+            removeChildNodes(activityContainer);
+            
+            let value;
+            if (e){
+                value = e.target.value;
+            }
+            else
+            {
+                value = "summary";
+            }
+
+
+            if (value === "summary"){
+                removeChildNodes(activityContainer);
+                activityContainer.setAttribute('style', 'display: none;');
+            }
+            else
+            {
+                activityContainer.removeAttribute('style');
+                for (let i = 0; i < acChildrenClones.length; i++) {
+                    activityContainer.appendChild(acChildrenClones[i].cloneNode(true))
+                }
+            }
+        }
+
+        handleReportTypeChange();
+    </script> -->
     <?php include 'scripts.php' ?>
 <!---------------------------------------------------------------> 
 </html>
