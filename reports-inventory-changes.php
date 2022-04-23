@@ -131,7 +131,7 @@
                             break;
                     }
 
-                    $summary = "SELECT it.$cmd ,ca.[Last Name] + ', ' + ca.[First Name] as [User Name], ca.Type as [User Type], COUNT(*) as $summTitle
+                    $summary = "SELECT it.$cmd as [User ID], ca.[Last Name] + ', ' + ca.[First Name] as [User Name], ca.Type as [User Type], COUNT(*) as $summTitle
                         FROM [library].[library].[Item Transaction] as it
                         LEFT JOIN library.library.Account as ca ON it.$cmd = ca.[User ID]
                         RIGHT JOIN library.dbo.Items_With_Title_Details_No_Delist as i ON i.[Item ID] = it.[Item ID]
