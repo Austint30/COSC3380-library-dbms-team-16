@@ -120,8 +120,11 @@
         <div class="container-fluid">
         <?php
                 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-                    $startTime = (new DateTime($_POST["startTime"]))->format('Y-m-d H:i:s');
-                    $endTime = (new DateTime($_POST["endTime"]))->format('Y-m-d H:i:s');
+                    $uf_startTime = new DateTime($_POST["startTime"]);
+                    $uf_endTime = new DateTime($_POST["endTime"]);
+
+                    $startTime = $uf_startTime->format('Y-m-d H:i:s');
+                    $endTime = $uf_endTime->format('Y-m-d H:i:s');
                     $activityType = $_POST["activityType"];
                     $checkOutUserID = $_POST["checkOutUserID"];
                     $approvingUserID = $_POST["approvingUserID"];
@@ -254,7 +257,11 @@
 
                     $columns = sqlsrv_field_metadata($stmt);
 
-                    echo "<h5>".sqlsrv_num_rows($stmt)." records found</h5>";
+                    if ($reportType == "summary"){
+                        echo "<div class='container'>";
+                    }
+
+                    echo "<h5>".sqlsrv_num_rows($stmt)." records found from ".$uf_startTime->format('l M j, y \a\t g:iA')." to ".$uf_endTime->format('l M j, y \a\t g:iA')."</h5>";
 
                     echo "<div class='table-responsive'><table class='table table-hover table-striped table-sm table-bordered'>";
                     echo "<thead class='table-success'><tr>";
