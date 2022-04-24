@@ -28,8 +28,8 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <a href="/reports-unpaid-fees.php" href="/reports/unpaid-fees.php" class="block fw-bold">Unpaid Fees</a>
-                        <div>Reports fees that are currently unpaid</div>
+                        <a href="/reports-fees-revenue.php" href="/reports/unpaid-fees.php" class="block fw-bold">Fee Revenue</a>
+                        <div>Reports revenue that was made from fees for a given time period</div>
                     </div>
                 </li>
             </ol>
