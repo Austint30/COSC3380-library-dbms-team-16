@@ -1,2 +1,1 @@
-Hello world!
-Hello everyone!
+# Library Reservation System Project
